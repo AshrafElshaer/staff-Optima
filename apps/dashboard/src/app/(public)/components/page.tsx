@@ -321,14 +321,20 @@ import {
 } from "@optima/ui/dialog";
 import { HoverCard, HoverCardContent } from "@optima/ui/hover-card";
 import { HoverCardTrigger } from "@optima/ui/hover-card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@optima/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@optima/ui/tooltip";
 import { TooltipProvider } from "@optima/ui/tooltip";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import * as React from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@optima/ui/select";
 
-export function ModeToggle() {
+function ModeToggle() {
   const { setTheme, theme } = useTheme();
 
   return (
