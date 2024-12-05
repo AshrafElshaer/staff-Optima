@@ -49,7 +49,6 @@ export const signInAction = actionClientWithMeta
       },
     });
 
-
     if (emailError) {
       throw new Error(emailError.message);
     }
@@ -82,7 +81,7 @@ export const verifyOtpAction = actionClientWithMeta
       type: parsedInput.auth_type,
     });
 
-    if (error || isAuthApiError(error)) {
+    if (error) {
       throw new Error(error.message);
     }
 
@@ -92,5 +91,4 @@ export const verifyOtpAction = actionClientWithMeta
 
     redirect(parsedInput.redirect_url ?? "/");
 
-    return data;
   });

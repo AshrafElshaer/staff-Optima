@@ -1,11 +1,11 @@
 import "@optima/ui/globals.css";
 import { Footer } from "@/components/footer";
+import { Providers } from "@/components/providers";
 import { cn } from "@optima/ui/cn";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-
 
 const baseUrl = "https://dashboard.hrtoolkit.app";
 
@@ -42,7 +42,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export const viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)" },
@@ -60,17 +59,10 @@ export default function RootLayout({
       <body
         className={cn(
           `${GeistSans.variable} ${GeistMono.variable}`,
-          "antialiased bg-background-base text-foreground-base",
+          "antialiased",
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
