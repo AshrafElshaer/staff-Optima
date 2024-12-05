@@ -29,11 +29,14 @@ import {
   SheetTrigger,
 } from "@optima/ui/sheet";
 import { Home, User } from "lucide-react";
+import { Icons } from "@optima/ui/icons";
 
 export default function Page() {
   return (
     <div className=" p-4 flex flex-col gap-4 pb-60 max-w-xl mx-auto">
       <ModeToggle />
+
+      <Icons.Logo className="w-10 h-10" />
 
       <h1 className="text-base">Accordion</h1>
       <Accordion type="single" collapsible className="w-72">

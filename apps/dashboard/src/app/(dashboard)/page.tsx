@@ -6,8 +6,6 @@ export const metadata = {
 
 export default async function Page() {
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center">
-      dashboard
-    </div>
+    <div className=" flex flex-col items-center justify-center">dashboard</div>
   );
 }
