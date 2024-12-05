@@ -1,8 +1,8 @@
 "use client";
 
+import { createClient } from "@optima/supabase/client";
 import { Button } from "@optima/ui/button";
 import { Icons } from "@optima/ui/icons";
-import { createClient } from "@v1/supabase/client";
 
 export function SignOut() {
   const supabase = createClient();

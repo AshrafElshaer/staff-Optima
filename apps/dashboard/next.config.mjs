@@ -3,8 +3,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@v1/supabase"],
- 
+  transpilePackages: ["@optima/supabase"],
 };
 
 export default withSentryConfig(nextConfig, {

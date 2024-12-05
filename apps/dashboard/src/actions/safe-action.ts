@@ -1,9 +1,9 @@
+import { setupAnalytics } from "@optima/analytics/server";
+import { ratelimit } from "@optima/kv/ratelimit";
+import { logger } from "@optima/logger";
+// import { getUser } from "@optima/supabase/queries";
+import { createClient } from "@optima/supabase/server";
 import * as Sentry from "@sentry/nextjs";
-import { setupAnalytics } from "@v1/analytics/server";
-import { ratelimit } from "@v1/kv/ratelimit";
-import { logger } from "@v1/logger";
-// import { getUser } from "@v1/supabase/queries";
-import { createClient } from "@v1/supabase/server";
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
   createSafeActionClient,
@@ -88,7 +88,6 @@ export const authActionClient = actionClientWithMeta
       // const analytics = await setupAnalytics({
       //   userId: user.id,
       // });
-
       // if (metadata.track) {
       //   analytics.track(metadata.track);
       // }

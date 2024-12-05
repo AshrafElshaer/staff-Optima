@@ -1,7 +1,7 @@
 "use client";
 
+import { createClient } from "@optima/supabase/client";
 import { Button } from "@optima/ui/button";
-import { createClient } from "@v1/supabase/client";
 
 export function GoogleSignin() {
   const supabase = createClient();

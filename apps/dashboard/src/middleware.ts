@@ -1,4 +1,4 @@
-import { updateSession } from "@v1/supabase/middleware";
+import { updateSession } from "@optima/supabase/middleware";
 
 import { type NextRequest, NextResponse } from "next/server";
 
