@@ -1,11 +1,11 @@
 "use client";
 
-import { createClient } from "@optima/supabase/client";
+import { createBrowserClient } from "@/lib/supabase/browser";
 import { Button } from "@optima/ui/button";
 import { Icons } from "@optima/ui/icons";
 
 export function SignOut() {
-  const supabase = createClient();
+  const supabase = createBrowserClient();
 
   const handleSignOut = () => {
     supabase.auth.signOut();

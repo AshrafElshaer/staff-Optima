@@ -43,6 +43,8 @@
     "./sheet": "./src/components/sheet.tsx",
     "./navigation-menu": "./src/components/navigation-menu.tsx",
     "./popover": "./src/components/popover.tsx",
+    "./input-otp": "./src/components/input-otp.tsx",
+    "./card": "./src/components/card.tsx",
     "./postcss": "./postcss.config.js",
     "./progress": "./src/components/progress.tsx",
     "./radio-group": "./src/components/radio-group.tsx",

@@ -1,13 +1,21 @@
 import { Img } from "@react-email/components";
+import React from "react";
 
-export function Logo({ baseUrl }: { baseUrl: string }) {
+const baseUrl = "https://dashboard.hrtoolkit.app";
+
+export default function Logo() {
   return (
-    <Img
-      src={`${baseUrl}/logo.png`}
-      alt="Logo"
-      className="my-0 mx-auto text-center"
-      width={70}
-      height={70}
-    />
+    <>
+      <Img
+        src={`${baseUrl}/logo-png-dark.png`}
+        alt="HR Toolkit"
+        className="dark:hidden mx-auto h-14 w-14 mb-8"
+      />
+      <Img
+        src={`${baseUrl}/logo-png-light.png`}
+        alt="HR Toolkit"
+        className="hidden dark:block mx-auto h-14 w-14  mb-8"
+      />
+    </>
   );
 }

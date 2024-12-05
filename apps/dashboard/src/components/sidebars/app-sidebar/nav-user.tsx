@@ -28,7 +28,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@optima/ui/sidebar";
-import { ChartBubble01Icon, CommentAdd01Icon, Door01Icon, Settings01Icon } from "hugeicons-react";
+import {
+  ChartBubble01Icon,
+  CommentAdd01Icon,
+  Door01Icon,
+  Settings01Icon,
+} from "hugeicons-react";
 
 export function NavUser({
   user,
@@ -58,7 +63,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className={cn("w-[12rem] rounded-lg", isMobile ? "w-[14rem]" : "")}
+            className={cn(" rounded-lg", isMobile ? "w-[13rem]" : "w-[11rem]")}
             side="top"
             align="center"
             sideOffset={4}

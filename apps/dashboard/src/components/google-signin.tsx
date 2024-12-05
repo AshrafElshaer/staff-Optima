@@ -1,10 +1,10 @@
 "use client";
 
-import { createClient } from "@optima/supabase/client";
+import { createBrowserClient } from "@/lib/supabase/browser";
 import { Button } from "@optima/ui/button";
 
 export function GoogleSignin() {
-  const supabase = createClient();
+  const supabase = createBrowserClient();
 
   const handleSignin = () => {
     supabase.auth.signInWithOAuth({

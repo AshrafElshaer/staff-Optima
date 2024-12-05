@@ -2,7 +2,7 @@ import { setupAnalytics } from "@optima/analytics/server";
 import { ratelimit } from "@optima/kv/ratelimit";
 import { logger } from "@optima/logger";
 // import { getUser } from "@optima/supabase/queries";
-import { createClient } from "@optima/supabase/server";
+import { createServerClient } from "@/lib/supabase/server";
 import * as Sentry from "@sentry/nextjs";
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
@@ -78,7 +78,7 @@ export const authActionClient = actionClientWithMeta
     //   data: { user },
     // } = await getUser();
     const user: { id: string } | null = null;
-    const supabase = await createClient();
+    const supabase = await createServerClient();
 
     if (!user) {
       throw new Error("Unauthorized");
