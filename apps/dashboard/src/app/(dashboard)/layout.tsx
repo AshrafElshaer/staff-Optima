@@ -27,10 +27,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {isOrganization ? <OrganizationSidebar /> : <AppSidebar />}
         </motion.div>
       </AnimatePresence>
-      <SidebarInset className="overflow-x-hidden">
-        <div className="p-4 -ml-1 md:hidden">
-          <SidebarTrigger />
-        </div>
+      <SidebarInset className="overflow-x-hidden p-4">
+        <SidebarTrigger className="-ml-1 md:hidden" />
+
         {children}
       </SidebarInset>
     </SidebarProvider>

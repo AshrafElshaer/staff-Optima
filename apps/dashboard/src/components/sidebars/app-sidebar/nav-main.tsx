@@ -38,7 +38,7 @@ export function NavMain({
   const { setOpenMobile } = useSidebar();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="mb-1">{label}</SidebarGroupLabel>
+      <SidebarGroupLabel >{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
          const isActive =

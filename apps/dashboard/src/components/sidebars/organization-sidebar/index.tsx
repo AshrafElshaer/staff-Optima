@@ -82,7 +82,7 @@ export function OrganizationSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenuItem className="flex items-center gap-4 p-2">
+        <SidebarMenuItem className="flex items-center gap-2 p-2">
           <button type="button" onClick={() => router.back()}>
             <HiArrowUturnLeft strokeWidth={2} size={14} />
           </button>
