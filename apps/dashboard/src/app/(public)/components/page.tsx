@@ -19,6 +19,7 @@ import {
 } from "@optima/ui/breadcrumb";
 import { Button } from "@optima/ui/button";
 import { Checkbox } from "@optima/ui/checkbox";
+import { Icons } from "@optima/ui/icons";
 import {
   Sheet,
   SheetContent,
@@ -29,7 +30,7 @@ import {
   SheetTrigger,
 } from "@optima/ui/sheet";
 import { Home, User } from "lucide-react";
-import { Icons } from "@optima/ui/icons";
+import { toast } from "sonner";
 
 export default function Page() {
   return (
@@ -288,10 +289,14 @@ export default function Page() {
           <SelectItem value="banana">Banana</SelectItem>
         </SelectContent>
       </Select>
+
+      <Button onClick={() => toast.custom(CustomToast)}>Toast</Button>
     </div>
   );
 }
-
+function CustomToast(id: number | string): React.ReactElement {
+  return <div >Custom Toast {id}</div>;
+}
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -335,7 +340,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@optima/ui/tooltip";
 import { TooltipProvider } from "@optima/ui/tooltip";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import * as React from "react";
+import type * as React from "react";
 
 function ModeToggle() {
   const { setTheme, theme } = useTheme();

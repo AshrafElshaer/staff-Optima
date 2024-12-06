@@ -32,7 +32,7 @@ export const Toaster = ({ ...props }: ToasterProps) => {
         closeButton: true,
         classNames: {
           toast: twJoin(
-            "bg-background ring-1 ring-border dark:ring-inset sm:min-w-[22rem] rounded-md text-foreground overflow-hidden text-[0.925rem] backdrop-blur-xl px-4 py-3  ",
+            "bg-secondary ring-1 ring-border dark:ring-inset sm:min-w-[22rem] rounded-md text-foreground overflow-hidden text-[0.925rem] backdrop-blur-xl px-4 py-3  ",
             "[&:has([data-icon])_[data-content]]:ml-5",
             '[&:has([data-button])_[data-close-button="true"]]:hidden',
             // "[&:not([data-description])_[data-title]]:font-normal",
