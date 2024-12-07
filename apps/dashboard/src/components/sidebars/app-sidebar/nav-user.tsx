@@ -63,7 +63,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className={cn(" rounded-md w-[13rem]")}
+            className={cn(" rounded-md w-[11rem]")}
             side="top"
             align="center"
             sideOffset={4}
