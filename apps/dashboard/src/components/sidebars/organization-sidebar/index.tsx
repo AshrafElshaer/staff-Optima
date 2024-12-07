@@ -20,6 +20,7 @@ import {
   JobLinkIcon,
   MailAdd02Icon,
   Profile02Icon,
+  SlidersHorizontalIcon,
   UserMultipleIcon,
   UserSearch01Icon,
   WorkflowSquare10Icon,
@@ -50,7 +51,12 @@ const general = [
     icon: <UserMultipleIcon strokeWidth={2} size={20} />,
   },
   {
-    title: "Biiling & Usage",
+    title: "Integrations",
+    url: "/organization/integrations",
+    icon: <SlidersHorizontalIcon strokeWidth={2} size={20} />,
+  },
+  {
+    title: "Billing & Usage",
     url: "/organization/billing",
     icon: <CreditCardIcon strokeWidth={2} size={20} />,
   },
@@ -67,7 +73,7 @@ const communication = [
   {
     title: "Chat Channels",
     url: "/organization/chat-channels",
-    icon: <FaHashtag strokeWidth={2} className="size-[20px]" />,
+    icon: <FaHashtag strokeWidth={1} className="size-[20px]" />,
   },
   {
     title: "Email Templates",
@@ -85,6 +91,7 @@ export function OrganizationSidebar({
         <SidebarMenuItem className="flex items-center gap-2 p-2">
           <button type="button" onClick={() => router.back()}>
             <HiArrowUturnLeft strokeWidth={2} size={14} />
+            <span className="sr-only">Back</span>
           </button>
           <span className="text-compact-large font-bold">Settings</span>
         </SidebarMenuItem>
