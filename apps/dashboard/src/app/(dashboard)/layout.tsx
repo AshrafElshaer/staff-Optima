@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
-          key={pathname}
+          key={isOrganization ? "organization" : "app"}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

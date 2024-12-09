@@ -70,11 +70,11 @@ const applications = [
 ];
 
 const communication = [
-  {
-    title: "Chat Channels",
-    url: "/organization/chat-channels",
-    icon: <FaHashtag strokeWidth={1} className="size-[20px]" />,
-  },
+  // {
+  //   title: "Chat Channels",
+  //   url: "/organization/chat-channels",
+  //   icon: <FaHashtag strokeWidth={1} className="size-[20px]" />,
+  // },
   {
     title: "Email Templates",
     url: "/organization/email-templates",
@@ -89,7 +89,7 @@ export function OrganizationSidebar({
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenuItem className="flex items-center gap-2 p-2">
-          <button type="button" onClick={() => router.back()}>
+          <button type="button" onClick={() => router.push("/")}>
             <HiArrowUturnLeft strokeWidth={2} size={14} />
             <span className="sr-only">Back</span>
           </button>
@@ -103,8 +103,6 @@ export function OrganizationSidebar({
         <NavMain items={communication} label="Communication" />
       </SidebarContent>
       <Separator />
-
-      <SidebarRail />
     </Sidebar>
   );
 }

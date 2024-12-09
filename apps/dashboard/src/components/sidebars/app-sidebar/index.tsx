@@ -67,15 +67,16 @@ const links = [
     icon: <Home01Icon strokeWidth={2} size={20} />,
   },
   {
-    title: "Interviews",
-    url: "/interviews",
-    icon: <Calendar03Icon strokeWidth={2} size={20} />,
-  },
-  {
     title: "Job Listings",
     url: "/job-listings",
     icon: <JobLinkIcon strokeWidth={2} size={20} />,
   },
+  {
+    title: "Interviews",
+    url: "/interviews",
+    icon: <Calendar03Icon strokeWidth={2} size={20} />,
+  },
+
   {
     title: "Candidates",
     url: "/candidates",
@@ -106,15 +107,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <Separator />
       <SidebarContent>
         <NavMain items={links} label="Workspace" />
-        <NavMain items={communication} label="Team" />
+        {/* <NavMain items={communication} label="Team" /> */}
         <NavMain items={settings} label="Settings" />
-        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <Separator />
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
+
     </Sidebar>
   );
 }

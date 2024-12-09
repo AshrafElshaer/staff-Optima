@@ -38,24 +38,25 @@ export function NavMain({
   const { setOpenMobile } = useSidebar();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel >{label}</SidebarGroupLabel>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-         const isActive =
+          const isActive =
             pathname === item.url ||
-            item.url === pathname.split("/").slice(0, 2).join("/"); 
+            item.url === pathname.split("/").slice(0, 1).join("/");
           return (
             <SidebarMenuButton
               asChild
               key={item.title}
               onClick={() => setOpenMobile(false)}
-              className="!px-3"
             >
               <Link
                 href={item.url}
                 className={buttonVariants({
                   variant: isActive ? "secondary" : "ghost",
-                  className: cn("!justify-start gap-2   relative font-semibold"),
+                  className: cn(
+                    "!justify-start gap-2   relative font-semibold",
+                  ),
                 })}
               >
                 {item.icon}

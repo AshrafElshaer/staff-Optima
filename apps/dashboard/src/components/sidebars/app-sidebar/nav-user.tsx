@@ -34,6 +34,8 @@ import {
   Door01Icon,
   Settings01Icon,
 } from "hugeicons-react";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function NavUser({
   user,
@@ -79,9 +81,12 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Settings01Icon />
-                Account Settings
+              <ThemeToggle />
+              <DropdownMenuItem asChild>
+                <Link href="/account-settings">
+                  <Settings01Icon />
+                  Account Settings
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Headset />

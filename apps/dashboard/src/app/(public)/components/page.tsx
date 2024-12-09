@@ -35,7 +35,7 @@ import { toast } from "sonner";
 export default function Page() {
   return (
     <div className=" p-4 flex flex-col gap-4 pb-60 max-w-xl mx-auto">
-      <ModeToggle />
+      <ThemeToggle />
 
       <Icons.Logo className="w-10 h-10" />
 
@@ -341,19 +341,5 @@ import { TooltipProvider } from "@optima/ui/tooltip";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import type * as React from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
-function ModeToggle() {
-  const { setTheme, theme } = useTheme();
-
-  return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-    >
-      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
-    </Button>
-  );
-}
