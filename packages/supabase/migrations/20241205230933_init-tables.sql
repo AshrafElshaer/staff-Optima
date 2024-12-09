@@ -1,31 +1,221 @@
-required tables:
 
 
--- Organization
-- organizations
-- organization_members
-- departments
-- application_pipelines
-- application_pipeline_stages
-- email_templates
-- organization_integrations
+
+-- Organization 
+
+-- - email_templates
+-- - organization_integrations
 
 -- Users
-- users
-- user_preferences
-- user_integrations
-
--- Jobs
-- job_listings
-- job_applications
+-- - user_preferences
+-- - user_integrations
 
 
--- Interviews
-- interviews
-- interview_feedback
 
--- Candidates
-- candidates
+create type user_role_enum as enum ('admin', 'member');
+
+create table users (
+    id uuid references auth.users on delete cascade primary key,
+    email text not null unique,
+    first_name text not null,
+    last_name text not null,
+    avatar_url text,
+    access_role user_role_enum not null default 'member',
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_users_id on users(id);
+create index idx_users_email on users(email);
+
+
+create table organizations (
+    id uuid primary key default gen_random_uuid(),
+    name text not null,
+    logo_url text,
+    domain text not null,
+    admin_id uuid references users(id) on delete set null,
+    industry text not null,
+    profile jsonb,
+
+    address_1 text,
+    address_2 text,
+    city text,
+    state text,
+    zip_code text,
+    country text not null,
+
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_organizations_id on organizations(id);
+create index idx_organizations_domain on organizations(domain);
+
+create table organization_members (
+    organization_id uuid references organizations(id) on delete cascade,
+    user_id uuid references users(id) on delete cascade,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_organization_members_org on organization_members(organization_id);
+create index idx_organization_members_user on organization_members(user_id);
+
+create table departments (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade,
+    name text not null,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_departments_org on departments(organization_id);
+
+create table application_stages(
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade,
+    name text not null,
+    stage_order numeric not null
+);
+
+create table application_stage_triggers(
+    id uuid primary key default gen_random_uuid(),
+    stage_id uuid references application_stages(id) on delete cascade,
+    type text not null
+);
+
+create type employment_type_enum as enum ('full_time', 'part_time', 'contract', 'internship');
+create type experience_level_enum as enum ('junior', 'mid', 'senior', 'lead', 'executive');
+create type job_status_enum as enum ('published', 'draft', 'closed', 'paused');
+create type job_location_enum as enum ('remote','hybrid','on_site');
+
+
+create table job_listings (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade,
+    created_by uuid references users(id)  on delete set null,
+    department uuid references departments(id) on delete set null,
+    title text not null,
+    details jsonb not null,
+    employment_type employment_type_enum not null,
+    salary_range text,
+    experience_level experience_level_enum not null,
+    status job_status_enum default 'draft',
+    screening_questions jsonb ,
+    location job_location_enum not null,
+
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_job_listings_id on job_listings(id);
+create index idx_job_listings_org on job_listings(organization_id);
+
+create table candidates (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade,
+    avatar_url text,
+    first_name text not null,
+    last_name text not null,
+    email text not null unique,
+    phone_number text,
+    time_zone text not null,
+    urls jsonb not null,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_candidates_organization on candidates(organization_id);
+create index idx_candidates_email on candidates(email);
+
+create table applications(
+    id uuid primary key default gen_random_uuid(),
+    job_id uuid references job_listings(id) on delete cascade,
+    organization_id uuid references organizations(id) on delete cascade,
+    candidate_id uuid references candidates(id) on delete cascade,
+    stage_id uuid references application_stages(id) on delete set null,
+    source text,
+    screening_question_answers jsonb,
+    candidate_match numeric not null,
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_application_id on applications(id);
+create index idx_application_job_id on applications(job_id);
+create index idx_application_candidate_id on applications(candidate_id);
+
+create table reject_reasons (
+    id uuid primary key default gen_random_uuid(),
+    application_id uuid references applications(id) on delete cascade,
+    content text not null,
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_rejection_id on reject_reasons(id);
+create index idx_rejection_application_id on reject_reasons(application_id);
+
+
+
+
+
+create type attachment_type_enum as enum ('resume', 'cover_letter', 'portfolio', 'certificate', 'reference_letter', 'other');
+
+create table attachments (
+    id uuid primary key default gen_random_uuid(),
+    candidate_id uuid references candidates(id) on delete cascade,
+    file_name text not null,
+    file_url text not null,
+    attachment_type attachment_type_enum default 'resume',
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_attachments_candidate_id on attachments(candidate_id);
+
+   
+create type interview_status_enum as enum ('scheduled', 'completed', 'canceled','awaiting_feedback');
+
+create table interviews (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) not null,
+    application_id uuid references applications(id)  on delete cascade,
+    interviewer_id uuid references users(id) on delete set null,
+    start_at timestamp with time zone not null,
+    end_at timestamp with time zone not null,
+    location text,
+    status interview_status_enum not null default 'scheduled',
+
+    created_by uuid references users(id) on delete set null,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_interviews_application_id on interviews(application_id);
+create index idx_interviews_interviewer_id on interviews(interviewer_id);
+
+create table interview_feedback (
+    id uuid primary key default gen_random_uuid(),
+    interview_id uuid references interviews(id) on delete cascade,
+    created_by uuid references users(id) on delete set null,
+    feedback text not null,
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_interview_feedback_interview_id on interview_feedback(interview_id);
+create index idx_interview_feedback_created_by on interview_feedback(created_by);
+
+
+
 
 
 

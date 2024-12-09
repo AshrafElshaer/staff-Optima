@@ -4,29 +4,673 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never;
-    };
+      application_stage_triggers: {
+        Row: {
+          id: string
+          stage_id: string | null
+          type: string
+        }
+        Insert: {
+          id?: string
+          stage_id?: string | null
+          type: string
+        }
+        Update: {
+          id?: string
+          stage_id?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_stage_triggers_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "application_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      application_stages: {
+        Row: {
+          id: string
+          name: string
+          organization_id: string | null
+          stage_order: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          organization_id?: string | null
+          stage_order: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          organization_id?: string | null
+          stage_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_stages_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      applications: {
+        Row: {
+          candidate_id: string | null
+          candidate_match: number
+          created_at: string
+          id: string
+          job_id: string | null
+          organization_id: string | null
+          screening_question_answers: Json | null
+          source: string | null
+          stage_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          candidate_id?: string | null
+          candidate_match: number
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          organization_id?: string | null
+          screening_question_answers?: Json | null
+          source?: string | null
+          stage_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string | null
+          candidate_match?: number
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          organization_id?: string | null
+          screening_question_answers?: Json | null
+          source?: string | null
+          stage_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "application_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      attachments: {
+        Row: {
+          attachment_type:
+            | Database["public"]["Enums"]["attachment_type_enum"]
+            | null
+          candidate_id: string | null
+          created_at: string
+          file_name: string
+          file_url: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          attachment_type?:
+            | Database["public"]["Enums"]["attachment_type_enum"]
+            | null
+          candidate_id?: string | null
+          created_at?: string
+          file_name: string
+          file_url: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          attachment_type?:
+            | Database["public"]["Enums"]["attachment_type_enum"]
+            | null
+          candidate_id?: string | null
+          created_at?: string
+          file_name?: string
+          file_url?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attachments_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidates: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          organization_id: string | null
+          phone_number: string | null
+          time_zone: string
+          updated_at: string
+          urls: Json
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          organization_id?: string | null
+          phone_number?: string | null
+          time_zone: string
+          updated_at?: string
+          urls: Json
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          organization_id?: string | null
+          phone_number?: string | null
+          time_zone?: string
+          updated_at?: string
+          urls?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidates_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          organization_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          organization_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          organization_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_feedback: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          feedback: string
+          id: string
+          interview_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          feedback: string
+          id?: string
+          interview_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          feedback?: string
+          id?: string
+          interview_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_feedback_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_feedback_interview_id_fkey"
+            columns: ["interview_id"]
+            isOneToOne: false
+            referencedRelation: "interviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interviews: {
+        Row: {
+          application_id: string | null
+          created_at: string
+          created_by: string | null
+          end_at: string
+          id: string
+          interviewer_id: string | null
+          location: string | null
+          organization_id: string
+          start_at: string
+          status: Database["public"]["Enums"]["interview_status_enum"]
+          updated_at: string
+        }
+        Insert: {
+          application_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_at: string
+          id?: string
+          interviewer_id?: string | null
+          location?: string | null
+          organization_id: string
+          start_at: string
+          status?: Database["public"]["Enums"]["interview_status_enum"]
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_at?: string
+          id?: string
+          interviewer_id?: string | null
+          location?: string | null
+          organization_id?: string
+          start_at?: string
+          status?: Database["public"]["Enums"]["interview_status_enum"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interviews_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interviews_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interviews_interviewer_id_fkey"
+            columns: ["interviewer_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interviews_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_listings: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          department: string | null
+          details: Json
+          employment_type: Database["public"]["Enums"]["employment_type_enum"]
+          experience_level: Database["public"]["Enums"]["experience_level_enum"]
+          id: string
+          location: Database["public"]["Enums"]["job_location_enum"]
+          organization_id: string | null
+          salary_range: string | null
+          screening_questions: Json | null
+          status: Database["public"]["Enums"]["job_status_enum"] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          details: Json
+          employment_type: Database["public"]["Enums"]["employment_type_enum"]
+          experience_level: Database["public"]["Enums"]["experience_level_enum"]
+          id?: string
+          location: Database["public"]["Enums"]["job_location_enum"]
+          organization_id?: string | null
+          salary_range?: string | null
+          screening_questions?: Json | null
+          status?: Database["public"]["Enums"]["job_status_enum"] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          details?: Json
+          employment_type?: Database["public"]["Enums"]["employment_type_enum"]
+          experience_level?: Database["public"]["Enums"]["experience_level_enum"]
+          id?: string
+          location?: Database["public"]["Enums"]["job_location_enum"]
+          organization_id?: string | null
+          salary_range?: string | null
+          screening_questions?: Json | null
+          status?: Database["public"]["Enums"]["job_status_enum"] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_listings_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_listings_department_fkey"
+            columns: ["department"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_listings_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organization_members: {
+        Row: {
+          created_at: string
+          organization_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          organization_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          organization_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "organization_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          address_1: string | null
+          address_2: string | null
+          admin_id: string | null
+          city: string | null
+          country: string
+          created_at: string
+          domain: string
+          id: string
+          industry: string
+          logo_url: string | null
+          name: string
+          profile: Json | null
+          state: string | null
+          updated_at: string
+          zip_code: string | null
+        }
+        Insert: {
+          address_1?: string | null
+          address_2?: string | null
+          admin_id?: string | null
+          city?: string | null
+          country: string
+          created_at?: string
+          domain: string
+          id?: string
+          industry: string
+          logo_url?: string | null
+          name: string
+          profile?: Json | null
+          state?: string | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Update: {
+          address_1?: string | null
+          address_2?: string | null
+          admin_id?: string | null
+          city?: string | null
+          country?: string
+          created_at?: string
+          domain?: string
+          id?: string
+          industry?: string
+          logo_url?: string | null
+          name?: string
+          profile?: Json | null
+          state?: string | null
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organizations_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reject_reasons: {
+        Row: {
+          application_id: string | null
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          application_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reject_reasons_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          access_role: Database["public"]["Enums"]["user_role_enum"]
+          avatar_url: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          updated_at: string
+        }
+        Insert: {
+          access_role?: Database["public"]["Enums"]["user_role_enum"]
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          updated_at?: string
+        }
+        Update: {
+          access_role?: Database["public"]["Enums"]["user_role_enum"]
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      [_ in never]: never;
-    };
+      get_user_access_role: {
+        Args: Record<PropertyKey, never>
+        Returns: Database["public"]["Enums"]["user_role_enum"]
+      }
+      get_user_organization_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      is_user_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_user_member: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_user_organization_admin: {
+        Args: {
+          organization_id: string
+        }
+        Returns: boolean
+      }
+      is_user_organization_member: {
+        Args: {
+          organization_id: string
+        }
+        Returns: boolean
+      }
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      attachment_type_enum:
+        | "resume"
+        | "cover_letter"
+        | "portfolio"
+        | "certificate"
+        | "reference_letter"
+        | "other"
+      employment_type_enum:
+        | "full_time"
+        | "part_time"
+        | "contract"
+        | "internship"
+      experience_level_enum: "junior" | "mid" | "senior" | "lead" | "executive"
+      interview_status_enum:
+        | "scheduled"
+        | "completed"
+        | "canceled"
+        | "awaiting_feedback"
+      job_location_enum: "remote" | "hybrid" | "on_site"
+      job_status_enum: "published" | "draft" | "closed" | "paused"
+      user_role_enum: "admin" | "member"
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type PublicSchema = Database[Extract<keyof Database, "public">];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -39,7 +683,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
@@ -47,11 +691,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R;
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -62,17 +706,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -83,17 +727,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -106,14 +750,14 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never;
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof PublicSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database;
+    schema: keyof Database
   }
     ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
@@ -121,4 +765,4 @@ export type CompositeTypes<
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never;
+    : never
