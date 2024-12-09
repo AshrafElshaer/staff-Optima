@@ -178,6 +178,7 @@ create table attachments (
 
     file_name text not null,
     file_url text not null,
+    file_path text not null,
     attachment_type attachment_type_enum default 'resume',
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null
