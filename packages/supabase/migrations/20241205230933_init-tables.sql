@@ -83,6 +83,7 @@ create table application_stages(
 
 create table application_stage_triggers(
     id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade,
     stage_id uuid references application_stages(id) on delete cascade,
     type text not null
 );
@@ -97,7 +98,7 @@ create table job_listings (
     id uuid primary key default gen_random_uuid(),
     organization_id uuid references organizations(id) on delete cascade,
     created_by uuid references users(id)  on delete set null,
-    department uuid references departments(id) on delete set null,
+    department_id uuid references departments(id) on delete set null,
     title text not null,
     details jsonb not null,
     employment_type employment_type_enum not null,
@@ -154,6 +155,8 @@ create table reject_reasons (
     id uuid primary key default gen_random_uuid(),
     application_id uuid references applications(id) on delete cascade,
     content text not null,
+    organization_id uuid references organizations(id) on delete cascade,
+
 
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null
@@ -171,6 +174,8 @@ create type attachment_type_enum as enum ('resume', 'cover_letter', 'portfolio',
 create table attachments (
     id uuid primary key default gen_random_uuid(),
     candidate_id uuid references candidates(id) on delete cascade,
+    organization_id uuid references organizations(id) not null,
+
     file_name text not null,
     file_url text not null,
     attachment_type attachment_type_enum default 'resume',
@@ -204,6 +209,7 @@ create index idx_interviews_interviewer_id on interviews(interviewer_id);
 create table interview_feedback (
     id uuid primary key default gen_random_uuid(),
     interview_id uuid references interviews(id) on delete cascade,
+    organization_id uuid references organizations(id) not null,
     created_by uuid references users(id) on delete set null,
     feedback text not null,
 
