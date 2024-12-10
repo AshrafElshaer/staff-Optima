@@ -12,7 +12,7 @@
 
 
 
-create type user_role_enum as enum ('admin', 'member');
+create type user_role_enum as enum ('admin', 'recruiter','hiring_manager','interviewer');
 
 create table users (
     id uuid references auth.users on delete cascade primary key,
@@ -20,7 +20,7 @@ create table users (
     first_name text not null,
     last_name text not null,
     avatar_url text,
-    access_role user_role_enum not null default 'member',
+    access_role user_role_enum not null,
 
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null

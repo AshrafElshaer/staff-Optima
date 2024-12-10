@@ -36,19 +36,19 @@ create policy "Users can update their own logo." on storage.objects
 
 -- Profile Document bucket
 insert into storage.buckets (id, name, public)
-  values ('profile-documents', 'profile-documents', true);
+  values ('profile_documents', 'profile_documents', true);
 
 create policy "Profile document images are publicly accessible." on storage.objects
-  for select using (bucket_id = 'profile-documents');
+  for select using (bucket_id = 'profile_documents');
 
 create policy "Anyone can upload a profile document." on storage.objects
-  for insert with check (bucket_id = 'profile-documents');
+  for insert with check (bucket_id = 'profile_documents');
 
 create policy "Users can delete their own profile document." on storage.objects
-  for delete using (bucket_id = 'profile-documents' and auth.uid() = owner);
+  for delete using (bucket_id = 'profile_documents' and auth.uid() = owner);
 
 create policy "Users can update their own profile document." on storage.objects
-  for update using (bucket_id = 'profile-documents' and auth.uid() = owner);
+  for update using (bucket_id = 'profile_documents' and auth.uid() = owner);
 
 -- attachments bucket
 insert into storage.buckets (id, name, public)

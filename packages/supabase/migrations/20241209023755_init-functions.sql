@@ -20,12 +20,7 @@ as $$
     select access_role = 'admin' from users where id = auth.uid();
 $$ language sql stable;
 
-create or replace function is_user_member() returns boolean  
-    security invoker
-    set search_path = public 
-as $$
-    select access_role = 'member' from users where id = auth.uid(); 
-$$ language sql stable;
+
 
 create or replace function is_user_organization_admin(organization_id uuid) returns boolean 
     security invoker
