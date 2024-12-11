@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </motion.div>
       </AnimatePresence>
       <SidebarInset className="overflow-x-hidden p-4">
-        <SidebarTrigger className="-ml-1 md:hidden" />
+        <SidebarTrigger className="-ml-1 md:hidden mb-4" />
 
         {children}
       </SidebarInset>
