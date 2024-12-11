@@ -12,7 +12,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, startIcon, endIcon, error, ...props }, ref) => {
     return (
       <div className=" space-y-2 w-full ">
-        <div className="flex items-center rounded-md border relative ">
+        <div
+          className={cn(
+            "flex items-center rounded-md border relative ",
+            error && "border-destructive",
+          )}
+        >
           <input
             type={type}
             className={cn(
@@ -42,4 +47,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = "Input";
 
-export { Input };
+const UrlInput = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ error, ...props }, ref) => {
+    return (
+      <div className="space-y-2">
+        <div className="relative">
+          <Input {...props} className="peer ps-16" type="text" ref={ref} />
+          <span className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-sm text-secondary-foreground peer-disabled:opacity-50">
+            https://
+          </span>
+        </div>
+        {error && <p className="text-destructive text-sm">{error}</p>}
+      </div>
+    );
+  },
+);
+UrlInput.displayName = "UrlInput";
+
+export { Input, UrlInput };

@@ -74,23 +74,23 @@ export const authActionClient = actionClientWithMeta
     });
   })
   .use(async ({ next, metadata }) => {
-    // const {
-    //   data: { user },
-    // } = await getUser();
-    const user: { id: string } | null = null;
+    
     const supabase = await createServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
     if (!user) {
       throw new Error("Unauthorized");
     }
 
     if (metadata) {
-      // const analytics = await setupAnalytics({
-      //   userId: user.id,
-      // });
-      // if (metadata.track) {
-      //   analytics.track(metadata.track);
-      // }
+      const analytics = await setupAnalytics({
+        userId: user.id,
+      });
+      if (metadata.track) {
+        analytics.track(metadata.track);
+      }
     }
 
     return Sentry.withServerActionInstrumentation(metadata.name, async () => {

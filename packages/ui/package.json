@@ -31,6 +31,7 @@
     "./checkbox": "./src/components/checkbox.tsx",
     "./cn": "./src/utils/cn.ts",
     "./collapsible": "./src/components/collapsible.tsx",
+    "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
     "./dialog": "./src/components/dialog.tsx",
     "./dropdown-menu": "./src/components/dropdown-menu.tsx",
@@ -41,6 +42,7 @@
     "./label": "./src/components/label.tsx",
     "./menubar": "./src/components/menubar.tsx",
     "./sheet": "./src/components/sheet.tsx",
+    "./skeleton": "./src/components/skeleton.tsx",
     "./navigation-menu": "./src/components/navigation-menu.tsx",
     "./popover": "./src/components/popover.tsx",
     "./input-otp": "./src/components/input-otp.tsx",
@@ -109,6 +111,6 @@
     "tailwind-variants": "^0.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.1",
-    "zod": "^3.23.8"
+    "zod": "^3.24.0"
   }
 }

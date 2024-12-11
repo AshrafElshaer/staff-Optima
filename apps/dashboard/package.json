@@ -14,9 +14,11 @@
   "dependencies": {
     "@optima/analytics": "workspace:*",
     "@optima/kv": "workspace:*",
+    "@optima/location": "workspace:*",
     "@optima/supabase": "workspace:*",
     "@optima/ui": "workspace:*",
     "@tanstack/react-query": "^5.62.2",
+    "canvas-confetti": "^1.9.3",
     "dub": "^0.36.5",
     "geist": "^1.3.1",
     "hugeicons-react": "^0.3.0",
@@ -31,11 +33,12 @@
     "react-icons": "^5.4.0",
     "resend": "^4.0.1",
     "usehooks-ts": "^3.1.0",
-    "zod": "^3.23.8"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@sentry/nextjs": "^8.42.0",
     "@supabase/sentry-js-integration": "^0.3.0",
+    "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^22",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",

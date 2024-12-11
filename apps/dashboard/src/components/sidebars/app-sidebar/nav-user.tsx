@@ -11,6 +11,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { Avatar } from "@optima/ui/avatar";
 import { cn } from "@optima/ui/cn";
 import {
@@ -26,27 +28,31 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
   useSidebar,
 } from "@optima/ui/sidebar";
 import {
   ChartBubble01Icon,
   CommentAdd01Icon,
   Door01Icon,
+  IslandIcon,
   Settings01Icon,
 } from "hugeicons-react";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Skeleton } from "@optima/ui/skeleton";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
-  const { isMobile } = useSidebar();
+export function NavUser() {
+  const { isMobile, toggleSidebar } = useSidebar();
+  const { data: user, isLoading } = useCurrentUser();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-2 px-2">
+        <Skeleton className="size-6 rounded-sm" />
+        <Skeleton className="w-full h-6 rounded-sm" />
+      </div>
+    );
+  }
 
   return (
     <SidebarMenu>
@@ -57,9 +63,16 @@ export function NavUser({
               size="default"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground items-center"
             >
-              <Avatar className="size-6 " shape="square" initials={"AE"} />
+              <Avatar
+                className="size-6 "
+                shape="square"
+                initials={`${user?.first_name[0]}${user?.last_name[0]}`}
+                src={user?.avatar_url}
+              />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-bold">{user.name}</span>
+                <span className="truncate font-bold">
+                  {user?.first_name} {user?.last_name}
+                </span>
               </div>
               <MoreHorizontal className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -72,17 +85,32 @@ export function NavUser({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg" initials={"AE"} />
+                <Avatar
+                  className="size-8"
+                  shape="square"
+                  initials={`${user?.first_name[0]}${user?.last_name[0]}`}
+                  src={user?.avatar_url}
+                />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">
+                    {" "}
+                    {user?.first_name} {user?.last_name}
+                  </span>
+                  <span className="truncate text-xs">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <ThemeToggle />
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem
+                asChild
+                onSelect={() => {
+                  if (isMobile) {
+                    toggleSidebar();
+                  }
+                }}
+              >
                 <Link href="/account-settings">
                   <Settings01Icon />
                   Account Settings

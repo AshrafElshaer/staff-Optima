@@ -1,18 +1,6 @@
 "use client";
 
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Building2,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  //   Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+
 import type * as React from "react";
 
 import { Icons } from "@optima/ui/icons";
@@ -22,7 +10,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+
 } from "@optima/ui/sidebar";
 import {
   Calendar03Icon,
@@ -35,31 +23,7 @@ import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { OrganizationLogo } from "./organization-logo";
 
-// This is sample data.
-const data = {
-  user: {
-    name: "Adam Ericson",
-    email: "adam@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-};
+
 const links = [
   {
     title: "Dashboard",
@@ -102,7 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <OrganizationLogo teams={data.teams} />
+        <OrganizationLogo />
       </SidebarHeader>
       <Separator />
       <SidebarContent>
@@ -112,9 +76,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <Separator />
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
-
     </Sidebar>
   );
 }

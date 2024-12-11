@@ -19,7 +19,6 @@ const config = {
     },
     extend: {
       fontSize: {
-        base: ["1.2rem", { fontWeight: "500" }],
         "compact-xlarge-plus": ["1rem", { fontWeight: "500" }],
         "compact-xlarge": ["1rem", { fontWeight: "400" }],
         "compact-large-plus": ["0.89rem", { fontWeight: "500" }],
