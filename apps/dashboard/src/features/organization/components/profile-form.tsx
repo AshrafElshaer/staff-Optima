@@ -34,12 +34,18 @@ export function OrganizationProfileForm({
       toast.error(error.serverError);
     },
     onSuccess: ({ data }) => {
-      form.reset(
-        {},
-        {
-          keepDirty: false,
-        },
-      );
+      form.reset(data ?{
+        ...data,
+        profile: data.profile ? JSON.parse(data.profile as string) : null,
+        logo_url: data.logo_url ?? null,
+          admin_id: data.admin_id ?? undefined,
+          address_1: data.address_1 ?? null,
+          address_2: data.address_2 ?? null,
+          city: data.city ?? null,
+        }
+      : undefined, {
+        keepDirty: false,
+      });
       toast.success("Organization profile updated successfully");
     },
   });
