@@ -2,8 +2,8 @@
 import { authActionClient } from "@/lib/safe-action";
 import { updateOrganization } from "@optima/supabase/mutations";
 import {
-  organizationUpdateSchema,
   organizationSchema,
+  organizationUpdateSchema,
 } from "@optima/supabase/validations";
 import { revalidatePath } from "next/cache";
 import type { z } from "zod";
@@ -20,9 +20,11 @@ export const updateOrganizationAction = authActionClient
   .action(async ({ ctx, parsedInput }) => {
     const { user, supabase } = ctx;
 
+
+
     const { data, error } = await updateOrganization(supabase, {
       ...parsedInput,
-      profile: parsedInput.profile ? JSON.stringify(parsedInput.profile) : null
+      profile: parsedInput.profile ? JSON.stringify(parsedInput.profile) : null,
     });
 
     if (error) {

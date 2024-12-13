@@ -31,22 +31,33 @@ export function OrganizationProfileForm({
     reset: resetAction,
   } = useAction(updateOrganizationAction, {
     onError: ({ error }) => {
-      toast.error(error.serverError);
+      setTimeout(() => {
+        resetAction();
+      }, 3000);
     },
     onSuccess: ({ data }) => {
-      form.reset(data ?{
-        ...data,
-        profile: data.profile ? JSON.parse(data.profile as string) : null,
-        logo_url: data.logo_url ?? null,
-          admin_id: data.admin_id ?? undefined,
-          address_1: data.address_1 ?? null,
-          address_2: data.address_2 ?? null,
-          city: data.city ?? null,
-        }
-      : undefined, {
-        keepDirty: false,
-      });
-      toast.success("Organization profile updated successfully");
+      setTimeout(() => {
+        form.reset(
+          data
+            ? {
+                ...data,
+                profile: data.profile
+                  ? JSON.parse(data.profile as string)
+                  : null,
+                logo_url: data.logo_url ?? null,
+                admin_id: data.admin_id ?? undefined,
+                address_1: data.address_1 ?? null,
+                address_2: data.address_2 ?? null,
+                city: data.city ?? null,
+              }
+            : undefined,
+          {
+            keepDirty: false,
+          },
+        );
+        dismissToast();
+        resetAction();
+      }, 3000);
     },
   });
 
@@ -71,31 +82,16 @@ export function OrganizationProfileForm({
     updateOrganization(values);
   }
 
-  useActionBar({
-    onAction: async () => {
-      formSubmitRef.current?.click();
-    },
-    onReset: () => {
-      form.reset(
-        organization
-          ? {
-              ...organization,
-              profile: organization.profile
-                ? JSON.parse(organization.profile as string)
-                : null,
-              admin_id: organization.admin_id ?? undefined,
-              address_1: organization.address_1 ?? null,
-              address_2: organization.address_2 ?? null,
-              city: organization.city ?? null,
-            }
-          : undefined,
-      );
-    },
-    isLoading: isUpdating,
-    status,
+  const { dismissToast } = useActionBar({
     show: form.formState.isDirty,
-    title: "Unsaved Changes",
-
+    ToastContent: () => (
+      <OnEditToast
+        onAction={() => formSubmitRef.current?.click()}
+        onReset={() => form.reset()}
+        status={status}
+        error={result?.serverError}
+      />
+    ),
   });
 
   return (
