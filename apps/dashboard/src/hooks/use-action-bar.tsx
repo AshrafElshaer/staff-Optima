@@ -13,7 +13,6 @@ type Props = {
   show: boolean;
   className?: string;
   status?: HookActionStatus;
-
 };
 
 import { Button } from "@optima/ui/button";
@@ -27,7 +26,6 @@ export const useActionBar = ({
   description = "test",
   className,
   status,
-
 }: Props) => {
   const toastId = React.useRef<string | number>("");
 
@@ -87,7 +85,6 @@ export const useActionBar = ({
       toast.dismiss(toastId.current);
       toastId.current = "";
     }
-
   }, [
     show,
     isLoading,

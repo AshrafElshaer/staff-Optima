@@ -131,7 +131,8 @@ function OrganizationForm() {
       <div className="flex flex-col sm:flex-row gap-2 w-full">
         <div className="space-y-2 w-full">
           <Label>
-            Address 1 <span className="text-muted-foreground">( Optional )</span>
+            Address 1{" "}
+            <span className="text-muted-foreground">( Optional )</span>
           </Label>
           <Input
             {...form.register("address_1")}
@@ -141,7 +142,10 @@ function OrganizationForm() {
         </div>
 
         <div className="space-y-2 w-full">
-          <Label>Address 2 <span className="text-muted-foreground">( Optional )</span></Label>
+          <Label>
+            Address 2{" "}
+            <span className="text-muted-foreground">( Optional )</span>
+          </Label>
           <Input
             {...form.register("address_2")}
             placeholder="suite #512"
@@ -152,7 +156,9 @@ function OrganizationForm() {
 
       <div className="flex flex-col sm:flex-row gap-2 w-full">
         <div className="space-y-2 w-full">
-          <Label>City <span className="text-muted-foreground">( Optional )</span></Label>
+          <Label>
+            City <span className="text-muted-foreground">( Optional )</span>
+          </Label>
           <Input
             {...form.register("city")}
             placeholder="New York"
@@ -160,7 +166,9 @@ function OrganizationForm() {
           />
         </div>
         <div className="space-y-2 w-full">
-          <Label>State <span className="text-muted-foreground">( Optional )</span></Label>
+          <Label>
+            State <span className="text-muted-foreground">( Optional )</span>
+          </Label>
           <Input
             {...form.register("state")}
             placeholder="Texas"
@@ -168,7 +176,9 @@ function OrganizationForm() {
           />
         </div>
         <div className="space-y-2 w-full">
-          <Label>Zip Code <span className="text-muted-foreground">( Optional )</span></Label>
+          <Label>
+            Zip Code <span className="text-muted-foreground">( Optional )</span>
+          </Label>
           <Input
             {...form.register("zip_code")}
             placeholder="12345"

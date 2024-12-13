@@ -295,7 +295,7 @@ export default function Page() {
   );
 }
 function CustomToast(id: number | string): React.ReactElement {
-  return <div >Custom Toast {id}</div>;
+  return <div>Custom Toast {id}</div>;
 }
 import {
   DropdownMenu,
@@ -342,4 +342,3 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import type * as React from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
-

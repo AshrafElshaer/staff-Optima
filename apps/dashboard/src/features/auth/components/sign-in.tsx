@@ -25,7 +25,6 @@ export function SignIn() {
       toast.error(error.serverError);
     },
     onSuccess: (res) => {
-
       setAuthParams({
         auth_type: res?.data?.properties?.verification_type as
           | "signup"

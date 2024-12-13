@@ -10,7 +10,7 @@ Sentry.init({
   debug: false,
   enabled: process.env.NODE_ENV === "production",
   integrations: [
-    supabaseIntegration( client, Sentry, {
+    supabaseIntegration(client, Sentry, {
       tracing: true,
       breadcrumbs: true,
       errors: true,

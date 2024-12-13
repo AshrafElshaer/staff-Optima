@@ -21,11 +21,11 @@ export const Toaster = ({ ...props }: ToasterProps) => {
       duration={5000}
       position="top-right"
       // icons={{
-        // info: <MdOutlineError size={16} />,
-        // success: <Check size={16} strokeWidth={2} />,
-        // warning: <FaExclamationTriangle size={14} />,
-        // error: <FaExclamationTriangle size={14} />,
-        // loading: <Loader size={16} className="animate-spin" />,
+      // info: <MdOutlineError size={16} />,
+      // success: <Check size={16} strokeWidth={2} />,
+      // warning: <FaExclamationTriangle size={14} />,
+      // error: <FaExclamationTriangle size={14} />,
+      // loading: <Loader size={16} className="animate-spin" />,
       // }}
       toastOptions={{
         // unstyled: true,

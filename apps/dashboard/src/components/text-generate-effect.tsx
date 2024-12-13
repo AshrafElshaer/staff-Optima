@@ -33,10 +33,10 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx.toString()}
-                style={{
-                  opacity: 0,
-                  color: "currentColor",
-                }}
+              style={{
+                opacity: 0,
+                color: "currentColor",
+              }}
               custom={{ className: "text-foreground opacity-0" }}
             >
               {word}{" "}

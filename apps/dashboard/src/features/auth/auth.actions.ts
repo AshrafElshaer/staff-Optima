@@ -90,5 +90,4 @@ export const verifyOtpAction = actionClientWithMeta
     }
 
     redirect(parsedInput.redirect_url ?? "/");
-
   });

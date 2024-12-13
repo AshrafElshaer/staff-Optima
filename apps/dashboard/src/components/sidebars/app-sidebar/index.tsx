@@ -1,6 +1,5 @@
 "use client";
 
-
 import type * as React from "react";
 
 import { Icons } from "@optima/ui/icons";
@@ -10,7 +9,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-
 } from "@optima/ui/sidebar";
 import {
   Calendar03Icon,
@@ -22,7 +20,6 @@ import {
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { OrganizationLogo } from "./organization-logo";
-
 
 const links = [
   {

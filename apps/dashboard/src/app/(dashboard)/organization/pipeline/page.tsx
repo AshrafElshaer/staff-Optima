@@ -1,8 +1,7 @@
 export default function OrganizationPipelinePage() {
-    return (
-      <div>
-        <h1>OrganizationPipeline</h1>
-      </div>
-    );
-  }
-  
+  return (
+    <div>
+      <h1>OrganizationPipeline</h1>
+    </div>
+  );
+}
