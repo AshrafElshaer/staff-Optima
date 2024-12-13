@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database, Enums } from "./database";
+import type { Database, Enums, Tables } from "./database";
+export * from "./database";
 
 export type SupabaseInstance = SupabaseClient<Database>;
 
@@ -20,4 +21,4 @@ export const userRoleEnum: {
   recruiter: "recruiter",
 };
 
-export * from "./database";
+export type Organization = Tables<"organizations">;

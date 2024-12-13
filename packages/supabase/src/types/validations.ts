@@ -1,4 +1,6 @@
 import { z } from "zod";
+// import type { JSONContent } from "@tiptap/core";
+
 import {
   type AttachmentType,
   type EmploymentType,
@@ -9,13 +11,13 @@ import {
   type Tables,
   type UserAccessRole,
   userRoleEnum,
-} from "./index";
+} from "../types";
 
-interface TiptapJSONContent {
+interface JSONContent {
   [key: string]: unknown;
   type?: string;
   attrs?: Record<string, unknown>;
-  content?: TiptapJSONContent[];
+  content?: JSONContent[];
   marks?: {
     type: string;
     attrs?: Record<string, unknown>;
@@ -35,7 +37,7 @@ export const organizationSchema = z.object({
   industry: z.string().min(2, {
     message: "Industry is required",
   }),
-  logo_url: z.string().url().nullable(),
+  logo_url: z.string().nullable(),
   address_1: z.string().nullable(),
   address_2: z.string().nullable(),
   city: z.string().nullable(),
@@ -43,7 +45,7 @@ export const organizationSchema = z.object({
     message: "Country is required",
   }),
   admin_id: z.string().uuid(),
-  profile: z.custom<TiptapJSONContent>().nullable(),
+  profile: z.custom<JSONContent>().optional(),
   state: z.string().nullable(),
   zip_code: z.string().nullable(),
   created_at: z.string(),

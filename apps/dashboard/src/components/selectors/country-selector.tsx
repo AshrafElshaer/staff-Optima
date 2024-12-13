@@ -2,7 +2,6 @@
 
 import { Check, ChevronDown } from "lucide-react";
 import { Fragment, useState } from "react";
-
 import { continents } from "@optima/location";
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
@@ -86,7 +85,7 @@ export function CountrySelector({ setValue, value, error }: Props) {
                           {country.flag}
                         </span>{" "}
                         {country.name}
-                        {value === country.cca2 && (
+                        {value === country.name && (
                           <Check
                             size={16}
                             strokeWidth={2}
