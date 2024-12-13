@@ -89,7 +89,7 @@ export function OrganizationProfileForm({
     status,
     show: form.formState.isDirty,
     title: "Unsaved Changes",
-    error: result?.serverError,
+
   });
 
   return (

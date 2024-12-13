@@ -22,6 +22,7 @@ export const updateOrganizationAction = authActionClient
 
     const { data, error } = await updateOrganization(supabase, {
       ...parsedInput,
+      profile: parsedInput.profile ? JSON.stringify(parsedInput.profile) : null
     });
 
     if (error) {
