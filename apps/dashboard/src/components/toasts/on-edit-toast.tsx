@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@optima/ui/button";
-import { AlertDiamondIcon } from "hugeicons-react";
+import { AlertDiamondIcon, CheckmarkCircle03Icon } from "hugeicons-react";
 import { Check, Loader } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import type { HookActionStatus } from "next-safe-action/hooks";
@@ -93,7 +93,7 @@ export function OnEditToast({
 function OnEditToastSuccess() {
   return (
     <div className="py-1 flex items-center gap-2">
-      <Check className="ml-2 text-tag-success-icon" size={20} />
+      <CheckmarkCircle03Icon className="ml-2 text-tag-success-icon" size={20} />
       <span className="font-medium mr-auto ">Changes saved successfully! </span>
     </div>
   );
