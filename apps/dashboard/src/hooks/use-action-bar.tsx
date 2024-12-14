@@ -59,12 +59,6 @@ export function useActionBar({
         isFirstRender.current = true;
       }
     }
-
-    // return () => {
-    //   if (toastId.current) {
-    //     toast.dismiss(toastId.current);
-    //   }
-    // };
   }, [show, ToastContent, toastConfig]);
 
   return {

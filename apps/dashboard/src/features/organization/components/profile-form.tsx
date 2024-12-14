@@ -230,8 +230,12 @@ export function OrganizationProfileForm({
             <CountrySelector
               value={form.watch("country") ?? null}
               setValue={(value) => {
-                form.setValue("country", value);
-                form.clearErrors("country");
+                form.setValue("country", value, {
+                  shouldDirty: true,
+                });
+                if (form.formState.errors.country) {
+                  form.clearErrors("country");
+                }
               }}
               error={form.formState.errors.country?.message}
             />
