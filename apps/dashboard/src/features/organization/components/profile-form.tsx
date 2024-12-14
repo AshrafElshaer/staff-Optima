@@ -224,7 +224,7 @@ export function OrganizationProfileForm({
               error={form.formState.errors.zip_code?.message}
             />
           </div>
-          <div className="w-full space-y-2">
+          <div className="w-full space-y-2 pb-20">
             <Label>Country</Label>
 
             <CountrySelector
@@ -243,7 +243,7 @@ export function OrganizationProfileForm({
         </div>
       </section>
 
-      <Separator />
+      {/* <Separator />
 
       <section className="flex flex-col  w-full gap-4 ">
         <div className="space-y-2 w-full">
@@ -254,7 +254,7 @@ export function OrganizationProfileForm({
           </p>
         </div>
         <div className="w-full border rounded-md min-h-96 p-4 ">hello</div>
-      </section>
+      </section> */}
 
       <button type="submit" ref={formSubmitRef} className="hidden">
         save

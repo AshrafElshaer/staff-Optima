@@ -1,43 +1,39 @@
 "use client";
 
-import { Button } from "@optima/ui/button";
-import { Icons } from "@optima/ui/icons";
 import { Separator } from "@optima/ui/separator";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenuItem,
-  SidebarRail,
 } from "@optima/ui/sidebar";
+
 import {
-  Calendar03Icon,
-  Chatting01Icon,
   CreditCardIcon,
   DashboardSquare03Icon,
-  Home01Icon,
-  JobLinkIcon,
   MailAdd02Icon,
   Profile02Icon,
   SlidersHorizontalIcon,
   UserMultipleIcon,
-  UserSearch01Icon,
   WorkflowSquare10Icon,
 } from "hugeicons-react";
-import { ArrowLeftIcon } from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import type * as React from "react";
-import { FaHashtag } from "react-icons/fa";
+
 import { HiArrowUturnLeft } from "react-icons/hi2";
 import { NavMain } from "../app-sidebar/nav-main";
-import { NavUser } from "../app-sidebar/nav-user";
-import { OrganizationLogo } from "../app-sidebar/organization-logo";
+import { Building2 } from "lucide-react";
 
 const general = [
   {
-    title: "Profile",
+    title: "Information",
     url: "/organization",
+    icon: <Building2 strokeWidth={2} size={20} />,
+  },
+  {
+    title: "Profile",
+    url: "/organization/profile",
     icon: <Profile02Icon strokeWidth={2} size={20} />,
   },
   {

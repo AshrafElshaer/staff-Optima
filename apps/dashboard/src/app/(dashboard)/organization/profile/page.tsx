@@ -3,7 +3,6 @@ import { createServerClient } from "@/lib/supabase/server";
 import { getOrganizationById } from "@optima/supabase/queries";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { OrganizationProfileForm } from "@/features/organization/components/profile-form";
 
 export default async function OrganizationProfilePage() {
   const supabase = await createServerClient();
@@ -11,19 +10,20 @@ export default async function OrganizationProfilePage() {
   const organizationId = headerList.get("x-organization-id");
   if (!organizationId) {
     redirect("/");
-    return;
   }
   const { data: organization } = await getOrganizationById(
     supabase,
     organizationId,
   );
   return (
-    <main className="flex flex-col gap-8">
-      <PageTitle
-        title="Customize your organization's public profile settings, including logo,
-        legal name, domain, industry, and description."
-      />
-      <OrganizationProfileForm organization={organization} />
+    <main className="flex flex-col gap-2">
+      <PageTitle title="Customize your organization's public profile" />
+      {/* <OrganizationProfileForm /> */}
+      <p className="text-secondary-foreground md:w-1/2">
+        Write a detailed profile showcasing your organization's mission, values,
+        services, and achievements.
+      </p>
+      
     </main>
   );
 }
