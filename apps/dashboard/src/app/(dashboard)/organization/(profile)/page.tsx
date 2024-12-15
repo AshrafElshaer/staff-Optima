@@ -1,4 +1,5 @@
 import { PageTitle } from "@/components/page-title";
+import { OrganizationProfileForm } from "@/features/organization/components/profile-form";
 import { createServerClient } from "@/lib/supabase/server";
 import { getOrganizationById } from "@optima/supabase/queries";
 import { headers } from "next/headers";
@@ -16,14 +17,13 @@ export default async function OrganizationProfilePage() {
     organizationId,
   );
   return (
-    <main className="flex flex-col gap-2">
-      <PageTitle title="Customize your organization's public profile" />
-      {/* <OrganizationProfileForm /> */}
-      <p className="text-secondary-foreground md:w-1/2">
-        Write a detailed profile showcasing your organization's mission, values,
-        services, and achievements.
-      </p>
-      
+    <main className="flex flex-col gap-8">
+      <PageTitle
+        title="Customize your organization's information, including logo,
+        legal name, domain , industry and address."
+      />
+     
+      <OrganizationProfileForm organization={organization} />
     </main>
   );
 }

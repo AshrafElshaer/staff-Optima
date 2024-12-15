@@ -1,4 +1,5 @@
 "use client";
+import AdvancedEditor from "@/components/editors/advanced";
 import { CountrySelector } from "@/components/selectors/country-selector";
 import { OnEditToast } from "@/components/toasts/on-edit-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
@@ -243,18 +244,50 @@ export function OrganizationProfileForm({
         </div>
       </section>
 
-      {/* <Separator />
+      <Separator />
 
       <section className="flex flex-col  w-full gap-4 ">
-        <div className="space-y-2 w-full">
-          <Label className="font-semibold text-base">Profile</Label>
-          <p className="text-muted-foreground text-sm md:w-1/2">
-            Write a detailed profile showcasing your organization's mission,
-            values, services, and achievements.
-          </p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="space-y-2 w-full">
+            <Label className="font-semibold text-base">Profile</Label>
+            <p className="text-muted-foreground text-sm md:w-3/4">
+              Write a detailed profile showcasing your organization's mission,
+              values, services, and achievements.
+            </p>
+          </div>
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full md:w-auto"
+            >
+              Preview
+            </Button>
+            <Button
+              type="button"
+              className="w-full md:w-auto"
+              onClick={() => {
+                form.setValue("id", form.getValues("id"), {
+                  shouldDirty: true,
+                });
+                console.log(form.getValues("profile"));
+              }}
+            >
+              Save
+            </Button>
+          </div>
         </div>
-        <div className="w-full border rounded-md min-h-96 p-4 ">hello</div>
-      </section> */}
+        <div className="w-full border rounded-md min-h-96 p-4 grid ">
+          <AdvancedEditor
+            content={form.watch("profile")}
+            onChange={(content) => {
+              form.setValue("profile", content, {
+                shouldDirty: false,
+              });
+            }}
+          />
+        </div>
+      </section>
 
       <button type="submit" ref={formSubmitRef} className="hidden">
         save

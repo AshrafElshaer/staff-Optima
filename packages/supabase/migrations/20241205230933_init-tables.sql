@@ -37,7 +37,7 @@ create table organizations (
     domain text not null,
     admin_id uuid references users(id) on delete set null,
     industry text not null,
-    profile jsonb,
+    profile json,
 
     address_1 text,
     address_2 text,

@@ -44,13 +44,13 @@ export const authActionClient = actionClientWithMeta
   .use(async ({ next, clientInput, metadata }) => {
     const result = await next({ ctx: {} });
 
-    if (process.env.NODE_ENV === "development") {
-      logger.info(`Input -> ${JSON.stringify(clientInput)}`);
-      logger.info(`Result -> ${JSON.stringify(result.data)}`);
-      logger.info(`Metadata -> ${JSON.stringify(metadata)}`);
+    // if (process.env.NODE_ENV === "development") {
+    //   logger.info(`Input -> ${JSON.stringify(clientInput)}`);
+    //   logger.info(`Result -> ${JSON.stringify(result.data)}`);
+    //   logger.info(`Metadata -> ${JSON.stringify(metadata)}`);
 
-      return result;
-    }
+    //   return result;
+    // }
 
     return result;
   })

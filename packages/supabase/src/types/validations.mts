@@ -1,5 +1,5 @@
+import type { HTMLContent, JSONContent } from "@tiptap/core";
 import { z } from "zod";
-// import type { JSONContent } from "@tiptap/core";
 
 import {
   type AttachmentType,
@@ -11,20 +11,7 @@ import {
   type Tables,
   type UserAccessRole,
   userRoleEnum,
-} from "../types";
-
-interface JSONContent {
-  [key: string]: unknown;
-  type?: string;
-  attrs?: Record<string, unknown>;
-  content?: JSONContent[];
-  marks?: {
-    type: string;
-    attrs?: Record<string, unknown>;
-    [key: string]: unknown;
-  }[];
-  text?: string;
-}
+} from "./index.js";
 
 export const organizationSchema = z.object({
   id: z.string().uuid(),

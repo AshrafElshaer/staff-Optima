@@ -19,9 +19,9 @@ export const updateOrganizationAction = authActionClient
   .schema(organizationSchema)
   .action(async ({ ctx, parsedInput }) => {
     const { user, supabase } = ctx;
-
-
-
+    console.dir(parsedInput.profile, {
+      depth: Number.POSITIVE_INFINITY,
+    });
     const { data, error } = await updateOrganization(supabase, {
       ...parsedInput,
       profile: parsedInput.profile ? JSON.stringify(parsedInput.profile) : null,
@@ -30,6 +30,7 @@ export const updateOrganizationAction = authActionClient
     if (error) {
       throw new Error(error.message);
     }
+
     revalidatePath("/organization");
 
     return data;

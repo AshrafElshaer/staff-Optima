@@ -27,13 +27,8 @@ import { Building2 } from "lucide-react";
 
 const general = [
   {
-    title: "Information",
+    title: "Public Profile",
     url: "/organization",
-    icon: <Building2 strokeWidth={2} size={20} />,
-  },
-  {
-    title: "Profile",
-    url: "/organization/profile",
     icon: <Profile02Icon strokeWidth={2} size={20} />,
   },
   {
