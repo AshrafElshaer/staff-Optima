@@ -25,6 +25,6 @@
     "./mutations": "./src/mutations/index.ts",
     "./queries": "./src/queries/index.ts",
     "./types": "./src/types/index.ts",
-    "./validations": "./src/types/validations.mts"
+    "./validations": "./src/types/validations.ts"
   }
 }

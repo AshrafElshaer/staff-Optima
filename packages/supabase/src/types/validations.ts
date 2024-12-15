@@ -1,4 +1,3 @@
-import type { HTMLContent, JSONContent } from "@tiptap/core";
 import { z } from "zod";
 
 import {
@@ -11,7 +10,20 @@ import {
   type Tables,
   type UserAccessRole,
   userRoleEnum,
-} from "./index.js";
+} from "./index";
+
+interface JSONContent {
+  [key: string]: unknown;
+  type?: string;
+  attrs?: Record<string, unknown>;
+  content?: JSONContent[];
+  marks?: {
+    type: string;
+    attrs?: Record<string, unknown>;
+    [key: string]: unknown;
+  }[];
+  text?: string;
+}
 
 export const organizationSchema = z.object({
   id: z.string().uuid(),
