@@ -22,3 +22,4 @@ export const userRoleEnum: {
 };
 
 export type Organization = Tables<"organizations">;
+export type Department = Tables<"departments">;

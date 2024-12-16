@@ -13,6 +13,7 @@ import {
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useSupabase } from "@/hooks/use-supabase";
 import { Avatar } from "@optima/ui/avatar";
 import { cn } from "@optima/ui/cn";
 import {
@@ -31,6 +32,7 @@ import {
   SidebarMenuSkeleton,
   useSidebar,
 } from "@optima/ui/sidebar";
+import { Skeleton } from "@optima/ui/skeleton";
 import {
   ChartBubble01Icon,
   CommentAdd01Icon,
@@ -39,12 +41,14 @@ import {
   Settings01Icon,
 } from "hugeicons-react";
 import Link from "next/link";
-import { Skeleton } from "@optima/ui/skeleton";
+import { usePathname, useRouter } from "next/navigation";
 
 export function NavUser() {
   const { isMobile, toggleSidebar } = useSidebar();
   const { data: user, isLoading } = useCurrentUser();
-
+  const supabase = useSupabase();
+  const router = useRouter();
+  const pathname = usePathname();
   if (isLoading) {
     return (
       <div className="flex items-center gap-2 px-2">
@@ -126,7 +130,13 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                supabase.auth.signOut().then(() => {
+                  router.push(`/auth?redirect_url=${pathname}`);
+                });
+              }}
+            >
               <Door01Icon />
               Log out
             </DropdownMenuItem>

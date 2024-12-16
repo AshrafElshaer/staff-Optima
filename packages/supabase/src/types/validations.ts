@@ -1,16 +1,6 @@
 import { z } from "zod";
 
-import {
-  type AttachmentType,
-  type EmploymentType,
-  type ExperienceLevel,
-  type InterviewStatus,
-  type JobLocation,
-  type JobStatus,
-  type Tables,
-  type UserAccessRole,
-  userRoleEnum,
-} from "./index";
+import { userRoleEnum } from "./index";
 
 interface JSONContent {
   [key: string]: unknown;
@@ -76,6 +66,27 @@ export const organizationMemberInsertSchema = organizationMemberSchema.omit({
 
 export const organizationMemberUpdateSchema =
   organizationMemberSchema.partial();
+
+export const departmentSchema = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  name: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const departmentInsertSchema = departmentSchema.omit({
+  id: true,
+  organization_id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const departmentUpdateSchema = departmentSchema.partial().required({
+  id: true,
+});
 
 export const userSchema = z.object({
   id: z.string().uuid(),
