@@ -15,10 +15,7 @@ export async function middleware(request: NextRequest) {
     }),
   );
 
-  if (
-    request.nextUrl.pathname.startsWith("/jobs") ||
-    request.nextUrl.pathname.startsWith("/components")
-  ) {
+  if (request.nextUrl.pathname.startsWith("/jobs")) {
     return response;
   }
 

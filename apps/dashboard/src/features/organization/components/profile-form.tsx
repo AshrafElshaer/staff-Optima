@@ -7,14 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
 import { Avatar } from "@optima/ui/avatar";
-import { Button } from "@optima/ui/button";
+import { Button, buttonVariants } from "@optima/ui/button";
 import { Input, UrlInput } from "@optima/ui/input";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
 import { useAction } from "next-safe-action/hooks";
-import { useEffect, useRef } from "react";
+import Link from "next/link";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
 import { updateOrganizationAction } from "../organization.actions";
 
@@ -256,13 +256,16 @@ export function OrganizationProfileForm({
             </p>
           </div>
           <div className="flex items-center gap-4 w-full md:w-auto">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full md:w-auto"
+            <Link
+              href={`/jobs/${organization?.domain}`}
+              className={buttonVariants({
+                variant: "outline",
+                className: "w-full md:w-auto",
+              })}
+              target="_blank"
             >
               Preview
-            </Button>
+            </Link>
             <Button
               type="button"
               className="w-full md:w-auto"

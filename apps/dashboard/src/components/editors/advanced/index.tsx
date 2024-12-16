@@ -20,7 +20,8 @@ import { defaultExtensions } from "./extensions";
 import { slashCommand, suggestionItems } from "./slash-commands";
 type AdvancedEditorProps = {
   content: JSONContent | undefined;
-  onChange: (content: JSONContent) => void;
+  onChange?: (content: JSONContent) => void;
+  editable?: boolean;
 };
 
 const extensions = [...defaultExtensions, slashCommand];
@@ -28,6 +29,7 @@ const extensions = [...defaultExtensions, slashCommand];
 export default function AdvancedEditor({
   content,
   onChange,
+  editable = true,
 }: AdvancedEditorProps) {
   const [openNode, setOpenNode] = useState(false);
   const [openLink, setOpenLink] = useState(false);
@@ -36,9 +38,10 @@ export default function AdvancedEditor({
   return (
     <EditorRoot>
       <EditorContent
+        editable={editable}
         initialContent={content}
         onUpdate={({ editor }) => {
-          onChange(editor.getJSON());
+          onChange?.(editor.getJSON());
         }}
         extensions={extensions}
         immediatelyRender={false}

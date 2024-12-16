@@ -84,12 +84,12 @@ const starterKit = StarterKit.configure({
   },
   orderedList: {
     HTMLAttributes: {
-      class: cx("list-decimal list-outside leading-3 -mt-2 ml-4"),
+      class: cx("list-decimal list-outside leading-3 mt-2 ml-4"),
     },
   },
   listItem: {
     HTMLAttributes: {
-      class: cx("leading-normal -mb-2 ml-4"),
+      class: cx("leading-normal mb-2 ml-4"),
     },
   },
   blockquote: {

@@ -6,3 +6,14 @@ export async function getOrganizationById(
 ) {
   return supabase.from("organizations").select("*").eq("id", id).single();
 }
+
+export async function getOrganizationByDomain(
+  supabase: SupabaseInstance,
+  domain: string,
+) {
+  return supabase
+    .from("organizations")
+    .select("*")
+    .eq("domain", domain)
+    .single();
+}
