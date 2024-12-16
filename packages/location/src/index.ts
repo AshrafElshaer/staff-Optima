@@ -6,7 +6,8 @@ import { EU_COUNTRY_CODES } from "./eu-countries";
 import continents from "./continents.json";
 import timezones from "./timezones.json";
 
-export { timezones, countries, continents };
+const countriesMap = new Map(countries.map((c) => [c.name, c]));
+export { timezones, countries, continents, countriesMap };
 
 // export async function getCountryCode(): Promise<string> {
 //   return (await headers()).get("x-vercel-ip-country") ?? "SE";

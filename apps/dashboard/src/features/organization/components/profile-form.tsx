@@ -1,8 +1,11 @@
 "use client";
+import { DropZone } from "@/components/drop-zone";
 import AdvancedEditor from "@/components/editors/advanced";
 import { CountrySelector } from "@/components/selectors/country-selector";
 import { OnEditToast } from "@/components/toasts/on-edit-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
+import { useSupabase } from "@/hooks/use-supabase";
+import { uploadOrganizationLogo } from "@/lib/supabase/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
@@ -11,10 +14,12 @@ import { Button, buttonVariants } from "@optima/ui/button";
 import { Input, UrlInput } from "@optima/ui/input";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
+import { Plus } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 import { updateOrganizationAction } from "../organization.actions";
 
@@ -24,14 +29,15 @@ export function OrganizationProfileForm({
   organization: Organization | null;
 }) {
   const formSubmitRef = useRef<HTMLButtonElement | null>(null);
+  const supabase = useSupabase();
   const {
     execute: updateOrganization,
-    isExecuting: isUpdating,
+    executeAsync: updateOrganizationAsync,
     status,
     result,
     reset: resetAction,
   } = useAction(updateOrganizationAction, {
-    onError: ({ error }) => {
+    onError: () => {
       setTimeout(() => {
         resetAction();
       }, 3000);
@@ -83,6 +89,31 @@ export function OrganizationProfileForm({
     updateOrganization(values);
   }
 
+  async function uploadLogo(file: File) {
+    toast.promise(
+      async () => {
+        const url = await uploadOrganizationLogo({
+          supabase,
+          organizationId: form.getValues("id"),
+          file,
+        });
+        form.setValue("logo_url", url, {
+          shouldDirty: false,
+        });
+        return await updateOrganizationAsync({
+          id: form.getValues("id"),
+          logo_url: url,
+          profile: form.getValues("profile"),
+        });
+      },
+      {
+        loading: "Uploading logo...",
+        success: "Logo uploaded successfully",
+        error: ({ error }) => error,
+      },
+    );
+  }
+
   const { dismissToast } = useActionBar({
     show: form.formState.isDirty,
     ToastContent: () => (
@@ -111,11 +142,41 @@ export function OrganizationProfileForm({
             Recommended dimensions: 200x200 pixels.
           </p>
         </div>
-        <Avatar
-          className="size-28"
-          shape="square"
-          initials={`${organization?.name[0]}${organization?.name[1]}`}
-        />
+        <DropZone
+          options={{
+            accept: {
+              "image/png": [".png"],
+              "image/jpeg": [".jpg", ".jpeg"],
+              "image/svg+xml": [".svg"],
+              "image/webp": [".webp"],
+              "image/x-icon": [".ico"],
+            },
+            maxSize: 1000000,
+            maxFiles: 1,
+            multiple: false,
+            onDrop: async (acceptedFiles) => {
+              const file = acceptedFiles[0];
+              if (file) {
+                await uploadLogo(file);
+              }
+            },
+            onDropRejected: (rejectedFiles) => {
+              for (const file of rejectedFiles) {
+                toast.error(file.errors[0]?.message);
+              }
+            },
+          }}
+        >
+          <Avatar
+            className="size-28"
+            shape="square"
+            initials={`${organization?.name[0]}${organization?.name[1]}`}
+            src={organization?.logo_url}
+          />
+          <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 grid place-items-center">
+            <Plus className="size-10 text-secondary-foreground" />
+          </div>
+        </DropZone>
       </section>
       <Separator />
 

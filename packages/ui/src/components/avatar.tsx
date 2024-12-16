@@ -4,6 +4,7 @@ import React from "react";
 // @ts-ignore
 import { type VariantProps, tv } from "tailwind-variants";
 
+import Image from "next/image";
 import { VisuallyHidden } from "./visually-hidden";
 
 const avatarGroupStyles = tv({
@@ -99,7 +100,7 @@ const Avatar = ({
           </text>
         </svg>
       )}
-      {src && <img src={src} alt={alt} />}
+      {src && <Image src={src} alt={alt} fill className="object-cover" />}
       {status && (
         <AvatarBadge size={size} status={status} aria-label={status} />
       )}

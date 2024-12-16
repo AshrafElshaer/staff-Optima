@@ -16,16 +16,15 @@ export const updateOrganizationAction = authActionClient
       channel: "organization",
     },
   })
-  .schema(organizationSchema)
+  .schema(organizationUpdateSchema)
   .action(async ({ ctx, parsedInput }) => {
     const { user, supabase } = ctx;
-    console.dir(parsedInput.profile, {
-      depth: Number.POSITIVE_INFINITY,
-    });
-    const { data, error } = await updateOrganization(supabase, {
+
+    const payload = {
       ...parsedInput,
       profile: parsedInput.profile ? JSON.stringify(parsedInput.profile) : null,
-    });
+    };
+    const { data, error } = await updateOrganization(supabase, payload);
 
     if (error) {
       throw new Error(error.message);

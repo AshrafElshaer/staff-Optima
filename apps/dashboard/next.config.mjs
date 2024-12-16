@@ -4,6 +4,14 @@ import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@optima/supabase"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
+    ],
+  },
 };
 
 export default withSentryConfig(nextConfig, {
