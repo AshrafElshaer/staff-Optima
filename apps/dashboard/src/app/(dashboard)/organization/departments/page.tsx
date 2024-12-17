@@ -1,4 +1,5 @@
 import { PageTitle } from "@/components/page-title";
+import { DeleteDepartment } from "@/features/organization/departments/delete-department";
 import { DepartmentDialog } from "@/features/organization/departments/department-dialog";
 import { createServerClient } from "@/lib/supabase/server";
 import {
@@ -54,12 +55,7 @@ export default async function OrganizationDepartmentsPage() {
                   <PencilEdit01Icon size={18} strokeWidth={2} />
                 </button>
               </DepartmentDialog>
-              <button
-                type="button"
-                className="opacity-0 group-hover:opacity-100 transition-all duration-300 text-secondary-foreground hover:text-foreground"
-              >
-                <Delete03Icon size={18} strokeWidth={2} />
-              </button>
+              <DeleteDepartment department={department} />
             </div>
             <div className="flex items-center justify-between gap-2">
               <TooltipProvider delayDuration={0}>

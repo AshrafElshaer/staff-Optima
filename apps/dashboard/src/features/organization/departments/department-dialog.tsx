@@ -28,7 +28,9 @@ export function DepartmentDialog({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New Department</DialogTitle>
+          <DialogTitle>
+            {department ? "Edit Department" : "New Department"}
+          </DialogTitle>
         </DialogHeader>
         <DialogDescription>
           {department

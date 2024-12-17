@@ -44,7 +44,10 @@ export function UpdateDepartmentForm({
   });
 
   function onSubmit(data: z.infer<typeof departmentUpdateSchema>) {
-    updateDepartment(data);
+    updateDepartment({
+      ...data,
+      name: data.name?.trim(),
+    });
   }
   return (
     <>

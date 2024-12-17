@@ -29,7 +29,9 @@ export function NewDepartmentForm({ onSuccess }: { onSuccess: () => void }) {
   });
 
   function onSubmit(data: z.infer<typeof departmentInsertSchema>) {
-    createDepartment(data);
+    createDepartment({
+      name: data.name.trim(),
+    });
   }
   return (
     <>

@@ -2,6 +2,7 @@
 import { authActionClient } from "@/lib/safe-action";
 import {
   createDepartment,
+  deleteDepartment,
   updateDepartment,
   updateOrganization,
 } from "@optima/supabase/mutations";
@@ -12,7 +13,7 @@ import {
   organizationUpdateSchema,
 } from "@optima/supabase/validations";
 import { revalidatePath } from "next/cache";
-import type { z } from "zod";
+import { z } from "zod";
 
 export const updateOrganizationAction = authActionClient
   .metadata({
@@ -82,6 +83,33 @@ export const updateDepartmentAction = authActionClient
     const { supabase } = ctx;
 
     const { data, error } = await updateDepartment(supabase, parsedInput);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    revalidatePath("/organization/departments");
+
+    return data;
+  });
+
+export const deleteDepartmentAction = authActionClient
+  .metadata({
+    name: "deleteDepartment",
+    track: {
+      event: "delete-department",
+      channel: "organization",
+    },
+  })
+  .schema(
+    z.object({
+      id: z.string().uuid(),
+    }),
+  )
+  .action(async ({ ctx, parsedInput }) => {
+    const { supabase } = ctx;
+
+    const { data, error } = await deleteDepartment(supabase, parsedInput.id);
 
     if (error) {
       throw new Error(error.message);

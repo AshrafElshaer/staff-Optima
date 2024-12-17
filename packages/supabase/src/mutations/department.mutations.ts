@@ -20,3 +20,7 @@ export const updateDepartment = async (
     .update(department)
     .eq("id", department.id);
 };
+
+export async function deleteDepartment(supabase: SupabaseInstance, id: string) {
+  return await supabase.from("departments").delete().eq("id", id);
+}
