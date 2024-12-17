@@ -49,18 +49,16 @@ export default async function OrganizationDepartmentsPage({
   const organizationId = headersList.get("x-organization-id")!;
   const { name } = departmentCache.parse(await searchParams);
   const { data: departments, error } =
-    await getDepartmentsWithJobsAndApplications(
-      supabase,
-      organizationId,
-      { name },
-    );
+    await getDepartmentsWithJobsAndApplications(supabase, organizationId, {
+      name,
+    });
 
   return (
     <main className="flex flex-col gap-6">
       <PageTitle title="Manage and view all departments within your organization. Use departments to organize job listings and streamline operations." />
       <section className="flex justify-between gap-2 w-full">
         <div className="w-full max-w-xs">
-          <SearchInput query="name" />
+          <SearchInput query="name" placeholder="Search departments" />
         </div>
         <DepartmentDialog>
           <Button variant="secondary" className="min-w-fit">

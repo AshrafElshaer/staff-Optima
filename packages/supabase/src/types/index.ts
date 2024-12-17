@@ -20,6 +20,6 @@ export const userRoleEnum: {
   interviewer: "interviewer",
   recruiter: "recruiter",
 };
-
+export type User = Tables<"users">;
 export type Organization = Tables<"organizations">;
 export type Department = Tables<"departments">;
