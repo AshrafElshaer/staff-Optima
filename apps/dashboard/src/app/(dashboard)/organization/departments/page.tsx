@@ -1,4 +1,5 @@
 import { PageTitle } from "@/components/page-title";
+import { SearchInput } from "@/components/search-input";
 import { DeleteDepartment } from "@/features/organization/departments/delete-department";
 import { DepartmentDialog } from "@/features/organization/departments/department-dialog";
 import { createServerClient } from "@/lib/supabase/server";
@@ -20,22 +21,51 @@ import {
   PencilEdit01Icon,
   UserIcon,
 } from "hugeicons-react";
-import { Pencil } from "lucide-react";
-import { headers } from "next/headers";
 
-export default async function OrganizationDepartmentsPage() {
+import { headers } from "next/headers";
+import {
+  createSearchParamsCache,
+  parseAsInteger,
+  parseAsString,
+} from "nuqs/server";
+
+const departmentCache = createSearchParamsCache({
+  name: parseAsString.withDefault(""),
+});
+
+type DepartmentSearchParams = Promise<{
+  name: string;
+}>;
+
+type DepartmentPageProps = {
+  searchParams: DepartmentSearchParams;
+};
+
+export default async function OrganizationDepartmentsPage({
+  searchParams,
+}: DepartmentPageProps) {
   const supabase = await createServerClient();
   const headersList = await headers();
   const organizationId = headersList.get("x-organization-id")!;
+  const { name } = departmentCache.parse(await searchParams);
   const { data: departments, error } =
-    await getDepartmentsWithJobsAndApplications(supabase, organizationId);
+    await getDepartmentsWithJobsAndApplications(
+      supabase,
+      organizationId,
+      { name },
+    );
 
   return (
     <main className="flex flex-col gap-6">
       <PageTitle title="Manage and view all departments within your organization. Use departments to organize job listings and streamline operations." />
-      <section className="flex justify-end w-full">
+      <section className="flex justify-between gap-2 w-full">
+        <div className="w-full max-w-xs">
+          <SearchInput query="name" />
+        </div>
         <DepartmentDialog>
-          <Button variant="secondary">New Department</Button>
+          <Button variant="secondary" className="min-w-fit">
+            New Department
+          </Button>
         </DepartmentDialog>
       </section>
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
