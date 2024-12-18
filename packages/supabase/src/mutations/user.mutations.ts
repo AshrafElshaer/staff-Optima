@@ -11,7 +11,7 @@ export async function createUserAdmin(
 }
 export async function createUser(
   supabase: SupabaseInstance,
-  data: UserInsert,
+  data: Omit<UserInsert, "id">,
   organizationId: string,
 ) {
   const { data: auth, error: authError } = await supabase.auth.admin.createUser(
@@ -27,7 +27,7 @@ export async function createUser(
   if (!auth.user || authError) {
     return {
       data: null,
-      error: authError || "Failed to create user",
+      error: authError,
     };
   }
 

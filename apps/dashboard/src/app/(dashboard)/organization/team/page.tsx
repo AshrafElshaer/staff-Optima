@@ -1,7 +1,8 @@
 import { PageTitle } from "@/components/page-title";
 import { SearchInput } from "@/components/search-input";
-import { MembersTable } from "@/features/organization/members/table";
-import { columns } from "@/features/organization/members/table/columns";
+import { InviteMember } from "@/features/organization/members/components/invite-member";
+import { MembersTable } from "@/features/organization/members/components/table";
+import { columns } from "@/features/organization/members/components/table/columns";
 import { createServerClient } from "@/lib/supabase/server";
 import { getTeamMembers } from "@optima/supabase/queries";
 import { Button } from "@optima/ui/button";
@@ -36,7 +37,6 @@ export default async function OrganizationTeamPage({
     },
   );
 
-  console.log(teamMembers);
 
   return (
     <main className="flex flex-col gap-6 min-h-full">
@@ -45,12 +45,7 @@ export default async function OrganizationTeamPage({
         <div className="w-full max-w-60">
           <SearchInput query="name" placeholder="Search team members" />
         </div>
-        <Button variant="secondary" className="min-w-fit">
-          Invite Team Member
-        </Button>
-        {/* <DepartmentDialog>
-        
-        </DepartmentDialog> */}
+        <InviteMember />
       </section>
       <MembersTable data={teamMembers ?? []} columns={columns} />
     </main>

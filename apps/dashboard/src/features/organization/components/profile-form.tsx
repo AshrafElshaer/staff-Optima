@@ -334,7 +334,6 @@ export function OrganizationProfileForm({
                 form.setValue("id", form.getValues("id"), {
                   shouldDirty: true,
                 });
-                console.log(form.getValues("profile"));
               }}
             >
               Save

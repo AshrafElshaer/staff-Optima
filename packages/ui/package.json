@@ -58,6 +58,7 @@
     "./switch": "./src/components/switch.tsx",
     "./tabs": "./src/components/tabs.tsx",
     "./table": "./src/components/table.tsx",
+    "./textarea": "./src/components/textarea.tsx",
     "./tailwind.config": "./tailwind.config.ts",
     "./toast": "./src/components/toast.tsx",
     "./toggle": "./src/components/toggle.tsx",

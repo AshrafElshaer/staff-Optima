@@ -1,8 +1,8 @@
+// import { getUser } from "@optima/supabase/queries";
+import { createServerClient } from "@/lib/supabase/server";
 import { setupAnalytics } from "@optima/analytics/server";
 import { ratelimit } from "@optima/kv/ratelimit";
 import { logger } from "@optima/logger";
-// import { getUser } from "@optima/supabase/queries";
-import { createServerClient } from "@/lib/supabase/server";
 import * as Sentry from "@sentry/nextjs";
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
@@ -10,6 +10,7 @@ import {
 } from "next-safe-action";
 import { headers } from "next/headers";
 import { z } from "zod";
+import { resend } from "./resend";
 
 const handleServerError = (e: Error) => {
   console.error("Action error:", e.message);
@@ -42,7 +43,11 @@ export const actionClientWithMeta = createSafeActionClient({
 
 export const authActionClient = actionClientWithMeta
   .use(async ({ next, clientInput, metadata }) => {
-    const result = await next({ ctx: {} });
+    const result = await next({
+      ctx: {
+        resend,
+      },
+    });
 
     // if (process.env.NODE_ENV === "development") {
     //   logger.info(`Input -> ${JSON.stringify(clientInput)}`);

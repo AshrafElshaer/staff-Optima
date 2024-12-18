@@ -45,7 +45,9 @@ export const columns: ColumnDef<User>[] = [
     header: "Access Role",
     cell: ({ row }) => {
       return (
-        <div className="capitalize min-w-24">{row.original.access_role}</div>
+        <div className="capitalize min-w-24">
+          {row.original.access_role.replace("_", " ")}
+        </div>
       );
     },
   },

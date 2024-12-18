@@ -1,3 +1,4 @@
+import type { Organization } from "@optima/supabase/types";
 import {
   Body,
   Container,
@@ -11,7 +12,6 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
-// import type { Organization } from "@toolkit/supabase/types";
 import React from "react";
 import { colors } from "../components/colors";
 import Logo from "../components/logo";
@@ -20,12 +20,12 @@ const baseUrl = "https://ats.hrtoolkit.app";
 
 export function InvitationEmail({
   name,
-  organizationName = "HR Toolkit",
-  // organization,
+
+  organization,
 }: {
   name: string;
-  organizationName?: string;
-  // organization: Organization
+
+  organization: Organization;
 }) {
   return (
     <Html>
@@ -55,7 +55,7 @@ export function InvitationEmail({
             fontStyle="normal"
           />
         </head>
-        {/* <Preview>Invitation to Join {organization.name}!</Preview> */}
+        <Preview>Invitation to Join {organization.name}!</Preview>
         <Body
           className={` bg-[${colors.lightTheme.background}] dark:bg-[${colors.darkTheme.background}] py-8 `}
         >
@@ -64,11 +64,13 @@ export function InvitationEmail({
               "w-[560px] rounded-lg  bg-transparent p-8 py-16 mx-auto shadow "
             }
           >
-            {/* <Img
-              src={organization.logo_url}
-              alt={organization.name}
-              className="mx-auto h-14 w-14 mb-8"
-            /> */}
+            {organization.logo_url && (
+              <Img
+                src={organization.logo_url}
+                alt={organization.name}
+                className="mx-auto h-14 w-14 mb-8"
+              />
+            )}
             <Heading
               className={`text-base text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
             >
@@ -78,9 +80,9 @@ export function InvitationEmail({
             <Text
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
             >
-              We are thrilled to invite you to join us at {organizationName}! As
-              part of our growing team, you’ll have the opportunity to make an
-              impact and work in a dynamic, collaborative environment.
+              We are thrilled to invite you to join us at {organization.name}!
+              As part of our growing team, you’ll have the opportunity to make
+              an impact and work in a dynamic, collaborative environment.
             </Text>
 
             <Text
@@ -115,7 +117,7 @@ export function InvitationEmail({
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
             >
               We are excited to have you on board and look forward to seeing you
-              {/* grow with {organization.name}. */}
+              grow with {organization.name}.
             </Text>
             <Section className="mt-[16px] text-center">
               <Text
@@ -126,7 +128,7 @@ export function InvitationEmail({
               <Text
                 className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}] mt-2`}
               >
-                The HR Toolkit Team
+                The {organization.name} Team
               </Text>
             </Section>
           </Container>
@@ -138,7 +140,10 @@ export function InvitationEmail({
 
 InvitationEmail.PreviewProps = {
   name: "Ashraf Elshaer",
-  organizationName: "HR Toolkit",
+  organization: {
+    name: "HR Toolkit",
+    logo_url: "",
+  },
 };
 
 export default InvitationEmail;
