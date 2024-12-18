@@ -90,7 +90,5 @@ export const verifyOtpAction = actionClientWithMeta
       redirect_url = "/onboarding";
     }
 
-    return {
-      redirect_url
-    }
+    redirect(redirect_url);
   });

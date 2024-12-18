@@ -55,7 +55,10 @@ export function DeleteMember({
 
         <div className="space-y-4 p-4 pt-0">
           <Label className="font-semibold">
-            Please type <span className="bg-muted p-1">delete member</span>
+            Please type{" "}
+            <span className="bg-muted p-1">
+              {user.first_name} {user.last_name}
+            </span>
             to confirm
           </Label>
           <Input
@@ -68,7 +71,7 @@ export function DeleteMember({
           <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
-            disabled={confirmation !== "delete member" || isDeleting}
+            disabled={confirmation !== `${user.first_name} ${user.last_name}` || isDeleting}
             onClick={() => deleteUser({ id: user.id })}
           >
             {isDeleting ? <Loader className="animate-spin size-4" /> : null}

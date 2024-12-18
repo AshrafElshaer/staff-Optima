@@ -19,16 +19,15 @@ import { AnimatePresence, motion } from "motion/react";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useRouter } from "next/navigation";
+
 import { useQueryStates } from "nuqs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useBoolean, useCountdown } from "usehooks-ts";
+import { useCountdown } from "usehooks-ts";
 import { authSearchParams } from "../auth-search-params";
 import { signInAction, verifyOtpAction } from "../auth.actions";
 
 export function VerifyOtp() {
-  const router = useRouter();
   const [{ auth_type, redirect_url, email }, setAuthParams] = useQueryStates(
     authSearchParams,
     {
@@ -39,9 +38,6 @@ export function VerifyOtp() {
     onError: ({ error }) => {
       toast.error(error.serverError);
       setIsError(true);
-    },
-    onSuccess: ({ data }) => {
-      router.push(data?.redirect_url ?? "/");
     },
   });
   const { execute: resend, isExecuting: isResending } = useAction(
