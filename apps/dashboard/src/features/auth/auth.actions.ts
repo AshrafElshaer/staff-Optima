@@ -73,6 +73,7 @@ export const verifyOtpAction = actionClientWithMeta
     }),
   )
   .action(async ({ parsedInput }) => {
+    let redirect_url = parsedInput.redirect_url ?? "/";
     const supabase = await createServerClient({ isAdmin: true });
 
     const { data, error } = await supabase.auth.verifyOtp({
@@ -86,8 +87,10 @@ export const verifyOtpAction = actionClientWithMeta
     }
 
     if (!data.user?.user_metadata.organization_id) {
-      return redirect("/onboarding");
+      redirect_url = "/onboarding";
     }
 
-    return redirect(parsedInput.redirect_url ?? "/");
+    return {
+      redirect_url
+    }
   });
