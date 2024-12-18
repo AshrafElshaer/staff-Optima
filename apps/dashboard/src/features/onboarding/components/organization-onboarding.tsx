@@ -2,19 +2,19 @@
 
 import { TextGenerateEffect } from "@/components/text-generate-effect";
 
-import { useSession } from "@/hooks/use-session";
-import { formatBytes } from "@/lib/formatters/format-bytes";
+
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { organizationInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { Input, UrlInput } from "@optima/ui/input";
 import { Label } from "@optima/ui/label";
-import { ImagePlus, Loader } from "lucide-react";
+import {  Loader } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useAction } from "next-safe-action/hooks";
-import Image from "next/image";
+
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { CountrySelector } from "@/components/selectors/country-selector";
 import { countries } from "@optima/location";
@@ -70,8 +70,7 @@ export function OrganizationOnboarding() {
 
 function OrganizationForm() {
   const router = useRouter();
-  const [logo, setLogo] = useState<File | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+ 
 
   const form = useForm<z.infer<typeof organizationInsertSchema>>({
     resolver: zodResolver(organizationInsertSchema),

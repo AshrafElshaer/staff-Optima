@@ -2,6 +2,8 @@
 
 import type * as React from "react";
 
+import { useSession } from "@/hooks/use-session";
+import { userRoleEnum } from "@optima/supabase/types";
 import { Icons } from "@optima/ui/icons";
 import { Separator } from "@optima/ui/separator";
 import {
@@ -60,6 +62,7 @@ const settings = [
   },
 ];
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: session } = useSession();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -68,8 +71,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <Separator />
       <SidebarContent>
         <NavMain items={links} label="Workspace" />
-        {/* <NavMain items={communication} label="Team" /> */}
-        <NavMain items={settings} label="Settings" />
+        <NavMain items={communication} label="Team" />
+        {session?.user.user_metadata.access_role === userRoleEnum.admin ? (
+          <NavMain items={settings} label="Settings" />
+        ) : null}
       </SidebarContent>
       <Separator />
       <SidebarFooter>

@@ -30,6 +30,7 @@ export async function middleware(request: NextRequest) {
     "x-organization-id",
     user?.user_metadata.organization_id ?? "",
   );
+  response.headers.set("x-access-role", user?.user_metadata.access_role ?? "");
   return response;
 }
 

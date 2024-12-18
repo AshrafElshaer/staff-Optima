@@ -72,7 +72,7 @@ function UserForm() {
 
   const form = useForm<z.infer<typeof userInsertSchema>>({
     defaultValues: {
-      email: session?.data?.session?.user.email ?? "",
+      email: session?.user.email ?? "",
       access_role: "admin",
     },
     resolver: zodResolver(userInsertSchema),
@@ -92,8 +92,8 @@ function UserForm() {
   }
 
   useEffect(() => {
-    form.setValue("email", session?.data?.session?.user.email ?? "");
-  }, [session?.data?.session?.user.email]);
+    form.setValue("email", session?.user.email ?? "");
+  }, [session?.user.email]);
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">

@@ -4,6 +4,12 @@ export function useSession() {
   const supabase = createBrowserClient();
   return useQuery({
     queryKey: ["session"],
-    queryFn: () => supabase.auth.getSession(),
+    queryFn: async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        throw error;
+      }
+      return data.session;
+    },
   });
 }
