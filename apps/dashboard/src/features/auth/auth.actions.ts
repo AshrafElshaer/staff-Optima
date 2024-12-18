@@ -86,8 +86,8 @@ export const verifyOtpAction = actionClientWithMeta
     }
 
     if (!data.user?.user_metadata.organization_id) {
-      redirect("/onboarding");
+      return redirect("/onboarding");
     }
 
-    redirect(parsedInput.redirect_url ?? "/");
+    return redirect(parsedInput.redirect_url ?? "/");
   });
