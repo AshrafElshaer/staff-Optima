@@ -15,6 +15,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Delete03Icon, Edit01Icon } from "hugeicons-react";
 import { MoreHorizontal } from "lucide-react";
 import moment from "moment";
+import { DeleteMember } from "../delete-team-member";
+import { UpdateMember } from "../update-team-member";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -65,7 +67,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const user = row.original;
 
       return (
         <DropdownMenu>
@@ -76,14 +78,18 @@ export const columns: ColumnDef<User>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Edit01Icon size={16} strokeWidth={2} />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Delete03Icon size={16} strokeWidth={2} />
-              Delete
-            </DropdownMenuItem>
+            <UpdateMember user={user}>
+              <DropdownMenuItem asDialogTrigger>
+                <Edit01Icon size={16} strokeWidth={2} />
+                Edit
+              </DropdownMenuItem>
+            </UpdateMember>
+            <DeleteMember user={user}>
+              <DropdownMenuItem asDialogTrigger>
+                <Delete03Icon size={16} strokeWidth={2} />
+                Delete
+              </DropdownMenuItem>
+            </DeleteMember>
           </DropdownMenuContent>
         </DropdownMenu>
       );
