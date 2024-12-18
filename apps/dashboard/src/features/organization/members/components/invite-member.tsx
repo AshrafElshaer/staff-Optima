@@ -18,7 +18,7 @@ import { Label } from "@optima/ui/label";
 import { Textarea } from "@optima/ui/textarea";
 import { Check, Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -43,6 +43,11 @@ export function InviteMember() {
   function onSubmit(data: z.infer<typeof userInsertSchema>) {
     execute(data);
   }
+  useEffect(() => {
+    if (open) {
+      form.reset();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

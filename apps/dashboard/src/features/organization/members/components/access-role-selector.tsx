@@ -9,13 +9,10 @@ import {
 } from "@optima/ui/select";
 
 const rolesDescription: Record<UserAccessRole, string> = {
-  admin: "Has full access to the organization.",
-  recruiter:
-    "Can create and manage job postings, schedule interviews, and manage candidates.",
-  hiring_manager:
-    "Can view and manage job postings, schedule interviews, and manage candidates.",
-  interviewer:
-    "Can view and manage job postings, schedule interviews, and manage candidates.",
+  admin: "Full organization access",
+  recruiter: "Manage jobs, interviews and candidates",
+  hiring_manager: "View jobs, interviews and candidates",
+  interviewer: "Conduct interviews and provide feedback",
 };
 
 type AccessRoleSelectorProps = {
@@ -39,7 +36,7 @@ export const AccessRoleSelector = ({
         >
           <SelectValue placeholder="Choose access role" />
         </SelectTrigger>
-        <SelectContent className="[&_*[role=option]>span]:end-2 [&_*[role=option]>span]:start-auto [&_*[role=option]]:pe-8 [&_*[role=option]]:ps-2 max-w-[29.85rem]">
+        <SelectContent className="[&_*[role=option]>span]:end-2 [&_*[role=option]>span]:start-auto [&_*[role=option]]:pe-8 [&_*[role=option]]:ps-2">
           {Object.values(userRoleEnum).map((role) => (
             <SelectItem key={role} value={role}>
               <span className="capitalize">{role.replace("_", " ")}</span>

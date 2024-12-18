@@ -31,10 +31,14 @@ export async function createUser(
     };
   }
 
-  const { data: user, error: userError } = await supabase.from("users").insert({
-    ...data,
-    id: auth.user.id,
-  });
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .insert({
+      ...data,
+      id: auth.user.id,
+    })
+    .select()
+    .single();
 
   if (userError) {
     return {

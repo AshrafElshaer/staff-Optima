@@ -165,6 +165,9 @@ export const inviteMemberAction = authActionClient
         name: `${parsedInput.first_name} ${parsedInput.last_name}`,
         organization,
       }),
+      headers: {
+        "X-Entity-Ref-ID": data?.id ?? "",
+      },
     });
 
     if (emailError) {
