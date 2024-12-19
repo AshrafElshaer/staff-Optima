@@ -1,8 +1,8 @@
 import { PageTitle } from "@/components/page-title";
 import { SearchInput } from "@/components/search-input";
-import { InviteMember } from "@/features/organization/members/components/invite-member";
-import { MembersTable } from "@/features/organization/members/components/table";
-import { columns } from "@/features/organization/members/components/table/columns";
+import { InviteMember } from "@/features/organization/members/invite-member";
+import { MembersTable } from "@/features/organization/members/table";
+import { columns } from "@/features/organization/members/table/columns";
 import { createServerClient } from "@/lib/supabase/server";
 import { getTeamMembers } from "@optima/supabase/queries";
 import { Button } from "@optima/ui/button";
@@ -36,7 +36,6 @@ export default async function OrganizationTeamPage({
       name,
     },
   );
-
 
   return (
     <main className="flex flex-col gap-6 min-h-full">

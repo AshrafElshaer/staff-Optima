@@ -1,13 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { User, UserAccessRole } from "@optima/supabase/types";
-import { userUpdateSchema } from "@optima/supabase/validations";
+import { userInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -15,46 +15,51 @@ import {
 } from "@optima/ui/dialog";
 import { Input } from "@optima/ui/input";
 import { Label } from "@optima/ui/label";
-import { Loader } from "lucide-react";
+import { Textarea } from "@optima/ui/textarea";
+import { Check, Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { type ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { updateTeamMemberAction } from "../../organization.actions";
+import { inviteMemberAction } from "../organization.actions";
 import { AccessRoleSelector } from "./access-role-selector";
 
-export function UpdateMember({
-  children,
-  user,
-}: { children: ReactNode; user: User }) {
+export function InviteMember() {
   const [open, setOpen] = useState(false);
-  const { execute, isExecuting } = useAction(updateTeamMemberAction, {
-    onSuccess: ({ data }) => {
-      toast.success("Changes Saved successfully");
+  const { execute, isExecuting } = useAction(inviteMemberAction, {
+    onSuccess: () => {
+      toast.success("Invitation sent successfully");
       setOpen(false);
-      form.reset(data);
     },
     onError: ({ error }) => {
       toast.error(error.serverError);
     },
   });
-  const form = useForm<z.infer<typeof userUpdateSchema>>({
-    resolver: zodResolver(userUpdateSchema),
-    defaultValues: user,
+  const form = useForm<z.infer<typeof userInsertSchema>>({
+    resolver: zodResolver(userInsertSchema),
   });
 
-  function onSubmit(data: z.infer<typeof userUpdateSchema>) {
+  function onSubmit(data: z.infer<typeof userInsertSchema>) {
     execute(data);
   }
+  useEffect(() => {
+    if (open) {
+      form.reset();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button variant="secondary" className="min-w-fit">
+          Invite Team Member
+        </Button>
+      </DialogTrigger>
       <DialogContent className="flex flex-col gap-0 overflow-y-visible p-0 sm:max-w-lg [&>button:last-child]:top-3.5">
         <DialogHeader className="contents space-y-0 text-left">
           <DialogTitle className="border-b border-border px-6 py-4 text-base">
-            Edit Team Member
+            Invite Team Member
           </DialogTitle>
         </DialogHeader>
 
@@ -89,13 +94,12 @@ export function UpdateMember({
                 type="email"
                 {...form.register("email")}
                 error={form.formState.errors.email?.message}
-                disabled
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-access-role">Access Role</Label>
               <AccessRoleSelector
-                value={form.watch("access_role") as UserAccessRole}
+                value={form.watch("access_role")}
                 onChange={(value) => {
                   form.setValue("access_role", value);
                   form.trigger("access_role");
@@ -113,7 +117,7 @@ export function UpdateMember({
             </DialogClose>
             <Button type="submit" disabled={isExecuting}>
               {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
-              Save
+              Invite
             </Button>
           </DialogFooter>
         </form>

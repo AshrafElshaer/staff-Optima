@@ -18,7 +18,7 @@ import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
-import { deleteTeamMember } from "../../organization.actions";
+import { deleteTeamMember } from "../organization.actions";
 
 export function DeleteMember({
   user,
@@ -71,7 +71,10 @@ export function DeleteMember({
           <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
           <Button
             variant="destructive"
-            disabled={confirmation !== `${user.first_name} ${user.last_name}` || isDeleting}
+            disabled={
+              confirmation !== `${user.first_name} ${user.last_name}` ||
+              isDeleting
+            }
             onClick={() => deleteUser({ id: user.id })}
           >
             {isDeleting ? <Loader className="animate-spin size-4" /> : null}

@@ -1,5 +1,5 @@
 import { PageTitle } from "@/components/page-title";
-import { OrganizationProfileForm } from "@/features/organization/components/profile-form";
+import { OrganizationProfileForm } from "@/features/organization/profile/profile-form";
 import { createServerClient } from "@/lib/supabase/server";
 import { getOrganizationById } from "@optima/supabase/queries";
 import { headers } from "next/headers";

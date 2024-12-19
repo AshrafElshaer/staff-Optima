@@ -33,6 +33,7 @@
     "./collapsible": "./src/components/collapsible.tsx",
     "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
+    "./date-picker-range": "./src/components/date-picker-range.tsx",
     "./dialog": "./src/components/dialog.tsx",
     "./dropdown-menu": "./src/components/dropdown-menu.tsx",
     "./globals.css": "./src/globals.css",
