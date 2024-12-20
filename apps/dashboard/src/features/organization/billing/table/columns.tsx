@@ -21,12 +21,14 @@ import {
 } from "@optima/ui/tooltip";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
+  CancelCircleHalfDotIcon,
+  CheckmarkSquare03Icon,
   Delete03Icon,
   Edit01Icon,
   FileDownloadIcon,
   ViewIcon,
 } from "hugeicons-react";
-import { MoreHorizontal } from "lucide-react";
+import { Loader, MoreHorizontal, X } from "lucide-react";
 import moment from "moment";
 
 export const columns: ColumnDef<{
@@ -99,8 +101,15 @@ export const columns: ColumnDef<{
                 : "destructive"
           }
           size="md"
-          className="capitalize rounded-sm"
+          className="capitalize rounded-sm gap-2"
         >
+          {status === "paid" ? (
+            <CheckmarkSquare03Icon size={16} strokeWidth={2} />
+          ) : status === "pending" ? (
+            <Loader size={16} strokeWidth={2} />
+          ) : (
+            <X size={16} strokeWidth={2} />
+          )}
           {row.original.status}
         </Badge>
       );

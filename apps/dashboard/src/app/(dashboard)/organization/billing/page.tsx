@@ -26,11 +26,41 @@ const invoices = [
     amount: 100,
     status: "failed",
   },
+  {
+    id: 4,
+    date: new Date(2024, 0, 15),
+    amount: 299.99,
+    status: "paid",
+  },
+  {
+    id: 5, 
+    date: new Date(2024, 0, 10),
+    amount: 149.50,
+    status: "pending",
+  },
+  {
+    id: 6,
+    date: new Date(2024, 0, 5),
+    amount: 499.99,
+    status: "failed", 
+  },
+  {
+    id: 7,
+    date: new Date(2023, 11, 28),
+    amount: 75.25,
+    status: "paid",
+  },
+  {
+    id: 8,
+    date: new Date(2023, 11, 20),
+    amount: 199.99,
+    status: "pending",
+  },
 ];
 
 export default function OrganizationBillingPage() {
   return (
-    <main className="flex flex-col gap-6 flex-1">
+    <main className="flex flex-col gap-6 flex-1 ">
       <PageTitle title="Manage your organization's billing and usage details, including subscription plans and payment methods." />
 
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">

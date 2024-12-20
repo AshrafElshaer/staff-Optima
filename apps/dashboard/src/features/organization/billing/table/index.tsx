@@ -7,7 +7,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { TableSelectToast } from "@/components/toasts/table-select-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
+import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
 import {
   Table,
@@ -39,24 +41,41 @@ export function BillingTable<TData, TValue>({
     },
   });
 
+  const selectedRows = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original);
+
   useActionBar({
     show: !!Object.keys(rowSelection).length,
     ToastContent: ({ toastId }) => (
-      <div>
-        <p>Selected {Object.keys(rowSelection).length} invoices</p>
-      </div>
+      <TableSelectToast
+        toastId={toastId}
+        rowSelection={Object.keys(rowSelection).length}
+        totalRows={table.getRowCount()}
+      >
+        <Button variant="success" size="sm" className="rounded-full ml-auto">
+          Download
+        </Button>
+      </TableSelectToast>
     ),
   });
 
   return (
-    <div className="rounded-md border flex-1">
+    <div
+      className={cn("rounded-md border flex-1", {
+        "!mb-16": Object.keys(rowSelection).length,
+      })}
+    >
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="!rounded-full">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={cn(header.id === "select" && "min-w-8 max-w-8")}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
