@@ -69,7 +69,7 @@ export const columns: ColumnDef<{
     accessorKey: "date",
     header: "Date",
     cell: ({ row }) => {
-      return <span>{moment(row.original.date).format("MM/DD/YYYY")}</span>;
+      return <span>{moment(row.original.date).format("MMM Do YYYY")}</span>;
     },
   },
   {

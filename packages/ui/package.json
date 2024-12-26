@@ -16,6 +16,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^3.4.10",
+    "tailwindcss-react-aria-components": "^1.2.0",
     "typescript": "^5.5.4"
   },
   "exports": {
@@ -64,7 +65,9 @@
     "./toast": "./src/components/toast.tsx",
     "./toggle": "./src/components/toggle.tsx",
     "./toggle-group": "./src/components/toggle-group.tsx",
-    "./tooltip": "./src/components/tooltip.tsx"
+    "./tooltip": "./src/components/tooltip.tsx",
+
+    "./color-picker": "./src/components/color-picker.tsx"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -102,16 +105,19 @@
     "embla-carousel-react": "^8.5.1",
     "hugeicons-react": "^0.3.0",
     "input-otp": "^1.4.1",
+    "justd-icons": "^1.10.4",
     "lucide-react": "^0.465.0",
     "next": "^15.1.1",
     "next-themes": "^0.4.3",
     "react-aria": "^3.36.0",
+    "react-aria-components": "^1.5.0",
+    "react-colorful": "^5.6.1",
     "react-day-picker": "8.10.1",
     "react-hook-form": "^7.54.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.14.1",
     "sonner": "^1.7.0",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^2.5.5",
     "tailwind-variants": "^0.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.1",

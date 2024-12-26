@@ -22,6 +22,7 @@ const buttonVariants = cva(
         link: "text-primary/70 underline-offset-4 hover:text-primary  hover:underline",
         success:
           " bg-success/80 hover:bg-success/90 border border-success text-success-foreground ",
+        icon: "text-secondary-foreground hover:text-foreground transition-colors bg-transparent",
       },
       size: {
         default: " px-4 py-1.5",

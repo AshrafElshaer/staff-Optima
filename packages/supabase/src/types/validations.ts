@@ -88,6 +88,40 @@ export const departmentUpdateSchema = departmentSchema.partial().required({
   id: true,
 });
 
+export const pipelineStageSchema = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  title: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  description: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  indicator_color: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  stage_order: z.string().min(1, {
+    message: "Must be positive number",
+  }),
+  previous_stage_id: z.string().uuid().optional(),
+  next_stage_id: z.string().uuid().optional(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const pipelineStageInsertSchema = pipelineStageSchema.omit({
+  id: true,
+  organization_id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const pipelineStageUpdateSchema = pipelineStageSchema
+  .partial()
+  .required({
+    id: true,
+  });
+
 export const userSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
