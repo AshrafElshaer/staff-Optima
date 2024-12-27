@@ -10,11 +10,17 @@ import { Input } from "@optima/ui/input";
 import { Label } from "@optima/ui/label";
 import { Textarea } from "@optima/ui/textarea";
 import { useReactFlow } from "@xyflow/react";
+import { useAction } from "next-safe-action/hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { parseColor } from "react-stately";
+import { toast } from "sonner";
 
+import { Loader } from "lucide-react";
 import type { z } from "zod";
+import {
+  createApplicationStageAction,
+  updateApplicationStageAction,
+} from "../organization.actions";
 
 const DEFAULT_STAGE_DATA = {
   title: "",
@@ -22,34 +28,88 @@ const DEFAULT_STAGE_DATA = {
   indicator_color: "#FFFFFF",
   stage_order: "1",
 };
-
 export function StageForm() {
   const { addNodes, addEdges, getNodes, getEdges, updateNode, setNodes } =
     useReactFlow();
-  const selectedStage = useStagesStore((store) => store.selectedStage);
+
   const nodes = getNodes();
   const edges = getEdges();
-
+  const selectedStage = useStagesStore((store) => store.selectedStage);
   const stageData = {
     ...selectedStage?.data,
     stage_order: selectedStage?.data?.stage_order,
   } as z.infer<typeof pipelineStageSchema>;
 
+  const { execute: createApplicationStage, isExecuting: isCreating } =
+    useAction(createApplicationStageAction, {
+      onSuccess: ({ data }) => {
+        if (!data?.id) return;
+        const node = {
+          id: data.id,
+          type: "stageNode",
+          position: { x: 0, y: (data.stage_order - 1) * 250 },
+          data: data,
+        };
+        addNodes(node);
+        toast.success("Stage created successfully");
+
+        form.reset({
+          ...DEFAULT_STAGE_DATA,
+          stage_order: `${data.stage_order + 1}`,
+        });
+
+        const nodes = getNodes();
+        const previousStage = nodes.at(-1);
+
+        if (!previousStage) return;
+        const edge = {
+          id: `e${previousStage.id}-${data.id}`,
+          source: previousStage.id,
+          target: data.id,
+          // type: "stageEdge",
+        };
+        addEdges(edge);
+      },
+      onError: ({ error }) => {
+        toast.error(error.serverError);
+      },
+    });
+
+  const { execute: updateApplicationStage, isExecuting: isUpdating } =
+    useAction(updateApplicationStageAction, {
+      onSuccess: ({ data }) => {
+        toast.success("Stage updated successfully");
+        // console.log({ data });
+        // if (!data?.id) return;
+        // updateNode(data.id!, {
+        //   data: data,
+        // });
+      },
+      onError: ({ error }) => {
+        toast.error(error.serverError);
+      },
+    });
+
   const form = useForm<z.infer<typeof pipelineStageInsertSchema>>({
     resolver: zodResolver(pipelineStageInsertSchema),
-    defaultValues: stageData ?? {
-      ...DEFAULT_STAGE_DATA,
-      stage_order: `${nodes.length + 1}`,
+    defaultValues: {
+      ...stageData,
+      stage_order: String(stageData?.stage_order) ?? `${nodes.length + 1}`,
     },
   });
 
   useEffect(() => {
     if (selectedStage) {
-      form.reset(stageData);
+      form.reset({
+        ...stageData,
+        stage_order: String(stageData.stage_order),
+      });
     } else {
+      const nodes = getNodes();
+      const nextStageOrder = nodes.length === 0 ? 1 : nodes.length + 1;
       form.reset({
         ...DEFAULT_STAGE_DATA,
-        stage_order: `${nodes.length + 1}`,
+        stage_order: `${nextStageOrder}`,
       });
     }
   }, [selectedStage]);
@@ -63,76 +123,27 @@ export function StageForm() {
   };
 
   function handleUpdate(data: z.infer<typeof pipelineStageInsertSchema>) {
-    if (selectedStage?.id) {
-      updateNode(selectedStage.id, {
-        data: data,
+    if (selectedStage?.data.id) {
+      updateApplicationStage({
+        ...data,
+        id: selectedStage.data.id as string,
       });
-
-      console.log(nodes)
     }
   }
 
-  const handleAddStage = ({
+  async function handleAddStage({
     title,
     description,
     indicator_color,
     stage_order,
-    next_stage_id,
-  }: z.infer<typeof pipelineStageInsertSchema>) => {
-    const previous_stage_id = nodes.find(
-      (stage) => stage.data.next_stage_id === undefined,
-    )?.id;
-
-    const newStageId = window.crypto.randomUUID();
-    const newNode = {
-      id: newStageId,
-      type: "stageNode",
-      position: { x: 0, y: nodes.length * 200 },
-      data: {
-        title,
-        description,
-        indicator_color,
-        stage_order: Number(stage_order),
-        next_stage_id,
-        previous_stage_id,
-      },
-      deletable: false,
-    };
-
-    const updatedNodes = [...nodes, newNode];
-
-    if (previous_stage_id) {
-      // Update the previous node's next_stage_id
-      const updatedNodesWithPrevious = updatedNodes.map((node) =>
-        node.id === previous_stage_id
-          ? {
-              ...node,
-              data: { ...node.data, next_stage_id: newStageId },
-            }
-          : node,
-      );
-
-      // Create the edge
-      const newEdge = {
-        id: `e${previous_stage_id}-${newStageId}`,
-        source: previous_stage_id,
-        target: newStageId,
-        animated: true,
-        type: "stageEdge",
-      };
-      setNodes(updatedNodesWithPrevious);
-      // addNodes(newNode); // Add the new node
-      addEdges(newEdge); // Add the edge
-    } else {
-      // If no previous stage, just add the node
-      addNodes(newNode);
-    }
-
-    form.reset({
-      ...DEFAULT_STAGE_DATA,
-      stage_order: `${nodes.length + 1}`,
+  }: z.infer<typeof pipelineStageInsertSchema>) {
+    createApplicationStage({
+      title,
+      description,
+      indicator_color,
+      stage_order: stage_order,
     });
-  };
+  }
 
   return (
     <form
@@ -158,16 +169,6 @@ export function StageForm() {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label>Stage Order</Label>
-        <Input
-          {...form.register("stage_order")}
-          type="number"
-          placeholder="1, 2, 3, etc"
-          error={form.formState.errors.stage_order?.message}
-        />
-      </div>
-
       <ColorPicker
         value={form.watch("indicator_color") ?? stageData?.indicator_color}
         onChange={(color) => {
@@ -181,7 +182,14 @@ export function StageForm() {
           {form.formState.errors.indicator_color.message}
         </p>
       )}
-      <Button type="submit" variant={"secondary"} className="w-full mt-auto">
+      <Button
+        type="submit"
+        variant={"secondary"}
+        disabled={isCreating || isUpdating}
+        className="w-full mt-auto"
+      >
+        {isCreating ||
+          (isUpdating && <Loader className="w-4 h-4 animate-spin" />)}
         {selectedStage ? "Save" : "Create"}
       </Button>
     </form>

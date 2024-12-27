@@ -2,6 +2,7 @@
 import { Button } from "@optima/ui/button";
 
 import { useStagesStore } from "@/stores/stages-pipeline";
+import type { ApplicationStage } from "@optima/supabase/types";
 import {
   Background,
   Controls,
@@ -21,59 +22,39 @@ import {
   useOnSelectionChange,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActionPanel } from "./action-panel";
 import { AddStage } from "./add-stage";
 import { StageEdge } from "./stage-edge";
 import { StageNode } from "./stage-node";
 
-const initialNodes = [
-  {
-    id: "7b96d954-98cd-4da7-88dc-c1578dc1c7de",
+type StagesFlowProps = {
+  applicationStages: ApplicationStage[];
+};
+
+export function StagesFlow({ applicationStages }: StagesFlowProps) {
+  const initNodes = applicationStages.map((stage, idx) => ({
+    id: stage.id,
     type: "stageNode",
     deletable: false,
-    position: { x: 0, y: 0 },
-    data: {
-      title: "Application Review",
-      description: "Initial screening of candidate applications and resumes",
-      indicator_color: "#4F46E5",
-      stage_order: 1,
-      next_stage_id: "1b462a3b-b0ea-4e2d-95b1-e05af0e4bf94",
-    },
-  },
-  {
-    id: "1b462a3b-b0ea-4e2d-95b1-e05af0e4bf94",
-    type: "stageNode",
-    deletable: false,
-    position: { x: 0, y: 250 },
-    data: {
-      title: "Phone Screen",
-      description:
-        "Brief phone interview to assess basic qualifications and interest",
-      indicator_color: "#10B981",
-      stage_order: 2,
-      previous_stage_id: "7b96d954-98cd-4da7-88dc-c1578dc1c7de",
-    },
-  },
-];
+    position: { x: 0, y: idx * 250 },
+    data: stage,
+  }));
 
-const initialEdges = [
-  {
-    id: "e7b96d954-98cd-4da7-88dc-c1578dc1c7de-1b462a3b-b0ea-4e2d-95b1-e05af0e4bf94",
-    source: "7b96d954-98cd-4da7-88dc-c1578dc1c7de",
-    target: "1b462a3b-b0ea-4e2d-95b1-e05af0e4bf94",
-    animated: true,
-    type: "stageEdge",
-  },
-];
+  const initEdges = applicationStages.map((stage, idx) => ({
+    id: `e${stage.id}-${applicationStages[idx + 1]?.id}`,
+    source: stage.id,
+    target: applicationStages[idx + 1]?.id ?? "rejected",
+    // animated: true,
+    // type: "stageEdge",
+  }));
 
-export function StagesFlow() {
   const { resolvedTheme = "dark" } = useTheme();
   const setSelectedStage = useStagesStore((store) => store.setSelectedStage);
   const setSelectedEdges = useStagesStore((store) => store.setSelectedEdges);
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, , onNodesChange] = useNodesState(initNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initEdges);
   const nodeTypes = useMemo(() => ({ stageNode: StageNode }), []);
 
   // the passed handler has to be memoized, otherwise the hook will not work correctly
@@ -85,11 +66,12 @@ export function StagesFlow() {
     onChange,
   });
 
+
   return (
     <>
       <ReactFlow
         colorMode={resolvedTheme === "dark" ? "dark" : "light"}
-        className="border rounded-md"
+        className="border rounded-md min-h-screen sm:min-h-0"
         nodes={nodes}
         onNodesChange={onNodesChange}
         edges={edges}

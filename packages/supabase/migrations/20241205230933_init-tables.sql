@@ -79,16 +79,27 @@ create table application_stages(
     id uuid primary key default gen_random_uuid(),
     organization_id uuid references organizations(id) not null on delete cascade,
 
-    name text not null,
-    stage_order numeric not null
+    title text not null,
+    stage_order numeric not null,
+    indicator_color string not null
+
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
 );
 
 create table application_stage_triggers(
     id uuid primary key default gen_random_uuid(),
     organization_id uuid references organizations(id) not null on delete cascade,
     stage_id uuid references application_stages(id) on delete cascade,
-    type text not null
+    action_type text not null, -- e.g., 'send_email', 'update_status'
+    action_data jsonb not null, -- Contains specifics like email templates or status values
+    trigger_condition text not null, -- e.g., 'on_start', 'on_complete'
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
 );
+
+
+
 
 create type employment_type_enum as enum ('full_time', 'part_time', 'contract', 'internship');
 create type experience_level_enum as enum ('junior', 'mid', 'senior', 'lead', 'executive');

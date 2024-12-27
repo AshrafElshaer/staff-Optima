@@ -3,10 +3,12 @@ import { authActionClient } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
 import { InvitationEmail } from "@optima/email";
 import {
+  createApplicationStage,
   createDepartment,
   createUser,
   deleteDepartment,
   deleteUser,
+  updateApplicationStage,
   updateDepartment,
   updateOrganization,
   updateUser,
@@ -17,6 +19,8 @@ import {
   departmentUpdateSchema,
   organizationSchema,
   organizationUpdateSchema,
+  pipelineStageInsertSchema,
+  pipelineStageUpdateSchema,
   userInsertSchema,
   userUpdateSchema,
 } from "@optima/supabase/validations";
@@ -243,4 +247,55 @@ export const deleteTeamMember = authActionClient
     revalidatePath("/organization/team");
 
     return data.user;
+  });
+
+export const createApplicationStageAction = authActionClient
+  .metadata({
+    name: "createApplicationStage",
+    track: {
+      event: "create-application-stage",
+      channel: "organization",
+    },
+  })
+  .schema(pipelineStageInsertSchema)
+  .action(async ({ ctx, parsedInput }) => {
+    const { user, supabase } = ctx;
+
+    const { data, error } = await createApplicationStage(supabase, {
+      ...parsedInput,
+      stage_order: Number(parsedInput.stage_order),
+      organization_id: user.user_metadata.organization_id,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
+  });
+
+export const updateApplicationStageAction = authActionClient
+  .metadata({
+    name: "updateApplicationStage",
+    track: {
+      event: "update-application-stage",
+      channel: "organization",
+    },
+  })
+  .schema(pipelineStageUpdateSchema)
+  .action(async ({ ctx, parsedInput }) => {
+    const { supabase } = ctx;
+
+    const { data, error } = await updateApplicationStage(supabase, {
+      ...parsedInput,
+      stage_order: parsedInput.stage_order
+        ? Number(parsedInput.stage_order)
+        : undefined,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data;
   });

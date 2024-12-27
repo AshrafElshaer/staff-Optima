@@ -103,8 +103,6 @@ export const pipelineStageSchema = z.object({
   stage_order: z.string().min(1, {
     message: "Must be positive number",
   }),
-  previous_stage_id: z.string().uuid().optional(),
-  next_stage_id: z.string().uuid().optional(),
   created_at: z.string(),
   updated_at: z.string(),
 });

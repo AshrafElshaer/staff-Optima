@@ -11,22 +11,34 @@ export type Database = {
     Tables: {
       application_stage_triggers: {
         Row: {
+          action_data: Json;
+          action_type: string;
+          created_at: string;
           id: string;
           organization_id: string | null;
           stage_id: string | null;
-          type: string;
+          trigger_condition: string;
+          updated_at: string;
         };
         Insert: {
+          action_data: Json;
+          action_type: string;
+          created_at?: string;
           id?: string;
           organization_id?: string | null;
           stage_id?: string | null;
-          type: string;
+          trigger_condition: string;
+          updated_at?: string;
         };
         Update: {
+          action_data?: Json;
+          action_type?: string;
+          created_at?: string;
           id?: string;
           organization_id?: string | null;
           stage_id?: string | null;
-          type?: string;
+          trigger_condition?: string;
+          updated_at?: string;
         };
         Relationships: [
           {
@@ -47,22 +59,34 @@ export type Database = {
       };
       application_stages: {
         Row: {
+          created_at: string;
+          description: string;
           id: string;
-          name: string;
+          indicator_color: string;
           organization_id: string | null;
           stage_order: number;
+          title: string;
+          updated_at: string;
         };
         Insert: {
+          created_at?: string;
+          description: string;
           id?: string;
-          name: string;
+          indicator_color: string;
           organization_id?: string | null;
           stage_order: number;
+          title: string;
+          updated_at?: string;
         };
         Update: {
+          created_at?: string;
+          description?: string;
           id?: string;
-          name?: string;
+          indicator_color?: string;
           organization_id?: string | null;
           stage_order?: number;
+          title?: string;
+          updated_at?: string;
         };
         Relationships: [
           {

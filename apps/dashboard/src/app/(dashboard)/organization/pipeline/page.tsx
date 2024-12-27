@@ -1,9 +1,22 @@
 import { PageTitle } from "@/components/page-title";
 import { FlowWithProvider } from "@/components/providers/react-flow-provider";
 import { StagesFlow } from "@/features/organization/pipeline/stages-flow";
+import { createServerClient } from "@/lib/supabase/server";
+import { getApplicationStages } from "@optima/supabase/queries";
 import { Alert } from "@optima/ui/alert";
+import { headers } from "next/headers";
 
-export default function OrganizationPipelinePage() {
+export default async function OrganizationPipelinePage() {
+  const supabase = await createServerClient();
+  const headerList = await headers();
+  const organizationId = headerList.get("x-organization-id");
+  const { data: applicationStages, error } = await getApplicationStages(
+    supabase,
+    organizationId!,
+  );
+  if (error) {
+    throw error;
+  }
   return (
     <div className="flex flex-col gap-6 flex-1">
       <PageTitle title="Design and manage your interview pipeline with customizable stages and automated triggers to streamline your hiring process." />
@@ -15,7 +28,7 @@ export default function OrganizationPipelinePage() {
         stage.
       </Alert>
       <FlowWithProvider>
-        <StagesFlow />
+        <StagesFlow applicationStages={applicationStages} />
       </FlowWithProvider>
     </div>
   );
