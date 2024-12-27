@@ -79,11 +79,10 @@ export function StageForm() {
     useAction(updateApplicationStageAction, {
       onSuccess: ({ data }) => {
         toast.success("Stage updated successfully");
-        // console.log({ data });
-        // if (!data?.id) return;
-        // updateNode(data.id!, {
-        //   data: data,
-        // });
+        if (!data?.id) return;
+        updateNode(data.id!, {
+          data: data,
+        });
       },
       onError: ({ error }) => {
         toast.error(error.serverError);
@@ -188,8 +187,9 @@ export function StageForm() {
         disabled={isCreating || isUpdating}
         className="w-full mt-auto"
       >
-        {isCreating ||
-          (isUpdating && <Loader className="w-4 h-4 animate-spin" />)}
+        {isCreating || isUpdating ? (
+          <Loader className="w-4 h-4 animate-spin" />
+        ) : null}
         {selectedStage ? "Save" : "Create"}
       </Button>
     </form>

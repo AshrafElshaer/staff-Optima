@@ -28,8 +28,8 @@ alter table application_stages enable row level security;
 
 create policy "Public can read Stage" on application_stages for select using (true);
 create policy "Only Admin Can Create Stage" on application_stages for insert with check (is_user_organization_admin(organization_id));
-create policy "Only Admin Can Update Stage" on application_stages for insert with check (is_user_organization_admin(organization_id));
-create policy "Only Admin Can Delete Stage" on application_stages for insert with check (is_user_organization_admin(organization_id));
+create policy "Only Admin Can Update Stage" on application_stages for update using (is_user_organization_admin(organization_id));
+create policy "Only Admin Can Delete Stage" on application_stages for delete using (is_user_organization_admin(organization_id));
 
 -- Application Stages triggers
 
