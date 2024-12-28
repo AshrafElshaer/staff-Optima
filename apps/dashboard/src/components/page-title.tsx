@@ -1,3 +1,10 @@
-export function PageTitle({ title }: { title: string }) {
-  return <h4 className="font-semibold w-full lg:w-3/5 ">{title}</h4>;
+import { cn } from "@optima/ui/cn";
+
+export function PageTitle({
+  title,
+  className,
+}: { title: string; className?: string }) {
+  return (
+    <h4 className={cn("font-semibold w-full lg:w-3/5 ", className)}>{title}</h4>
+  );
 }
