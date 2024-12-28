@@ -9,6 +9,7 @@ import {
   deleteApplicationStage,
   deleteDepartment,
   deleteUser,
+  reorderApplicationStages,
   updateApplicationStage,
   updateDepartment,
   updateOrganization,
@@ -316,6 +317,31 @@ export const deleteApplicationStageAction = authActionClient
     const data = await deleteApplicationStage(supabase, parsedInput.id);
 
     revalidatePath("/organization/pipeline");
+    return data;
+  });
+
+export const reorderApplicationStagesAction = authActionClient
+  .metadata({
+    name: "reorderApplicationStages",
+    track: {
+      event: "reorder-application-stages",
+      channel: "organization",
+    },
+  })
+  .schema(
+    z.object({
+      sourceStageId: z.string().uuid(),
+      targetStageId: z.string().uuid(),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx;
+
+    const data = await reorderApplicationStages(
+      supabase,
+      parsedInput.sourceStageId,
+      parsedInput.targetStageId,
+    );
 
     return data;
   });
