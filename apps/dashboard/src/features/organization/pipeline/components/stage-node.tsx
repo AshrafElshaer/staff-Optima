@@ -23,7 +23,7 @@ import type { z } from "zod";
 import {
   deleteApplicationStageAction,
   reorderApplicationStagesAction,
-} from "../organization.actions";
+} from "../stages-pipeline.actions";
 
 export type StageNode = Node<z.infer<typeof pipelineStageSchema>, "stageNode">;
 

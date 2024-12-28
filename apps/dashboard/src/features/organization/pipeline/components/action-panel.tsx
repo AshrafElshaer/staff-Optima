@@ -1,15 +1,13 @@
 import { useStagesStore } from "@/stores/stages-pipeline";
-import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
-import { Panel, useReactFlow } from "@xyflow/react";
-import { Layers2, Menu, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { AddStage } from "./add-stage";
+import { Panel } from "@xyflow/react";
+import { Layers2, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { StageForm } from "./stage-form";
 
 export function ActionPanel() {
   const [isOpen, setIsOpen] = useState(true);
-  const { selectedStage } = useStagesStore();
+
 
   return (
     <Panel

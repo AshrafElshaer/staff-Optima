@@ -20,7 +20,7 @@ import type { z } from "zod";
 import {
   createApplicationStageAction,
   updateApplicationStageAction,
-} from "../organization.actions";
+} from "../stages-pipeline.actions";
 
 const DEFAULT_STAGE_DATA = {
   title: "",

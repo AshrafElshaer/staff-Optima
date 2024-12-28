@@ -1,6 +1,6 @@
 import { PageTitle } from "@/components/page-title";
 import { FlowWithProvider } from "@/components/providers/react-flow-provider";
-import { StagesFlow } from "@/features/organization/pipeline/stages-flow";
+import { StagesFlow } from "@/features/organization/pipeline/components/stages-flow";
 import { createServerClient } from "@/lib/supabase/server";
 import { getApplicationStages } from "@optima/supabase/queries";
 import { Alert } from "@optima/ui/alert";

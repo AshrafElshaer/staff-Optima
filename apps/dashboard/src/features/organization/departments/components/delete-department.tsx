@@ -18,7 +18,7 @@ import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteDepartmentAction } from "../organization.actions";
+import { deleteDepartmentAction } from "../departments.actions";
 
 export function DeleteDepartment({
   department,

@@ -1,7 +1,7 @@
 import { PageTitle } from "@/components/page-title";
 import { SearchInput } from "@/components/search-input";
-import { DeleteDepartment } from "@/features/organization/departments/delete-department";
-import { DepartmentDialog } from "@/features/organization/departments/department-dialog";
+import { DeleteDepartment } from "@/features/organization/departments/components/delete-department";
+import { DepartmentDialog } from "@/features/organization/departments/components/department-dialog";
 import { createServerClient } from "@/lib/supabase/server";
 import {
   getDepartmentsByOrganizationId,

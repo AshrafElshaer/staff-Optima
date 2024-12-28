@@ -18,7 +18,7 @@ import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { type ReactNode, useState } from "react";
 import { toast } from "sonner";
-import { deleteTeamMember } from "../organization.actions";
+import { deleteTeamMember } from "../members.actions";
 
 export function DeleteMember({
   user,

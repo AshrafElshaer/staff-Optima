@@ -7,25 +7,16 @@ import {
   Background,
   Controls,
   type Edge,
-  type EdgeChange,
   type Node,
-  type NodeChange,
   type OnSelectionChangeFunc,
-  Panel,
-  PanelPosition,
   ReactFlow,
-  type UseOnSelectionChangeOptions,
-  applyEdgeChanges,
-  applyNodeChanges,
   useEdgesState,
   useNodesState,
   useOnSelectionChange,
 } from "@xyflow/react";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { ActionPanel } from "./action-panel";
-import { AddStage } from "./add-stage";
-import { StageEdge } from "./stage-edge";
 import { StageNode } from "./stage-node";
 
 type StagesFlowProps = {
@@ -65,7 +56,6 @@ export function StagesFlow({ applicationStages }: StagesFlowProps) {
   useOnSelectionChange({
     onChange,
   });
-
 
   return (
     <>

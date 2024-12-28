@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Department } from "@optima/supabase/types";
-import { departmentUpdateSchema } from "@optima/supabase/validations";
+import { departmentInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { DialogClose, DialogFooter } from "@optima/ui/dialog";
 import { Input } from "@optima/ui/input";
@@ -10,23 +9,14 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import {
-  createDepartmentAction,
-  updateDepartmentAction,
-} from "../organization.actions";
+import { createDepartmentAction } from "../departments.actions";
 
-export function UpdateDepartmentForm({
-  onSuccess,
-  department,
-}: {
-  onSuccess: () => void;
-  department: Department;
-}) {
-  const { execute: updateDepartment, isExecuting: isUpdating } = useAction(
-    updateDepartmentAction,
+export function NewDepartmentForm({ onSuccess }: { onSuccess: () => void }) {
+  const { execute: createDepartment, isExecuting: isCreating } = useAction(
+    createDepartmentAction,
     {
       onSuccess: () => {
-        toast.success("Department updated successfully");
+        toast.success("Department created successfully");
         onSuccess();
       },
       onError: ({ error }) => {
@@ -34,19 +24,13 @@ export function UpdateDepartmentForm({
       },
     },
   );
-  const form = useForm<z.infer<typeof departmentUpdateSchema>>({
-    resolver: zodResolver(departmentUpdateSchema),
-    defaultValues: {
-      id: department.id,
-      name: department.name,
-      organization_id: department.organization_id ?? undefined,
-    },
+  const form = useForm<z.infer<typeof departmentInsertSchema>>({
+    resolver: zodResolver(departmentInsertSchema),
   });
 
-  function onSubmit(data: z.infer<typeof departmentUpdateSchema>) {
-    updateDepartment({
-      ...data,
-      name: data.name?.trim(),
+  function onSubmit(data: z.infer<typeof departmentInsertSchema>) {
+    createDepartment({
+      name: data.name.trim(),
     });
   }
   return (
@@ -62,13 +46,13 @@ export function UpdateDepartmentForm({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" disabled={isUpdating}>
+            <Button variant="outline" disabled={isCreating}>
               Cancel
             </Button>
           </DialogClose>
-          <Button disabled={isUpdating}>
-            {isUpdating ? <Loader className="animate-spin size-4" /> : null}
-            Save
+          <Button disabled={isCreating}>
+            {isCreating ? <Loader className="animate-spin size-4" /> : null}
+            Create
           </Button>
         </DialogFooter>
       </form>
