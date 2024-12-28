@@ -85,6 +85,7 @@ export function StagesFlow({ applicationStages }: StagesFlowProps) {
           y: 24,
           zoom: 0.85,
         }}
+        fitView
       >
         <Background />
         <Controls showInteractive={false} className="react-flow_controls" />

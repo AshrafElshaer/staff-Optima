@@ -6,6 +6,7 @@ import {
   createApplicationStage,
   createDepartment,
   createUser,
+  deleteApplicationStage,
   deleteDepartment,
   deleteUser,
   updateApplicationStage,
@@ -296,6 +297,25 @@ export const updateApplicationStageAction = authActionClient
     if (error) {
       throw new Error(error.message);
     }
+
+    return data;
+  });
+
+export const deleteApplicationStageAction = authActionClient
+  .metadata({
+    name: "deleteApplicationStage",
+    track: {
+      event: "delete-application-stage",
+      channel: "organization",
+    },
+  })
+  .schema(z.object({ id: z.string().uuid() }))
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx;
+
+    const data = await deleteApplicationStage(supabase, parsedInput.id);
+
+    revalidatePath("/organization/pipeline");
 
     return data;
   });

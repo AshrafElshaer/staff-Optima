@@ -80,7 +80,7 @@ export function StageForm() {
       onSuccess: ({ data }) => {
         toast.success("Stage updated successfully");
         if (!data?.id) return;
-        updateNode(data.id!, {
+        updateNode(data.id, {
           data: data,
         });
       },
