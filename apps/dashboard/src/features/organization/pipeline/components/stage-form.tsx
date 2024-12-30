@@ -124,7 +124,12 @@ export function StageForm() {
   function handleUpdate(data: z.infer<typeof pipelineStageInsertSchema>) {
     if (selectedStage?.data.id) {
       updateApplicationStage({
-        ...data,
+        ...{
+          title: data.title.trim(),
+          description: data.description.trim(),
+          indicator_color: data.indicator_color,
+          stage_order: data.stage_order,
+        },
         id: selectedStage.data.id as string,
       });
     }
@@ -137,8 +142,8 @@ export function StageForm() {
     stage_order,
   }: z.infer<typeof pipelineStageInsertSchema>) {
     createApplicationStage({
-      title,
-      description,
+      title: title.trim(),
+      description: description.trim(),
       indicator_color,
       stage_order: stage_order,
     });

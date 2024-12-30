@@ -1,3 +1,4 @@
+import type { ApplicationStage } from "@optima/supabase/types";
 import type { pipelineStageSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
@@ -24,6 +25,8 @@ import {
   deleteApplicationStageAction,
   reorderApplicationStagesAction,
 } from "../stages-pipeline.actions";
+import { DeleteStage } from "./delete-stage";
+import { ReorderStages } from "./reorder-stages";
 
 export type StageNode = Node<z.infer<typeof pipelineStageSchema>, "stageNode">;
 
@@ -57,76 +60,11 @@ export function StageNode(props: NodeProps<StageNode>) {
       },
     });
 
-  const { executeAsync: reorderApplicationStages, isExecuting: isReordering } =
-    useAction(reorderApplicationStagesAction, {
-      onSuccess: ({ data }) => {
-        if (!data) return;
-        setNodes(
-          data.map((stage, idx) => ({
-            id: stage.id,
-            type: "stageNode",
-            deletable: false,
-            position: { x: 0, y: idx * 250 },
-            data: stage,
-          })),
-        );
-        setEdges(
-          data.map((stage, idx) => ({
-            id: `e${stage.id}-${data[idx + 1]?.id}`,
-            source: stage.id,
-            target: data[idx + 1]?.id ?? "rejected",
-          })),
-        );
-      },
-    });
 
-  function handleDelete() {
-    toast.promise(deleteApplicationStage({ id }), {
-      loading: "Deleting stage...",
-      success: "Stage deleted successfully",
-      error: ({ error }) => error.serverError,
-    });
-  }
 
-  function handleMoveUp() {
-    const nodes = getNodes();
-    const targetStageId = nodes.find(
-      (node) => Number(node.data.stage_order) === Number(stage_order) - 1,
-    )?.id;
-    if (!targetStageId) return toast.error("No stage to move up to");
 
-    toast.promise(
-      reorderApplicationStages({
-        sourceStageId: id,
-        targetStageId: targetStageId,
-      }),
-      {
-        loading: "Reordering stage...",
-        success: "Stage reordered successfully",
-        error: ({ error }) => error.serverError,
-      },
-    );
-  }
 
-  function handleMoveDown() {
-    const nodes = getNodes();
-    const targetStageId = nodes.find(
-      (node) => Number(node.data.stage_order) === Number(stage_order) + 1,
-    )?.id;
-    if (!targetStageId) return toast.error("No stage to move down to");
 
-    toast.promise(
-      reorderApplicationStages({
-        sourceStageId: id,
-        targetStageId: targetStageId,
-      }),
-      {
-        loading: "Reordering stage...",
-        success: "Stage reordered successfully",
-        error: ({ error }) => error.serverError,
-      },
-    );
-  }
 
   return (
     <>
@@ -144,36 +82,8 @@ export function StageNode(props: NodeProps<StageNode>) {
             }}
           />
           <p className="font-semibold flex-1">{title}</p>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="icon"
-                size="icon"
-                disabled={isDeleting || isReordering}
-              >
-                <ArrowUpDownIcon size={18} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={handleMoveUp} disabled={isReordering}>
-                Move up
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={handleMoveDown}
-                disabled={isReordering}
-              >
-                Move down
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button
-            variant="icon"
-            size="icon"
-            onClick={handleDelete}
-            disabled={isDeleting || isReordering}
-          >
-            <Delete01Icon size={18} />
-          </Button>
+          <ReorderStages stage_order={stage_order} id={id} />
+          <DeleteStage stage={data as unknown as ApplicationStage} />
         </div>
 
         <p className=" text-secondary-foreground">{description}</p>
