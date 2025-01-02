@@ -19,7 +19,7 @@ const ColorPicker = forwardRef<
   HTMLInputElement,
   Omit<ButtonProps, "value" | "onChange" | "onBlur"> &
     ColorPickerProps & {
-      label: string;
+      label?: string;
     }
 >(
   (
