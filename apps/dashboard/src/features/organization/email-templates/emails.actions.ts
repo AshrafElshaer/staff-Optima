@@ -77,7 +77,10 @@ export const updateEmailTemplateAction = authActionClient
   .schema(emailTemplateUpdateSchema)
   .action(async ({ parsedInput, ctx }) => {
     const { supabase, user } = ctx;
-    const { data, error } = await updateEmailTemplate(supabase, parsedInput);
+    const { data, error } = await updateEmailTemplate(supabase, {
+      ...parsedInput,
+      updated_at: new Date().toISOString(),
+    });
     if (error) {
       throw new Error(error.message);
     }

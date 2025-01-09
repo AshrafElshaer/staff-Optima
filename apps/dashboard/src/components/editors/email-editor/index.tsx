@@ -28,7 +28,15 @@ type AdvancedEditorProps = {
   className?: string;
 };
 
-const extensions = [...defaultExtensions, slashCommand, ImageResize];
+const extensions = [
+  ...defaultExtensions,
+  slashCommand,
+  ImageResize.configure({
+    HTMLAttributes: {
+      class: "w-auto h-auto",
+    },
+  }),
+];
 
 export default function EmailEditor({
   content,
