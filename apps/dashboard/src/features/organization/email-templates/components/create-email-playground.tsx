@@ -1,12 +1,8 @@
 "use client";
 import { defaultExtensions } from "@/components/editors/advanced/extensions";
 import EmailEditor from "@/components/editors/email-editor";
-import { resend } from "@/lib/resend";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  emailTemplateInsertSchema,
-  emailTemplateUpdateSchema,
-} from "@optima/supabase/validations";
+import { emailTemplateInsertSchema } from "@optima/supabase/validations";
 import {
   HoverCard,
   HoverCardContent,
@@ -22,22 +18,19 @@ import type { z } from "zod";
 
 import { OnEditToast } from "@/components/toasts/on-edit-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
-import type { EmailTemplate } from "@optima/supabase/types";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 import { createEmailTemplateAction } from "../emails.actions";
 import { PreviewEmail } from "./preview-email";
 import { TestEmailDropdown } from "./test-email-dropdown";
 
-export function EmailPlayground({
-  emailTemplate,
-}: { emailTemplate?: EmailTemplate }) {
+export function CreateEmailPlayground() {
   const form = useForm<z.infer<typeof emailTemplateInsertSchema>>({
     resolver: zodResolver(emailTemplateInsertSchema),
     defaultValues: {
-      title: emailTemplate?.title || "",
-      subject: emailTemplate?.subject || "",
-      body: emailTemplate?.body || "",
+      title: "",
+      subject: "",
+      body: "",
     },
   });
   const { execute, status, reset } = useAction(createEmailTemplateAction, {

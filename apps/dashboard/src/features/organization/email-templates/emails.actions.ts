@@ -2,8 +2,14 @@
 
 import { resend } from "@/lib/resend";
 import { authActionClient } from "@/lib/safe-action";
-import { createEmailTemplate } from "@optima/supabase/mutations";
-import { emailTemplateInsertSchema } from "@optima/supabase/validations";
+import {
+  createEmailTemplate,
+  updateEmailTemplate,
+} from "@optima/supabase/mutations";
+import {
+  emailTemplateInsertSchema,
+  emailTemplateUpdateSchema,
+} from "@optima/supabase/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -58,4 +64,24 @@ export const createEmailTemplateAction = authActionClient
     revalidatePath("/organization/email-templates");
 
     redirect("/organization/email-templates");
+  });
+
+export const updateEmailTemplateAction = authActionClient
+  .metadata({
+    name: "updateEmailTemplate",
+    track: {
+      event: "updateEmailTemplate",
+      channel: "email",
+    },
+  })
+  .schema(emailTemplateUpdateSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase, user } = ctx;
+    const { data, error } = await updateEmailTemplate(supabase, parsedInput);
+    if (error) {
+      throw new Error(error.message);
+    }
+    revalidatePath("/organization/email-templates");
+
+    return data;
   });

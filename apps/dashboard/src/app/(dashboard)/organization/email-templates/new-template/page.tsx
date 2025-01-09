@@ -1,6 +1,6 @@
 import { BackButton } from "@/components/back-button";
 import { PageTitle } from "@/components/page-title";
-import { EmailPlayground } from "@/features/organization/email-templates/components/email-playground";
+import { CreateEmailPlayground } from "@/features/organization/email-templates/components/create-email-playground";
 
 export default function OrganizationNewEmailTemplatePage() {
   return (
@@ -12,7 +12,7 @@ export default function OrganizationNewEmailTemplatePage() {
           className="!w-full"
         />
       </div>
-      <EmailPlayground />
+      <CreateEmailPlayground />
     </div>
   );
 }

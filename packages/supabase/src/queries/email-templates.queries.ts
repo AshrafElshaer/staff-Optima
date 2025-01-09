@@ -13,3 +13,14 @@ export async function getEmailTemplates(
   }
   return data;
 }
+
+export async function getEmailTemplateById(
+  supabase: SupabaseInstance,
+  id: string,
+) {
+  return await supabase
+    .from("email_templates")
+    .select("*")
+    .eq("id", id)
+    .single();
+}
