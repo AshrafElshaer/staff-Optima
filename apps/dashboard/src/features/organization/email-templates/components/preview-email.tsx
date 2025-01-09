@@ -4,14 +4,13 @@ import { Button } from "@optima/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@optima/ui/dialog";
 import { generateJSON } from "@tiptap/react";
 import { EyeIcon } from "lucide-react";
-
-
 
 export function PreviewEmail({ emailTemplate }: { emailTemplate: string }) {
   return (
@@ -22,11 +21,16 @@ export function PreviewEmail({ emailTemplate }: { emailTemplate: string }) {
           Preview
         </Button>
       </DialogTrigger>
-      <DialogContent className="h-96 p-4 overflow-y-scroll">
-        <EmailEditor
-          content={generateJSON(emailTemplate, defaultExtensions)}
-          editable={false}
-        />
+      <DialogContent className="h-96 ">
+        <DialogHeader>
+          <DialogTitle>Email Preview</DialogTitle>
+        </DialogHeader>
+        <div className="p-4 overflow-y-scroll h-full">
+          <EmailEditor
+            content={generateJSON(emailTemplate, defaultExtensions)}
+            editable={false}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

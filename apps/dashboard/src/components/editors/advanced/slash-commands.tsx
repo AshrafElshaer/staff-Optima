@@ -163,16 +163,20 @@ export const suggestionItems = createSuggestionItems([
         .chain()
         .focus()
         .deleteRange(range)
-        .setImage({ src: organizationLogo })
+        .setImage({
+          src: organizationLogo,
+          alt: "Organization Logo",
+          title: organization?.name,
+        })
         .run();
 
-      const img = document.querySelector(
-        `[src="${organizationLogo}"]`,
-      ) as HTMLImageElement;
-      if (img) {
-        img.style.width = "80px";
-        img.style.height = "80px";
-      }
+      // const img = document.querySelector(
+      //   `[src="${organizationLogo}"]`,
+      // ) as HTMLImageElement;
+      // if (img) {
+      //   img.style.width = "80px";
+      //   img.style.height = "80px";
+      // }
     },
   },
 ]);

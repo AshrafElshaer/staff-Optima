@@ -17,6 +17,7 @@ import { defaultExtensions } from "../advanced/extensions";
 import { slashCommand, suggestionItems } from "../advanced/slash-commands";
 
 import { ImageResize } from "tiptap-extension-resize-image";
+import { ResizableImage } from "../ResizableImage";
 import { ColorSelector } from "../selectors/color-selector";
 import { LinkSelector } from "../selectors/link-selector";
 import { NodeSelector } from "../selectors/node-selector";
@@ -31,9 +32,9 @@ type AdvancedEditorProps = {
 const extensions = [
   ...defaultExtensions,
   slashCommand,
-  ImageResize.configure({
+  ResizableImage.configure({
     HTMLAttributes: {
-      class: "w-auto h-auto",
+      class: "my-8",
     },
   }),
 ];
@@ -47,6 +48,7 @@ export default function EmailEditor({
   const [openNode, setOpenNode] = useState(false);
   const [openLink, setOpenLink] = useState(false);
   const [openColor, setOpenColor] = useState(false);
+  console.log({content});
 
   return (
     <EditorRoot>
@@ -55,7 +57,6 @@ export default function EmailEditor({
         initialContent={content}
         onUpdate={({ editor }) => {
           onChange?.(editor.getHTML());
-          console.log(editor.getHTML());
         }}
         extensions={extensions}
         immediatelyRender={false}
