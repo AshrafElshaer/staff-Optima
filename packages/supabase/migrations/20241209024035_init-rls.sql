@@ -40,6 +40,13 @@ create policy "Only Admin Can Create Stage Triggers" on application_stage_trigge
 create policy "Only Admin Can Update Stage Triggers" on application_stage_triggers for insert with check (is_user_organization_admin(organization_id));
 create policy "Only Admin Can Delete Stage Triggers" on application_stage_triggers for insert with check (is_user_organization_admin(organization_id));
 
+-- Email Templates
+alter table email_templates enable row level security;
+
+create policy "Members Can Read Email Templates" on email_templates for select using (is_user_organization_member(organization_id));
+create policy "Only Admin Can Create Email Templates" on email_templates for insert with check (is_user_organization_admin(organization_id));
+create policy "Only Admin Can Update Email Templates" on email_templates for update using (is_user_organization_admin(organization_id));
+create policy "Only Admin Can Delete Email Templates" on email_templates for delete using (is_user_organization_admin(organization_id));
 
 -- Users
 alter table users enable row level security;

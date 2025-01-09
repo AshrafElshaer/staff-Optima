@@ -22,70 +22,33 @@ export function OnEditToast({
 }: OnEditToastProps) {
   return (
     <div className="text-foreground bg-secondary w-[22rem] sm:min-w-[24rem] flex items-center gap-2 px-1 py-1 rounded-full border overflow-hidden">
-      <AnimatePresence mode="wait">
-        {status === "hasErrored" ? (
-          <motion.div
-            key="error"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <OnEditToastError error={error} />
-          </motion.div>
-        ) : status === "hasSucceeded" ? (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <OnEditToastSuccess />
-          </motion.div>
-        ) : status === "executing" ? (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <OnEditToastLoading />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="default"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="flex items-center gap-2 w-full"
-          >
-            <AlertDiamondIcon
-              size={20}
-              strokeWidth={2}
-              className="text-tag-warning-icon ml-2"
-            />
-            <span className="font-medium mr-auto">Unsaved changes! </span>
+      {status === "hasErrored" ? (
+        <OnEditToastError error={error} />
+      ) : status === "hasSucceeded" ? (
+        <OnEditToastSuccess />
+      ) : status === "executing" ? (
+        <OnEditToastLoading />
+      ) : (
+        <div className="flex items-center gap-2 w-full">
+          <AlertDiamondIcon
+            size={20}
+            strokeWidth={2}
+            className="text-tag-warning-icon ml-2"
+          />
+          <span className="font-medium mr-auto">Unsaved changes! </span>
 
-            <Button
-              variant="destructive"
-              onClick={onReset}
-              className="rounded-full"
-            >
-              Reset
-            </Button>
-            <Button
-              variant="success"
-              onClick={onAction}
-              className="rounded-full"
-            >
-              Save
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <Button
+            variant="destructive"
+            onClick={onReset}
+            className="rounded-full"
+          >
+            Reset
+          </Button>
+          <Button variant="success" onClick={onAction} className="rounded-full">
+            Save
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

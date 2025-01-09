@@ -98,7 +98,17 @@ create table application_stage_triggers(
     updated_at timestamp with time zone default now() not null
 );
 
+create table email_templates (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade not null ,
+    title text not null,
+    body text not null,
+    subject text not null,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
 
+create index idx_email_templates_org on email_templates(organization_id);
 
 
 create type employment_type_enum as enum ('full_time', 'part_time', 'contract', 'internship');

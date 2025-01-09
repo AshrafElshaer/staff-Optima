@@ -1,9 +1,12 @@
+import { createBrowserClient } from "@/lib/supabase/browser";
+import { getOrganizationById } from "@optima/supabase/queries";
 import {
   CheckSquare,
   Code,
   Heading1,
   Heading2,
   Heading3,
+  Image,
   List,
   ListOrdered,
   MessageSquarePlus,
@@ -16,15 +19,15 @@ import { Command, renderItems } from "novel/extensions";
 // import { startImageUpload } from "novel/plugins";
 
 export const suggestionItems = createSuggestionItems([
-//   {
-//     title: "Send Feedback",
-//     description: "Let us know how we can improve.",
-//     icon: <MessageSquarePlus size={18} />,
-//     command: ({ editor, range }) => {
-//       editor.chain().focus().deleteRange(range).run();
-//       window.open("/feedback", "_blank");
-//     },
-//   },
+  //   {
+  //     title: "Send Feedback",
+  //     description: "Let us know how we can improve.",
+  //     icon: <MessageSquarePlus size={18} />,
+  //     command: ({ editor, range }) => {
+  //       editor.chain().focus().deleteRange(range).run();
+  //       window.open("/feedback", "_blank");
+  //     },
+  //   },
   {
     title: "Text",
     description: "Just start typing with plain text.",
@@ -138,7 +141,40 @@ export const suggestionItems = createSuggestionItems([
     icon: <Minus size={18} />,
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
-  }
+  },
+  {
+    title: "Logo",
+    description: "Add a organization logo.",
+    searchTerms: ["logo"],
+    icon: <Image size={18} />,
+    command: async ({ editor, range }) => {
+      const supabase = createBrowserClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const { data: organization } = await getOrganizationById(
+        supabase,
+        user?.user_metadata.organization_id,
+      );
+
+      const organizationLogo = organization?.logo_url;
+      if (!organizationLogo) return;
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .setImage({ src: organizationLogo })
+        .run();
+
+      const img = document.querySelector(
+        `[src="${organizationLogo}"]`,
+      ) as HTMLImageElement;
+      if (img) {
+        img.style.width = "80px";
+        img.style.height = "80px";
+      }
+    },
+  },
 ]);
 
 export const slashCommand = Command.configure({

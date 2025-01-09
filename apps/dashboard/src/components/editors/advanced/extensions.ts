@@ -30,7 +30,7 @@ const tiptapLink = TiptapLink.configure({
 
 const textAlign = TextAlign.configure({
   alignments: ["left", "center", "right"],
-  types:["heading","paragraph"]
+  types: ["heading", "paragraph"],
 });
 
 const color = Color;

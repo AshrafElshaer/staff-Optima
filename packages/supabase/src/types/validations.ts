@@ -141,3 +141,32 @@ export const userInsertSchema = userSchema.omit({
 export const userUpdateSchema = userSchema.partial().required({
   id: true,
 });
+
+export const emailTemplateSchema = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  title: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  body: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  subject: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const emailTemplateInsertSchema = emailTemplateSchema.omit({
+  id: true,
+  organization_id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const emailTemplateUpdateSchema = emailTemplateSchema
+  .partial()
+  .required({
+    id: true,
+  });
