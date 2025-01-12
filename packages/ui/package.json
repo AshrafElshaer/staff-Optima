@@ -66,7 +66,8 @@
     "./toggle": "./src/components/toggle.tsx",
     "./toggle-group": "./src/components/toggle-group.tsx",
     "./tooltip": "./src/components/tooltip.tsx",
-    "./color-picker": "./src/components/color-picker.tsx"
+    "./color-picker": "./src/components/color-picker.tsx",
+    "./hooks": "./src/hooks/index.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

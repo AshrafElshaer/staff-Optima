@@ -1,6 +1,6 @@
-import type { SVGProps } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
-interface BuildingIconProps extends SVGProps<SVGSVGElement> {
+interface BuildingIconProps extends ComponentPropsWithoutRef<"svg"> {
   title?: string;
 }
 

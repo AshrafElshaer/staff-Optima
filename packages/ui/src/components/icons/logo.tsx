@@ -1,6 +1,6 @@
-import type { SVGProps } from "react";
+import type { ComponentPropsWithoutRef, SVGProps } from "react";
 
-interface LogoSvgLightProps extends SVGProps<SVGSVGElement> {
+interface LogoSvgLightProps extends ComponentPropsWithoutRef<"svg"> {
   title?: string;
 }
 
