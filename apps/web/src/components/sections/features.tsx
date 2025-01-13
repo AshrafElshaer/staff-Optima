@@ -14,31 +14,31 @@ const features = [
     title: "Custom Workflows",
     description:
       "Design and implement customizable hiring workflows that perfectly match your organization's unique recruitment process. Create multi-stage pipelines, set automated actions, and ensure consistency across all hiring channels.",
-    icon: WorkflowSquare10Icon,
+    icon: <WorkflowSquare10Icon strokeWidth={2} className="size-8" />,
   },
   {
-    title: "Automated Email Sequences", 
+    title: "Automated Email Sequences",
     description:
       "Send personalized, automated email sequences to candidates based on their stage in the hiring process. Schedule follow-ups, send reminders, and maintain consistent communication without manual intervention.",
-    icon: MailAdd02Icon,
+    icon: <MailAdd02Icon strokeWidth={2} className="size-8" />,
   },
   {
     title: "Collaborative Hiring",
     description:
       "Foster seamless teamwork with shared candidate profiles, structured interview feedback forms, and collaborative decision-making tools. Keep all stakeholders aligned and make better hiring decisions together.",
-    icon: UserMultipleIcon,
+    icon: <UserMultipleIcon strokeWidth={2} className="size-8" />,
   },
   {
     title: "Advanced Analytics",
     description:
       "Gain deep insights into your hiring process with customizable dashboards and real-time reporting. Track key metrics, identify bottlenecks, and optimize your recruitment funnel with data-driven decisions.",
-    icon: ChartLineData01Icon,
+    icon: <ChartLineData01Icon strokeWidth={2} className="size-8" />,
   },
   {
     title: "Multi-Channel Job Posting",
     description:
       "Launch and manage job campaigns across multiple platforms simultaneously. Post openings to LinkedIn, Indeed, and other major job boards with a single click, while tracking applications and engagement from each source.",
-    icon: NeuralNetworkIcon,
+    icon: <NeuralNetworkIcon strokeWidth={2} className="size-8" />,
   },
 ];
 
@@ -58,8 +58,7 @@ export function Features() {
             key={feature.title}
             title={feature.title}
             description={feature.description}
-            icon={feature.icon as React.FC<React.SVGProps<SVGSVGElement>>}
-
+            icon={feature.icon}
           />
         ))}
       </div>

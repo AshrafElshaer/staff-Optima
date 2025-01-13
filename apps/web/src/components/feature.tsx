@@ -5,7 +5,7 @@ import { TextAnimate } from "./text-animation";
 export interface FeatureProps {
   title: string;
   description: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  icon: React.ReactNode;
 }
 
 export function Feature({ title, description, icon }: FeatureProps) {
@@ -13,7 +13,7 @@ export function Feature({ title, description, icon }: FeatureProps) {
   return (
     <div className="space-y-8 py-12">
       <div className="flex items-center gap-2">
-        <Icon strokeWidth={2} className="size-8 " />
+        {icon}
 
         <TextAnimate
           animation="blurInUp"
