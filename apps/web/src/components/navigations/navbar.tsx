@@ -119,18 +119,17 @@ export function Navbar() {
         >
           Pricing
         </Button>
-        <Link href="/updates">
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-lg py-8"
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              router.push("/updates");
-            }}
-          >
-            Updates
-          </Button>
-        </Link>
+
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-lg py-8"
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            router.push("/updates");
+          }}
+        >
+          Updates
+        </Button>
 
         <Button className="w-full justify-start mt-auto" size="lg">
           Sign In
