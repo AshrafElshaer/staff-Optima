@@ -71,6 +71,10 @@ export function Navbar() {
         >
           Updates
         </Button>
+        <Separator orientation="vertical" className="ml-auto h-8" />
+        <Button variant="ghost" onClick={() => router.push("/sign-in")}>
+          Sign In
+        </Button>
       </div>
 
       <div
@@ -137,6 +141,7 @@ export function Navbar() {
 }
 
 import { scrollToSection } from "@/lib/scroll-to-section";
+import { Separator } from "@optima/ui/separator";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
