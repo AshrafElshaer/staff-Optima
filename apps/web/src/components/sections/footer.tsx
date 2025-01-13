@@ -76,7 +76,7 @@ export function Footer() {
           Hire Smarter, Hire Faster
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center text-sm  border-t pt-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center text-sm  border-t p-4">
         <p className=" mr-auto">
           &copy; {new Date().getFullYear()} Staff Optima. All rights reserved.
         </p>

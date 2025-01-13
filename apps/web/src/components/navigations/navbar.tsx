@@ -40,7 +40,7 @@ export function Navbar() {
               router.push("/");
               setTimeout(() => {
                 scrollToSection("features");
-              }, 100);
+              }, 50);
             }
           }}
         >
@@ -56,17 +56,20 @@ export function Navbar() {
               router.push("/");
               setTimeout(() => {
                 scrollToSection("pricing");
-              }, 100);
+              }, 50);
             }
           }}
         >
           Pricing
         </Button>
-        <Link href="/updates">
-          <Button variant="ghost">Updates</Button>
-        </Link>
-        <Button variant="ghost" className="ml-auto">
-          Sign In
+
+        <Button
+          variant="ghost"
+          onClick={() => {
+            router.push("/updates");
+          }}
+        >
+          Updates
         </Button>
       </div>
 
@@ -81,8 +84,15 @@ export function Navbar() {
           className="w-full justify-start text-lg py-8"
           size="lg"
           onClick={() => {
-            scrollToSection("features");
             setIsMobileMenuOpen(false);
+            if (pathname === "/") {
+              scrollToSection("features");
+            } else {
+              router.push("/");
+              setTimeout(() => {
+                scrollToSection("features");
+              }, 50);
+            }
           }}
         >
           Features
@@ -92,7 +102,14 @@ export function Navbar() {
           className="w-full justify-start text-lg py-8"
           size="lg"
           onClick={() => {
-            scrollToSection("pricing");
+            if (pathname === "/") {
+              scrollToSection("pricing");
+            } else {
+              router.push("/");
+              setTimeout(() => {
+                scrollToSection("pricing");
+              }, 50);
+            }
             setIsMobileMenuOpen(false);
           }}
         >
@@ -102,7 +119,10 @@ export function Navbar() {
           <Button
             variant="ghost"
             className="w-full justify-start text-lg py-8"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              router.push("/updates");
+            }}
           >
             Updates
           </Button>
