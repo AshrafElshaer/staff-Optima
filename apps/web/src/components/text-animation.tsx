@@ -1,7 +1,12 @@
 "use client";
 
 import { cn } from "@optima/ui/cn";
-import { AnimatePresence, motion, type MotionProps, type Variants } from "motion/react";
+import {
+  AnimatePresence,
+  type MotionProps,
+  type Variants,
+  motion,
+} from "motion/react";
 import type { ElementType } from "react";
 
 type AnimationType = "text" | "word" | "character" | "line";
@@ -314,6 +319,7 @@ export function TextAnimate({
   animation = "fadeIn",
   ...props
 }: TextAnimateProps) {
+  // @ts-ignore
   const MotionComponent = motion(Component);
 
   // Use provided variants or default variants based on animation type
