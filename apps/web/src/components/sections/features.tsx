@@ -13,40 +13,62 @@ const features = [
     title: "Custom Workflows",
     description:
       "Design and implement customizable hiring workflows that perfectly match your organization's unique recruitment process. Create multi-stage pipelines, set automated actions, and ensure consistency across all hiring channels.",
-    icon: <WorkflowSquare10Icon strokeWidth={2} className="size-8" />,
+    icon: (
+      <WorkflowSquare10Icon
+        strokeWidth={2}
+        className="size-6 sm:size-7 md:size-8 "
+      />
+    ),
   },
   {
     title: "Automated Email Sequences",
     description:
       "Send personalized, automated email sequences to candidates based on their stage in the hiring process. Schedule follow-ups, send reminders, and maintain consistent communication without manual intervention.",
-    icon: <MailAdd02Icon strokeWidth={2} className="size-8" />,
+    icon: (
+      <MailAdd02Icon strokeWidth={2} className="size-6 sm:size-7 md:size-8 " />
+    ),
   },
   {
     title: "Collaborative Hiring",
     description:
       "Foster seamless teamwork with shared candidate profiles, structured interview feedback forms, and collaborative decision-making tools. Keep all stakeholders aligned and make better hiring decisions together.",
-    icon: <UserMultipleIcon strokeWidth={2} className="size-8" />,
+    icon: (
+      <UserMultipleIcon
+        strokeWidth={2}
+        className="size-6 sm:size-7 md:size-8 "
+      />
+    ),
   },
   {
     title: "Advanced Analytics",
     description:
       "Gain deep insights into your hiring process with customizable dashboards and real-time reporting. Track key metrics, identify bottlenecks, and optimize your recruitment funnel with data-driven decisions.",
-    icon: <ChartLineData01Icon strokeWidth={2} className="size-8" />,
+    icon: (
+      <ChartLineData01Icon
+        strokeWidth={2}
+        className="size-6 sm:size-7 md:size-8 "
+      />
+    ),
   },
   {
     title: "Multi-Channel Job Posting",
     description:
       "Launch and manage job campaigns across multiple platforms simultaneously. Post openings to LinkedIn, Indeed, and other major job boards with a single click, while tracking applications and engagement from each source.",
-    icon: <NeuralNetworkIcon strokeWidth={2} className="size-8" />,
+    icon: (
+      <NeuralNetworkIcon
+        strokeWidth={2}
+        className="size-6 sm:size-7 md:size-8"
+      />
+    ),
   },
 ];
 
 export function Features() {
   return (
     <section className="max-w-3xl mx-auto space-y-24" id="features">
-      <p className="text-4xl sm:text-5xl md:text-6xl  text-center font-bold">
+      <h2 className="text-4xl sm:text-5xl md:text-6xl  text-center font-bold">
         Everything you need
-      </p>
+      </h2>
       <div className="space-y-10">
         {features.map((feature) => (
           <Feature

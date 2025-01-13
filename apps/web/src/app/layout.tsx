@@ -1,5 +1,7 @@
 import "@optima/ui/globals.css";
 
+import { Navbar } from "@/components/navigations/navbar";
+import { Footer } from "@/components/sections/footer";
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
 import { GeistMono } from "geist/font/mono";
@@ -32,8 +34,9 @@ export default function RootLayout({
           "antialiased dark",
         )}
       >
+        <Navbar />
         {children}
-
+        <Footer />
         <AnalyticsProvider />
       </body>
     </html>

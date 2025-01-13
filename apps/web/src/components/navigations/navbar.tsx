@@ -11,6 +11,8 @@ import { Icons } from "@optima/ui/icons";
 export function Navbar() {
   const isMobile = useIsMobile();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <nav
       className={cn(
@@ -29,15 +31,40 @@ export function Navbar() {
         />
       </div>
       <div className="items-center w-full hidden sm:flex">
-        <Button variant="ghost" onClick={() => scrollToSection("features")}>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (pathname === "/") {
+              scrollToSection("features");
+            } else {
+              router.push("/");
+              setTimeout(() => {
+                scrollToSection("features");
+              }, 100);
+            }
+          }}
+        >
           Features
         </Button>
-        <Button variant="ghost" onClick={() => scrollToSection("resources")}>
-          Resources
-        </Button>
-        <Button variant="ghost" onClick={() => scrollToSection("pricing")}>
+
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (pathname === "/") {
+              scrollToSection("pricing");
+            } else {
+              router.push("/");
+              setTimeout(() => {
+                scrollToSection("pricing");
+              }, 100);
+            }
+          }}
+        >
           Pricing
         </Button>
+        <Link href="/updates">
+          <Button variant="ghost">Updates</Button>
+        </Link>
         <Button variant="ghost" className="ml-auto">
           Sign In
         </Button>
@@ -65,23 +92,22 @@ export function Navbar() {
           className="w-full justify-start text-lg py-8"
           size="lg"
           onClick={() => {
-            scrollToSection("resources");
-            setIsMobileMenuOpen(false);
-          }}
-        >
-          Resources
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-lg py-8"
-          size="lg"
-          onClick={() => {
             scrollToSection("pricing");
             setIsMobileMenuOpen(false);
           }}
         >
           Pricing
         </Button>
+        <Link href="/updates">
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-lg py-8"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Updates
+          </Button>
+        </Link>
+
         <Button className="w-full justify-start mt-auto" size="lg">
           Sign In
         </Button>
@@ -91,6 +117,7 @@ export function Navbar() {
 }
 
 import { scrollToSection } from "@/lib/scroll-to-section";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 function MobileMenuOpen({

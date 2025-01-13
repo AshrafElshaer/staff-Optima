@@ -1,7 +1,6 @@
 import type { HugeiconsProps } from "hugeicons-react";
 import type { FC, RefAttributes } from "react";
 
-
 export interface FeatureProps {
   title: string;
   description: string;
@@ -9,13 +8,11 @@ export interface FeatureProps {
 }
 
 export function Feature({ title, description, icon }: FeatureProps) {
-  const Icon = icon;
   return (
     <div className="space-y-8 py-12">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ">
         {icon}
-
-        <p className="text-3xl font-bold">{title}</p>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">{title}</h2>
       </div>
       <p className="text-lg text-secondary-foreground">{description}</p>
     </div>
