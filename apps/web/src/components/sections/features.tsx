@@ -7,7 +7,6 @@ import {
 } from "hugeicons-react";
 import type React from "react";
 import { Feature } from "../feature";
-import { TextAnimate } from "../text-animation";
 
 const features = [
   {
@@ -45,13 +44,9 @@ const features = [
 export function Features() {
   return (
     <section className="max-w-3xl mx-auto space-y-24" id="features">
-      <TextAnimate
-        animation="blurInUp"
-        by="character"
-        className=" text-4xl sm:text-5xl md:text-6xl  text-center font-bold"
-      >
+      <p className="text-4xl sm:text-5xl md:text-6xl  text-center font-bold">
         Everything you need
-      </TextAnimate>
+      </p>
       <div className="space-y-10">
         {features.map((feature) => (
           <Feature
