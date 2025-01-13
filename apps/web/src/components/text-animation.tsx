@@ -314,7 +314,7 @@ export function TextAnimate({
   animation = "fadeIn",
   ...props
 }: TextAnimateProps) {
-  const MotionComponent = motion.create(Component);
+  const MotionComponent = motion(Component);
 
   // Use provided variants or default variants based on animation type
   const finalVariants = animation
