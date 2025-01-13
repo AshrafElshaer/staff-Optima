@@ -72,7 +72,7 @@ export function Footer() {
         <h1 className="text-center text-6xl md:text-8xl lg:text-[10rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-600 to-neutral-900 select-none ">
           Staff Optima
         </h1>
-        <p className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-600 to-neutral-900 select-none">
+        <p className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-600 to-neutral-900 select-none">
           Hire Smarter, Hire Faster
         </p>
       </div>
