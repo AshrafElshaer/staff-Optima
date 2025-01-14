@@ -9,16 +9,51 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+const baseUrl = "https://staffoptima.co";
+
 const DepartureMono = localFont({
   src: "../fonts/DepartureMono-Regular.woff2",
   variable: "--font-departure-mono",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://v1.run"),
-  title: "Create v1",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Staff Optima",
+    template: "%s | Staff Optima",
+  },
   description:
-    "A free, open-source starter kit for your next project, built with insights from Midday.",
+    "Staff Optima simplifies staffing and applicant tracking for modern organizations.",
+  openGraph: {
+    title: "Staff Optima | Smarter Staffing and Applicant Tracking",
+    description:
+      "Simplify staffing and streamline your applicant tracking processes with Staff Optima.",
+    url: baseUrl,
+    siteName: "Staff Optima",
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: { rel: "icon", url: "/favicon.ico" },
+  },
+};
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)" },
+    { media: "(prefers-color-scheme: dark)" },
+  ],
 };
 
 export default function RootLayout({

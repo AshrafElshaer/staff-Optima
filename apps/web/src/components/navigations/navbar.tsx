@@ -122,6 +122,7 @@ export function Navbar() {
 
         <Button
           variant="ghost"
+          size="lg"
           className="w-full justify-start text-lg py-8"
           onClick={() => {
             setIsMobileMenuOpen(false);

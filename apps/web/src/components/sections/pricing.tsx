@@ -1,6 +1,6 @@
 export function Pricing() {
   return (
-    <section className="max-w-3xl mx-auto py-24" id="pricing">
+    <section className="max-w-4xl mx-auto py-24" id="pricing">
       <h2 className="text-3xl sm:text-4xl md:text-5xl  text-center font-bold">
         Flexible Pricing for your needs
       </h2>

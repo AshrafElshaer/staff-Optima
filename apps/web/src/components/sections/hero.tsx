@@ -4,8 +4,8 @@ import React from "react";
 
 export function Hero() {
   return (
-    <header className="max-w-3xl mx-auto  w-full py-40 space-y-4">
-      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-left md:text-center">
+    <header className="max-w-4xl mx-auto  w-full py-40 space-y-4">
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-left md:text-center">
         Transform Your Recruitment Process
         <br />
         with Smart , Seamless , Modern
