@@ -31,6 +31,7 @@
     "./calendar": "./src/components/calendar.tsx",
     "./checkbox": "./src/components/checkbox.tsx",
     "./cn": "./src/utils/cn.ts",
+    "./chart": "./src/components/chart.tsx",
     "./collapsible": "./src/components/collapsible.tsx",
     "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
