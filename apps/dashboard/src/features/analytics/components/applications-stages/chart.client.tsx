@@ -96,6 +96,7 @@ export function ApplicationsStagesChartClient({
               data={chartData}
               dataKey="applications"
               nameKey="stage"
+              innerRadius={40}
               label={({ payload, ...props }) => {
                 return (
                   <text
