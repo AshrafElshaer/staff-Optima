@@ -30,16 +30,20 @@ const links = [
     icon: <Home01Icon strokeWidth={2} size={20} />,
   },
   {
+    title: "Calendar",
+    url: "/calendar",
+    icon: <Calendar03Icon strokeWidth={2} size={20} />,
+  },
+  {
     title: "Job Listings",
     url: "/job-listings",
     icon: <JobLinkIcon strokeWidth={2} size={20} />,
   },
-  {
-    title: "Interviews",
-    url: "/interviews",
-    icon: <Calendar03Icon strokeWidth={2} size={20} />,
-  },
-
+  // {
+  //   title: "Interviews",
+  //   url: "/interviews",
+  //   icon: <Calendar03Icon strokeWidth={2} size={20} />,
+  // },
   {
     title: "Candidates",
     url: "/candidates",

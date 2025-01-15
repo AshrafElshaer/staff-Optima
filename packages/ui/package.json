@@ -12,10 +12,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.43",
+    "postcss": "^8.5.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwindcss": "^3.4.10",
+    "tailwindcss": "^3.4.17",
     "tailwindcss-react-aria-components": "^1.2.0",
     "typescript": "^5.5.4"
   },
@@ -38,6 +38,7 @@
     "./date-picker-range": "./src/components/date-picker-range.tsx",
     "./dialog": "./src/components/dialog.tsx",
     "./dropdown-menu": "./src/components/dropdown-menu.tsx",
+    "./form": "./src/components/form.tsx",
     "./globals.css": "./src/globals.css",
     "./hover-card": "./src/components/hover-card.tsx",
     "./icons": "./src/components/icons/index.tsx",
