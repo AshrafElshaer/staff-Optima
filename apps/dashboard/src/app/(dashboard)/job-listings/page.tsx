@@ -3,6 +3,12 @@
 import { PageTitle } from "@/components/page-title";
 import type { Department, JobListing } from "@optima/supabase/types";
 import {
+  employmentTypeEnum,
+  experienceLevelEnum,
+  jobLocationEnum,
+  jobStatusEnum,
+} from "@optima/supabase/types";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -163,7 +169,7 @@ const demoJobListing: JobListingWithDepartment[] = [
 const filters = [
   {
     label: "Status",
-    options: ["published", "draft", "paused"],
+    options: Object.values(jobStatusEnum),
   },
   {
     label: "Department",
@@ -171,7 +177,15 @@ const filters = [
   },
   {
     label: "Type",
-    options: ["full_time", "part_time", "contract", "internship"],
+    options: Object.values(employmentTypeEnum),
+  },
+  {
+    label: "Location",
+    options: Object.values(jobLocationEnum),
+  },
+  {
+    label: "Experience",
+    options: Object.values(experienceLevelEnum),
   },
 ];
 
@@ -258,7 +272,10 @@ export default function JobListingsPage() {
                       <DropdownMenuItem
                         key={option}
                         className="capitalize"
-                        onSelect={() => handleAddFilter(filter.label, option)}
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          handleAddFilter(filter.label, option);
+                        }}
                       >
                         {option.split("_").join(" ")}
                         {selectedFilters.some(

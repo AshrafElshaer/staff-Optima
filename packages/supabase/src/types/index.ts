@@ -20,6 +20,43 @@ export const userRoleEnum: {
   interviewer: "interviewer",
   recruiter: "recruiter",
 };
+
+export const jobStatusEnum: {
+  [key in JobStatus]: key;
+} = {
+  published: "published",
+  draft: "draft",
+  closed: "closed",
+  paused: "paused",
+};
+
+export const jobLocationEnum: {
+  [key in JobLocation]: key;
+} = {
+  remote: "remote",
+  on_site: "on_site",
+  hybrid: "hybrid",
+};
+
+export const experienceLevelEnum: {
+  [key in ExperienceLevel]: key;
+} = {
+  junior: "junior",
+  mid: "mid",
+  senior: "senior",
+  lead: "lead",
+  executive: "executive",
+};
+
+export const employmentTypeEnum: {
+  [key in EmploymentType]: key;
+} = {
+  full_time: "full_time",
+  part_time: "part_time",
+  contract: "contract",
+  internship: "internship",
+};
+
 export type User = Tables<"users">;
 export type Organization = Tables<"organizations">;
 export type Department = Tables<"departments">;
