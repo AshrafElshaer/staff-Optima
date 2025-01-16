@@ -97,7 +97,7 @@ export function ExpandableTabs({
             onClick={() => handleSelect(index)}
             transition={transition}
             className={cn(
-              "relative flex items-center  px-4 py-1 text-sm font-medium transition-colors duration-300",
+              "relative flex items-center  px-4 py-1 text-sm font-medium transition-colors duration-300 capitalize",
               selected === index
                 ? cn("bg-muted", activeColor)
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
