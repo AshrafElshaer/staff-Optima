@@ -25,3 +25,4 @@ export type Organization = Tables<"organizations">;
 export type Department = Tables<"departments">;
 export type ApplicationStage = Tables<"application_stages">;
 export type EmailTemplate = Tables<"email_templates">;
+export type JobListing = Tables<"job_listings">;

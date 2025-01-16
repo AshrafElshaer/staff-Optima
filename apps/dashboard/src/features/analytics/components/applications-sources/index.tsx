@@ -30,7 +30,7 @@ const chartData = [
   { source: "Indeed", value: 505 },
   { source: "Glassdoor", value: 357 },
   { source: "Dice", value: 263 },
-  { source: "Profile", value: 339 },
+  { source: "Website", value: 339 },
 ];
 
 const chartConfig = {

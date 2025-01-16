@@ -104,6 +104,7 @@ export default function CalendarPage() {
           Create Event
         </Button>
       </section> */}
+      {/* <PageTitle title="Today's Events" className="text-lg" />
       <ScrollArea className="w-full whitespace-nowrap ">
         <div className="flex w-max space-x-4 pb-4">
           {upcomingEvents.map((event) => (
@@ -111,8 +112,8 @@ export default function CalendarPage() {
           ))}
         </div>
         <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-
+      </ScrollArea> */}
+      <PageTitle title="Calendar" className="text-lg" />
       <Calendar
         events={events}
         setEvents={setEvents}
