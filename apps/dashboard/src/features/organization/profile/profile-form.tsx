@@ -320,32 +320,22 @@ export function OrganizationProfileForm({
             <Link
               href={`/jobs/${organization?.domain}`}
               className={buttonVariants({
-                variant: "outline",
+                variant: "secondary",
                 className: "w-full md:w-auto",
               })}
               target="_blank"
             >
               Preview
             </Link>
-            <Button
-              type="button"
-              className="w-full md:w-auto"
-              onClick={() => {
-                form.setValue("id", form.getValues("id"), {
-                  shouldDirty: true,
-                });
-              }}
-            >
-              Save
-            </Button>
           </div>
         </div>
         <div className="w-full border rounded-md min-h-96 p-4 grid ">
           <AdvancedEditor
+            key={form.formState.isDirty ? "dirty" : "clean"}
             content={form.watch("profile")}
             onChange={(content) => {
               form.setValue("profile", content, {
-                shouldDirty: false,
+                shouldDirty: true,
               });
             }}
           />
