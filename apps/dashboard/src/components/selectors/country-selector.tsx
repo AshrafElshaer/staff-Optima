@@ -1,7 +1,5 @@
 "use client";
 
-import { Check, ChevronDown } from "lucide-react";
-import { Fragment, useState } from "react";
 import { continents } from "@optima/location";
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
@@ -14,6 +12,8 @@ import {
   CommandList,
 } from "@optima/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@optima/ui/popover";
+import { Check, ChevronDown } from "lucide-react";
+import { Fragment, useState } from "react";
 
 type Props = {
   value: string | null;
@@ -29,11 +29,11 @@ export function CountrySelector({ setValue, value, error }: Props) {
         <PopoverTrigger asChild>
           <Button
             id="select-44"
-            variant="outline"
+            variant="secondary"
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-full justify-between bg-background px-3 font-normal outline-offset-0 hover:bg-background focus-visible:border-ring focus-visible:outline-[3px] focus-visible:outline-ring/20",
+              "w-full justify-between  px-3 font-normal outline-offset-0  focus-visible:border-ring focus-visible:outline-[3px] focus-visible:outline-ring/20",
               error && "outline-destructive border-destructive",
             )}
           >

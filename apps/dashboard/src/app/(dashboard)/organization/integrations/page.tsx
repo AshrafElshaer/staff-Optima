@@ -1,6 +1,7 @@
 import { PageTitle } from "@/components/page-title";
 import { FaCalendar, FaLinkedinIn, FaSlack, FaVideo } from "react-icons/fa";
 import IntegrationSwitch from "./integration-switch";
+import { Icons } from "@optima/ui/icons";
 
 const integrations: {
   name: string;
@@ -17,20 +18,26 @@ const integrations: {
   },
   {
     name: "Slack",
-    icon: <FaSlack size={32} />,
+    icon: <Icons.Slack className="size-[32px]" />,
     description: "Connect your Slack account to sync your candidates and jobs.",
     status: "disconnected",
   },
   {
     name: "Google Calendar",
-    icon: <FaCalendar size={28} />,
+    icon: <Icons.GoogleCalendar className="size-[28px]" />,
     description: "Connect your Google Calendar to sync your events.",
     status: "disconnected",
   },
   {
     name: "Google Meet",
-    icon: <FaVideo size={28} />,
+    icon: <Icons.GoogleMeet className="size-[28px]" />,
     description: "Connect your Google Meet to sync your events.",
+    status: "disconnected",
+  },
+  {
+    name: "Zoom",
+    icon: <Icons.Zoom className="size-[28px]" />,
+    description: "Connect your Zoom account to sync your calls.",
     status: "disconnected",
   },
 ];

@@ -46,7 +46,7 @@ export default function CalendarHeaderActionsMode() {
                   "w-full rounded-none shadow-none focus-visible:z-10 text-base flex items-center justify-center gap-2 relative border-none ",
                   isSelected && "z-10",
                 )}
-                size="sm"
+
               >
                 <motion.div
                   layout

@@ -1,7 +1,9 @@
 import { Check, Copy, Loader2, LogOut } from "lucide-react";
 import { BuildingIcon } from "./building";
+import { GoogleCalendar } from "./google-calendar";
 import { GoogleMeet } from "./google-meet";
 import { LogoSvg } from "./logo";
+import { Slack } from "./slack";
 import { Zoom } from "./zoom";
 
 export const Icons = {
@@ -13,4 +15,6 @@ export const Icons = {
   Building: BuildingIcon,
   GoogleMeet: GoogleMeet,
   Zoom,
+  Slack,
+  GoogleCalendar,
 };
