@@ -20,7 +20,7 @@ export const MobileNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-      <SheetTrigger>
+      <SheetTrigger className=" ml-auto sm:hidden">
         <Menu03Icon size={20} />
       </SheetTrigger>
       <SheetContent side="left" className="w-80">
