@@ -144,8 +144,22 @@ export function Navbar() {
           Updates
         </Button>
 
-        <Button className="w-full justify-start mt-auto" size="lg">
-          Sign In
+        <Button
+          className="w-full justify-start mt-auto"
+          size="lg"
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            const emailInput = document.getElementById("waitlist-email");
+            if (emailInput) {
+              scrollToSection("hero").then(() => {
+                setTimeout(() => {
+                  emailInput.focus();
+                }, 100);
+              });
+            }
+          }}
+        >
+          Join Waitlist
         </Button>
       </div>
     </nav>
