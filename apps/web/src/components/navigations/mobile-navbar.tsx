@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@optima/ui/sheet";
+import { Menu03Icon } from "hugeicons-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -20,7 +21,7 @@ export const MobileNavbar = () => {
   return (
     <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
       <SheetTrigger>
-        <MobileMenuOpen />
+        <Menu03Icon size={20} />
       </SheetTrigger>
       <SheetContent side="left" className="w-80">
         <SheetHeader>
@@ -31,7 +32,7 @@ export const MobileNavbar = () => {
         <div className={cn("  flex flex-col flex-1 divide-y")}>
           <Button
             variant="ghost"
-            className="w-full justify-start text-lg py-6"
+            className="w-full justify-start text-lg py-6 rounded-none"
             size="lg"
             onClick={() => {
               setIsMobileMenuOpen(false);
@@ -49,7 +50,7 @@ export const MobileNavbar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-lg py-6"
+            className="w-full justify-start text-lg py-6 rounded-none"
             size="lg"
             onClick={() => {
               if (pathname === "/") {
@@ -69,7 +70,7 @@ export const MobileNavbar = () => {
           <Button
             variant="ghost"
             size="lg"
-            className="w-full justify-start text-lg py-6"
+            className="w-full justify-start text-lg py-6 rounded-none"
             onClick={() => {
               setIsMobileMenuOpen(false);
               router.push("/updates");
@@ -101,35 +102,3 @@ export const MobileNavbar = () => {
     </Sheet>
   );
 };
-
-function MobileMenuOpen() {
-  return (
-    <button type="button" className="group ml-auto sm:hidden ">
-      <svg
-        className="pointer-events-none"
-        width={18}
-        height={18}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 12L20 12"
-          className="origin-center -translate-y-[7px] transition-all duration-300 [transition-timing-function:cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
-        />
-        <path
-          d="M4 12H20"
-          className="origin-center transition-all duration-300 [transition-timing-function:cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
-        />
-        <path
-          d="M4 12H20"
-          className="origin-center translate-y-[7px] transition-all duration-300 [transition-timing-function:cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
-        />
-      </svg>
-    </button>
-  );
-}
