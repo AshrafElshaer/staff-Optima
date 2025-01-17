@@ -7,19 +7,18 @@ import { Toaster } from "./toaster";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ReactQueryProvider>
-      <AnalyticsProvider>
-        <NuqsAdapter>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </NuqsAdapter>
-      </AnalyticsProvider>
+      <NuqsAdapter>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+          <AnalyticsProvider />
+        </ThemeProvider>
+      </NuqsAdapter>
     </ReactQueryProvider>
   );
 }
