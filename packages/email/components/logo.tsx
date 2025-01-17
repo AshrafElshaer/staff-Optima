@@ -7,12 +7,12 @@ export default function Logo() {
   return (
     <>
       <Img
-        src={`${baseUrl}/logo-light.png`}
+        src={`${baseUrl}/logo-light.webp`}
         alt="Staff Optima"
         className="dark:hidden mx-auto h-14 w-14 mb-8"
       />
       <Img
-        src={`${baseUrl}/logo-dark.png`}
+        src={`${baseUrl}/logo-dark.webp`}
         alt="Staff Optima"
         className="hidden dark:block mx-auto h-14 w-14 mb-8"
       />

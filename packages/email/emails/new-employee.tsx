@@ -18,7 +18,7 @@ const baseUrl = "https://dashboard.staffoptima.co";
 
 export function NewEmployeeEmail({
   name,
-  organizationName = "HR Toolkit",
+  organizationName = "Staff Optima",
 }: { name: string; organizationName?: string }) {
   return (
     <Html>
@@ -82,7 +82,7 @@ export function NewEmployeeEmail({
             <Text
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}] `}
             >
-              Log In: Visit <Link href={baseUrl}>HR Toolkit</Link> and use your
+              Log In: Visit <Link href={baseUrl}>Staff Optima</Link> and use your
               email to log in.
             </Text>
             <Text
@@ -111,7 +111,7 @@ export function NewEmployeeEmail({
               <Text
                 className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]  mt-2`}
               >
-                The HR Toolkit Team
+                The Staff Optima Team
               </Text>
             </Section>
           </Container>
@@ -123,7 +123,7 @@ export function NewEmployeeEmail({
 
 NewEmployeeEmail.PreviewProps = {
   name: "Ashraf Elshaer",
-  organizationName: "HR Toolkit",
+  organizationName: "Staff Optima",
 };
 
 export default NewEmployeeEmail;

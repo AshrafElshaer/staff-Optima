@@ -42,7 +42,7 @@ export function OtpEmail({ otpCode }: { otpCode: string }) {
             fontStyle="normal"
           />
         </head>
-        <Preview>Secure Your Access to HR Toolkit with OTP Code</Preview>
+        <Preview>Secure Your Access to Staff Optima with OTP Code</Preview>
         <Body
           className={` bg-[${colors.lightTheme.background}] dark:bg-[${colors.darkTheme.background}] py-8 `}
         >
@@ -92,7 +92,7 @@ export function OtpEmail({ otpCode }: { otpCode: string }) {
               <Text
                 className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]  mt-2`}
               >
-                The HR Toolkit Team
+                The Staff Optima Team
               </Text>
             </Section>
           </Container>

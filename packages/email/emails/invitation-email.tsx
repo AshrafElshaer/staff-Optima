@@ -141,7 +141,7 @@ export function InvitationEmail({
 InvitationEmail.PreviewProps = {
   name: "Ashraf Elshaer",
   organization: {
-    name: "HR Toolkit",
+    name: "Staff Optima",
     logo_url: "",
   },
 };
