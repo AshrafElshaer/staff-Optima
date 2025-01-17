@@ -33,7 +33,7 @@ export const sendTestEmailAction = authActionClient
     const { sendTo, subject, emailContent } = parsedInput;
     const { resend } = ctx;
     const { error } = await resend.emails.send({
-      from: "testemail@hrtoolkit.app",
+      from: "testemail@staffoptima.co",
       to: sendTo,
       subject: subject,
       html: emailContent,

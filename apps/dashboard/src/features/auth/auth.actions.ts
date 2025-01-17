@@ -38,7 +38,7 @@ export const signInAction = actionClientWithMeta
     }
 
     const { error: emailError, data: emailData } = await resend.emails.send({
-      from: "HR Toolkit Access <onboarding@hrtoolkit.app>",
+      from: "HR Toolkit Access <onboarding@staffoptima.co>",
       to: [parsedInput.email],
       subject: "HR Toolkit OTP Access",
       react: OtpEmail({

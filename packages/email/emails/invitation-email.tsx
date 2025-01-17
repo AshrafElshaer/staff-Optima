@@ -16,7 +16,7 @@ import React from "react";
 import { colors } from "../components/colors";
 import Logo from "../components/logo";
 
-const baseUrl = "https://ats.hrtoolkit.app";
+const baseUrl = "https://dashboard.staffoptima.co";
 
 export function InvitationEmail({
   name,
@@ -107,8 +107,8 @@ export function InvitationEmail({
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
             >
               If you have any questions, feel free to contact us at{" "}
-              <Link href="mailto:support@hrtoolkit.com">
-                support@hrtoolkit.com
+              <Link href="mailto:support@staffoptima.co">
+                support@staffoptima.co
               </Link>{" "}
               .
             </Text>

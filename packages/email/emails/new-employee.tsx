@@ -14,7 +14,7 @@ import React from "react";
 import { colors } from "../components/colors";
 import Logo from "../components/logo";
 
-const baseUrl = "https://dashboard.hrtoolkit.app";
+const baseUrl = "https://dashboard.staffoptima.co";
 
 export function NewEmployeeEmail({
   name,
@@ -90,8 +90,8 @@ export function NewEmployeeEmail({
             >
               If you have any questions or need assistance, please do not
               hesitate to reach out to our IT support team at{" "}
-              <Link href="mailto:support@hrtoolkit.com">
-                support@hrtoolkit.com
+              <Link href="mailto:support@staffoptima.co">
+                support@staffoptima.co
               </Link>{" "}
               .
             </Text>

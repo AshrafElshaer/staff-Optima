@@ -7,7 +7,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 
-const baseUrl = "https://dashboard.hrtoolkit.app";
+const baseUrl = "https://dashboard.staffoptima.co";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

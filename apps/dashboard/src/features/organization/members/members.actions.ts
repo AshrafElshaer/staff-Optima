@@ -42,7 +42,7 @@ export const inviteMemberAction = authActionClient
     }
 
     const { data: emailData, error: emailError } = await resend.emails.send({
-      from: "Access Granted <onboarding@hrtoolkit.app>",
+      from: "Access Granted <onboarding@staffoptima.co>",
       to: [parsedInput.email],
       subject: `Welcome to ${organization.name}!`,
       react: InvitationEmail({
