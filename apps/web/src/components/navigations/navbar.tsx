@@ -72,8 +72,20 @@ export function Navbar() {
           Updates
         </Button>
         <Separator orientation="vertical" className="ml-auto h-8" />
-        <Button variant="ghost" onClick={() => router.push("/sign-in")}>
-          Sign In
+        <Button
+          variant="ghost"
+          onClick={() => {
+            const emailInput = document.getElementById("waitlist-email");
+            if (emailInput) {
+              scrollToSection("hero").then(() => {
+                setTimeout(() => {
+                  emailInput.focus();
+                }, 100);
+              });
+            }
+          }}
+        >
+          Join Waitlist
         </Button>
       </div>
 

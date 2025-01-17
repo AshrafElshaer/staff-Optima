@@ -6,7 +6,10 @@ import { BorderBeam } from "../border-beam";
 
 export function Hero() {
   return (
-    <header className="max-w-4xl mx-auto  w-full py-40 flex flex-col gap-4">
+    <header
+      className="max-w-4xl mx-auto  w-full py-40 flex flex-col gap-4"
+      id="hero"
+    >
       <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-left md:text-center">
         Transform Your Recruitment Process
         <br />
@@ -19,9 +22,9 @@ export function Hero() {
         tracking system.
       </p>
       <div className="flex items-center justify-center gap-2 max-w-sm mx-auto">
-        <Input type="email" placeholder="Email for waitlist" />
+        <Input type="email" placeholder="Email for waitlist" id="waitlist-email" />
         <Button variant="default" type="button" className="min-w-fit">
-          Join the waitlist
+          Join Waitlist
         </Button>
       </div>
 
