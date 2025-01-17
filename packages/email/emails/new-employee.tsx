@@ -82,8 +82,8 @@ export function NewEmployeeEmail({
             <Text
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}] `}
             >
-              Log In: Visit <Link href={baseUrl}>Staff Optima</Link> and use your
-              email to log in.
+              Log In: Visit <Link href={baseUrl}>Staff Optima</Link> and use
+              your email to log in.
             </Text>
             <Text
               className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}] `}
