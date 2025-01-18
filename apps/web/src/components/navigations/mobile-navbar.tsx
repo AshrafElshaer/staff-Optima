@@ -1,14 +1,15 @@
 import { scrollToSection } from "@/lib/scroll-to-section";
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@optima/ui/drawer";
 import { Icons } from "@optima/ui/icons";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@optima/ui/sheet";
+
 import { Menu03Icon } from "hugeicons-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,16 +19,16 @@ export const MobileNavbar = () => {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
-    <Drawer open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-      <DrawerTrigger className=" ml-auto sm:hidden">
+    <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+      <SheetTrigger className=" ml-auto sm:hidden">
         <Menu03Icon size={20} />
-      </DrawerTrigger>
-      <DrawerContent className="h-96">
-        <DrawerHeader>
-          <DrawerTitle className="flex items-center gap-4">
+      </SheetTrigger>
+      <SheetContent side="left" className="w-80">
+        <SheetHeader>
+          <SheetTitle className="flex items-center gap-4">
             <Icons.Logo /> Staff Optima
-          </DrawerTitle>
-        </DrawerHeader>
+          </SheetTitle>
+        </SheetHeader>
         <div className={cn("  flex flex-col flex-1 divide-y")}>
           <Button
             variant="ghost"
@@ -97,7 +98,7 @@ export const MobileNavbar = () => {
             </Button>
           </div>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
