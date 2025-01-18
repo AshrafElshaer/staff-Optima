@@ -1,6 +1,7 @@
 import { PageTitle } from "@/components/page-title";
 import { createServerClient } from "@/lib/supabase/server";
 import { getApplicationStages } from "@optima/supabase/queries";
+import { Badge } from "@optima/ui/badge";
 import { ScrollArea, ScrollBar } from "@optima/ui/scroll-area";
 import { Separator } from "@optima/ui/separator";
 import { headers } from "next/headers";
@@ -38,6 +39,9 @@ export default async function CandidatesPage() {
                 <p className=" font-medium text-sm md:text-base">
                   {stage.title}
                 </p>
+                <Badge variant="info" className="ml-auto p-1 py-0.5" >
+                  55
+                </Badge>
               </div>
               <Separator />
               <div className="space-y-4 p-4">

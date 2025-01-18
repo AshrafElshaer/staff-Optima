@@ -242,12 +242,51 @@ export default function JobListingsPage() {
           Create Job Post
         </Button>
       </section>
-      <section className="flex flex-col-reverse sm:flex-row items-center gap-4">
+      <section className="flex flex-col sm:flex-row items-center gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="min-w-fit py-2">
+              <FilterAddIcon className="size-4" /> Add Filter
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {filters.map((filter) => (
+              <DropdownMenuSub key={filter.label}>
+                <DropdownMenuSubTrigger>{filter.label}</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent sideOffset={8} className="w-36">
+                  {filter.options.map((option) => (
+                    <DropdownMenuCheckboxItem
+                      checked={selectedFilters.some(
+                        (f) =>
+                          f.label === filter.label && f.value.includes(option),
+                      )}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          handleAddFilter(filter.label, option);
+                        } else {
+                          handleRemoveFilter(filter.label, option);
+                        }
+                      }}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                      }}
+                      key={option}
+                      className="capitalize"
+                    >
+                      {option.split("_").join(" ")}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
         <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
           {selectedFilters.length > 0 && (
-            <div className="flex items-center gap-2 ">
-              {selectedFilters.map(
-                (filter) =>
+            <>
+              <div className="flex items-center gap-2 ">
+                {selectedFilters.map(
+                  (filter) =>
                   filter.value.length > 0 && (
                     <div
                       key={filter.label}
@@ -275,48 +314,12 @@ export default function JobListingsPage() {
                   ),
               )}
             </div>
+            <Button variant="outline" onClick={handleClearFilters}>
+              Clear all
+            </Button>
+          </>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="min-w-fit py-2">
-                <FilterAddIcon className="size-4" /> Add Filter
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {filters.map((filter) => (
-                <DropdownMenuSub key={filter.label}>
-                  <DropdownMenuSubTrigger>
-                    {filter.label}
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent sideOffset={8} className="w-36">
-                    {filter.options.map((option) => (
-                      <DropdownMenuCheckboxItem
-                        checked={selectedFilters.some(
-                          (f) =>
-                            f.label === filter.label &&
-                            f.value.includes(option),
-                        )}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            handleAddFilter(filter.label, option);
-                          } else {
-                            handleRemoveFilter(filter.label, option);
-                          }
-                        }}
-                        onSelect={(e) => {
-                          e.preventDefault();
-                        }}
-                        key={option}
-                        className="capitalize"
-                      >
-                        {option.split("_").join(" ")}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+
         </div>
 
         <div className="w-full sm:w-fit ml-auto">

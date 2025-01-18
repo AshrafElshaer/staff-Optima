@@ -33,6 +33,7 @@
     "./cn": "./src/utils/cn.ts",
     "./chart": "./src/components/chart.tsx",
     "./collapsible": "./src/components/collapsible.tsx",
+    "./drawer": "./src/components/drawer.tsx",
     "./command": "./src/components/command.tsx",
     "./context-menu": "./src/components/context-menu.tsx",
     "./date-picker-range": "./src/components/date-picker-range.tsx",
