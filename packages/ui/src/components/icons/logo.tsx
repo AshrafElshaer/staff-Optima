@@ -17,7 +17,7 @@ export function LogoSvg(props: LogoSvgLightProps) {
       {...props}
     >
       <title>{title}</title>
-      <g clip-path="url(#clip0_10584_65539)">
+      <g clipPath="url(#clip0_10584_65539)">
         <path
           d="M9.47833 17.8726C10.7462 16.0498 12.7711 16.9013 13.2569 19.1783C13.9444 22.4392 17.2057 22.8744 17.2057 22.8744C17.2057 22.8744 14.8402 25.0316 11.3392 23.3727C9.03676 22.2752 8.61412 19.1089 9.47833 17.8726Z"
           fill="currentColor"

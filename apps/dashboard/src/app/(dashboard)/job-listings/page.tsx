@@ -211,11 +211,27 @@ export default function JobListingsPage() {
     });
   };
 
-  const handleRemoveFilter = (label: string) => {
+  const handleRemoveFilter = (label: string, value: string) => {
+    setSelectedFilters((prev) =>
+      prev.map((filter) =>
+        filter.label === label
+          ? { ...filter, value: filter.value.filter((v) => v !== value) }
+          : filter,
+      ),
+    );
+  };
+
+  const handleClearFilters = () => {
+    setSelectedFilters([]);
+  };
+
+  const handleRemoveLabel = (label: string) => {
     setSelectedFilters((prev) =>
       prev.filter((filter) => filter.label !== label),
     );
   };
+
+  console.log(selectedFilters);
 
   return (
     <div className="flex flex-col gap-8">
@@ -230,29 +246,34 @@ export default function JobListingsPage() {
         <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
           {selectedFilters.length > 0 && (
             <div className="flex items-center gap-2 ">
-              {selectedFilters.map((filter) => (
-                <div
-                  key={filter.label}
-                  className="flex items-stretch gap-2 text-sm bg-accent px-3 py-2 rounded-md font-medium border min-w-fit"
-                >
-                  <p className="text-secondary-foreground">{filter.label}</p>
-                  <Separator orientation="vertical" />
-                  <div className="flex items-center gap-2">
-                    {filter.value.map((value) => (
-                      <p key={value} className="capitalize">
-                        {value.split("_").join(" ")},
+              {selectedFilters.map(
+                (filter) =>
+                  filter.value.length > 0 && (
+                    <div
+                      key={filter.label}
+                      className="flex items-stretch gap-2 text-sm bg-accent px-3 py-2 rounded-md font-medium border min-w-fit"
+                    >
+                      <p className="text-secondary-foreground">
+                        {filter.label}
                       </p>
-                    ))}
-                  </div>
-                  <Separator orientation="vertical" />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveFilter(filter.label)}
-                  >
-                    <X className="size-4" />
-                  </button>
-                </div>
-              ))}
+                      <Separator orientation="vertical" />
+                      <div className="flex items-center gap-2">
+                        {filter.value.map((value) => (
+                          <p key={value} className="capitalize">
+                            {value.split("_").join(" ")},
+                          </p>
+                        ))}
+                      </div>
+                      <Separator orientation="vertical" />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveLabel(filter.label)}
+                      >
+                        <X className="size-4" />
+                      </button>
+                    </div>
+                  ),
+              )}
             </div>
           )}
           <DropdownMenu>
@@ -269,21 +290,27 @@ export default function JobListingsPage() {
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent sideOffset={8} className="w-36">
                     {filter.options.map((option) => (
-                      <DropdownMenuItem
-                        key={option}
-                        className="capitalize"
-                        onSelect={(e) => {
-                          e.preventDefault();
-                          handleAddFilter(filter.label, option);
-                        }}
-                      >
-                        {option.split("_").join(" ")}
-                        {selectedFilters.some(
+                      <DropdownMenuCheckboxItem
+                        checked={selectedFilters.some(
                           (f) =>
                             f.label === filter.label &&
                             f.value.includes(option),
-                        ) && <Check className="ml-auto size-4" />}
-                      </DropdownMenuItem>
+                        )}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            handleAddFilter(filter.label, option);
+                          } else {
+                            handleRemoveFilter(filter.label, option);
+                          }
+                        }}
+                        onSelect={(e) => {
+                          e.preventDefault();
+                        }}
+                        key={option}
+                        className="capitalize"
+                      >
+                        {option.split("_").join(" ")}
+                      </DropdownMenuCheckboxItem>
                     ))}
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
@@ -351,6 +378,7 @@ import { Badge } from "@optima/ui/badge";
 import { Button } from "@optima/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
