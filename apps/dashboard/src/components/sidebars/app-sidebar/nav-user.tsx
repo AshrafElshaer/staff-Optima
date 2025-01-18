@@ -116,16 +116,16 @@ export function NavUser() {
                 }}
               >
                 <Link href="/account-settings">
-                  <Settings01Icon />
+                  <Settings01Icon strokeWidth={2} />
                   Account Settings
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Headset />
+                <Headset strokeWidth={2} />
                 Support
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CommentAdd01Icon />
+                <CommentAdd01Icon strokeWidth={2} />
                 Feedback
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -137,7 +137,7 @@ export function NavUser() {
                 });
               }}
             >
-              <Door01Icon />
+              <Door01Icon strokeWidth={2} />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
