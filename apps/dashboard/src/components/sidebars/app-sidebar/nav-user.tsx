@@ -60,9 +60,14 @@ export function NavUser() {
   const pathname = usePathname();
   if (isLoading) {
     return (
-      <div className="flex items-center gap-2 px-2">
+      <div
+        className={cn(
+          "flex items-center gap-2 px-2",
+          state === "collapsed" && "justify-center !p-0",
+        )}
+      >
         <Skeleton className="size-6 rounded-sm" />
-        <Skeleton className="w-full h-6 rounded-sm" />
+        {state === "expanded" && <Skeleton className="w-full h-6 rounded-sm" />}
       </div>
     );
   }
