@@ -243,6 +243,7 @@ export default function JobListingsPage() {
         </Button>
       </section>
       <section className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="min-w-fit py-2">
@@ -281,7 +282,6 @@ export default function JobListingsPage() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
           {selectedFilters.length > 0 && (
             <>
               <div className="flex items-center gap-2 ">
@@ -314,7 +314,11 @@ export default function JobListingsPage() {
                   ),
               )}
             </div>
-            <Button variant="outline" onClick={handleClearFilters}>
+            <Button
+              variant="outline"
+              onClick={handleClearFilters}
+              className="min-w-fit"
+            >
               Clear all
             </Button>
           </>

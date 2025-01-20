@@ -609,7 +609,7 @@ export default async function CandidatesPage() {
                       <JobLinkIcon strokeWidth={2} size={18} />
                       <span>{candidate.job_listing_id.title}</span>
                       <div className="flex items-center gap-2 ml-auto text-tag-success-text">
-                        <BiSolidCircleThreeQuarter />
+                        <BiSolidCircleThreeQuarter className="border rounded-full border-current" />
                         <span>80%</span>
                       </div>
                     </p>

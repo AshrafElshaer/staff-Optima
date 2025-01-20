@@ -16,6 +16,13 @@ export const updateUserAction = authActionClient
   .action(async ({ ctx, parsedInput }) => {
     const { supabase } = ctx;
     const { id, ...data } = parsedInput;
+
+    if (data.email) {
+      const updatedAuth = await supabase.auth.updateUser({
+        email: data.email,
+      });
+      if (updatedAuth.error) throw new Error(updatedAuth.error.message);
+    }
     const { error, data: user } = await updateUser(supabase, { id, ...data });
     if (error) throw new Error(error.message);
 
