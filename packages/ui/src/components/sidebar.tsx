@@ -71,13 +71,8 @@ const SidebarProvider = React.forwardRef<
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const cookies = typeof document !== "undefined" ? document.cookie : "";
-    const sidebarCookie = cookies
-      .split(";")
-      .find((c) => c.includes(SIDEBAR_COOKIE_NAME));
-    const isSidebarExpanded = sidebarCookie?.split("=")[1] === "true";
 
-    const [_open, _setOpen] = React.useState(isSidebarExpanded);
+    const [_open, _setOpen] = React.useState(defaultOpen);
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -93,6 +88,21 @@ const SidebarProvider = React.forwardRef<
       },
       [setOpenProp, open],
     );
+
+    // Initialize sidebar state from cookie on mount
+    React.useEffect(() => {
+      const cookies = document.cookie;
+      const sidebarCookie = cookies
+        .split(";")
+        .find((c) => c.trim().startsWith(SIDEBAR_COOKIE_NAME));
+      const isSidebarExpanded = sidebarCookie?.split("=")[1] === "true";
+
+      if (typeof isSidebarExpanded === "boolean") {
+        _setOpen(isSidebarExpanded);
+      } else {
+        _setOpen(defaultOpen);
+      }
+    }, []);
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
