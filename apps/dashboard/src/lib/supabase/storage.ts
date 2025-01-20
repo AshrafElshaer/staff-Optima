@@ -46,3 +46,16 @@ export async function uploadOrganizationLogo({
     file,
   });
 }
+
+type UploadUserAvatarProps = {
+  supabase: SupabaseInstance;
+  userId: string;
+  file: File;
+};
+export async function uploadUserAvatar({
+  supabase,
+  userId,
+  file,
+}: UploadUserAvatarProps) {
+  return uploadFile({ supabase, bucket: "avatars", path: userId, file });
+}

@@ -57,7 +57,7 @@ export function NavUser() {
   const { theme, setTheme } = useTheme();
   const supabase = useSupabase();
   const router = useRouter();
-  const pathname = usePathname();
+  
   if (isLoading) {
     return (
       <div
@@ -177,7 +177,7 @@ export function NavUser() {
             <DropdownMenuItem
               onSelect={() => {
                 supabase.auth.signOut().then(() => {
-                  router.push(`/auth?redirect_url=${pathname}`);
+                  router.push(`/auth?redirect_url=${usePathname()}`);
                 });
               }}
             >
