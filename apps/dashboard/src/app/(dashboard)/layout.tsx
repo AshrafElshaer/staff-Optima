@@ -9,11 +9,12 @@ import {
 } from "@optima/ui/sidebar";
 import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "next/navigation";
-
+import { useLocalStorage } from "usehooks-ts";
 export default function Layout({ children }: { children: React.ReactNode }) {
   // This is where your authenticated app lives, add a sidebar, header etc.
   const pathname = usePathname();
   const isOrganization = pathname.includes("/organization");
+
   return (
     <SidebarProvider>
       <AnimatePresence mode="wait" initial={false}>

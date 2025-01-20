@@ -6,6 +6,7 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarMenuItem,
+  useSidebar,
 } from "@optima/ui/sidebar";
 
 import {
@@ -21,9 +22,10 @@ import {
 import { useRouter } from "next/navigation";
 import type * as React from "react";
 
+import { cn } from "@optima/ui/cn";
+import { Building2 } from "lucide-react";
 import { HiArrowUturnLeft } from "react-icons/hi2";
 import { NavMain } from "../app-sidebar/nav-main";
-import { Building2 } from "lucide-react";
 
 const general = [
   {
@@ -76,15 +78,23 @@ export function OrganizationSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
+  const { state } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarMenuItem className="flex items-center gap-2 p-2">
+        <SidebarMenuItem
+          className={cn(
+            "flex items-center gap-2 p-2",
+            state === "collapsed" && " justify-center",
+          )}
+        >
           <button type="button" onClick={() => router.push("/")}>
             <HiArrowUturnLeft strokeWidth={2} size={14} />
             <span className="sr-only">Back</span>
           </button>
-          <span className="text-compact-large font-bold">Settings</span>
+          {state === "expanded" && (
+            <span className="text-compact-large font-bold">Settings</span>
+          )}
         </SidebarMenuItem>
       </SidebarHeader>
       <Separator />

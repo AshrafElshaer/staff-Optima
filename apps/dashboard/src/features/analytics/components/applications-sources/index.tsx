@@ -76,7 +76,7 @@ export function ApplicationsSources() {
                 dataKey="source"
                 position="insideLeft"
                 // offset={8}
-                className="fill-foreground"
+                className="fill-[#fff]"
                 fontSize={14}
               />
               <LabelList

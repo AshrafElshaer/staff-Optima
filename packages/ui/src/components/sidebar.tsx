@@ -23,7 +23,7 @@ const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "13rem";
 const SIDEBAR_WIDTH_MOBILE = "13rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
-const SIDEBAR_KEYBOARD_SHORTCUT = "";
+const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContext = {
   state: "expanded" | "collapsed";
@@ -71,7 +71,13 @@ const SidebarProvider = React.forwardRef<
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
-    const [_open, _setOpen] = React.useState(defaultOpen);
+    const cookies = document?.cookie;
+    const sidebarCookie = cookies
+      ?.split(";")
+      .find((c) => c.includes(SIDEBAR_COOKIE_NAME));
+    const isSidebarExpanded = sidebarCookie?.split("=")[1] === "true";
+
+    const [_open, _setOpen] = React.useState(isSidebarExpanded);
     const open = openProp ?? _open;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
@@ -591,6 +597,7 @@ const SidebarMenuButton = React.forwardRef<
           side="right"
           align="center"
           hidden={state !== "collapsed" || isMobile}
+          sideOffset={10}
           {...tooltip}
         />
       </Tooltip>

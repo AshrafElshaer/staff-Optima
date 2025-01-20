@@ -35,7 +35,7 @@ export function NavMain({
   label: string;
 }) {
   const pathname = usePathname();
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile, isMobile, state } = useSidebar();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
@@ -43,12 +43,13 @@ export function NavMain({
         {items.map((item) => {
           const isActive =
             pathname === item.url ||
-            item.url === pathname.split("/").slice(0,3).join("/");
+            item.url === pathname.split("/").slice(0, 3).join("/");
           return (
             <SidebarMenuButton
               asChild
               key={item.title}
               onClick={() => setOpenMobile(false)}
+              tooltip={item.title}
             >
               <Link
                 href={item.url}
@@ -62,7 +63,12 @@ export function NavMain({
                 {item.icon}
                 {item.title}
                 {isActive && (
-                  <div className="absolute  w-1 bg-primary right-0 bottom-1 top-1 rounded-l-full" />
+                  <div
+                    className={cn(
+                      "absolute  bg-primary right-0 bottom-1 top-1 rounded-l-full",
+                      state === "collapsed" ? "w-0.5" : "w-1",
+                    )}
+                  />
                 )}
               </Link>
             </SidebarMenuButton>

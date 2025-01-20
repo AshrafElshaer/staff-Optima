@@ -7,8 +7,12 @@ import {
   CreditCard,
   Headset,
   LogOut,
+  MonitorCog,
+  Moon,
   MoreHorizontal,
   Sparkles,
+  Sun,
+  SunMoon,
 } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -23,6 +27,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@optima/ui/dropdown-menu";
 import {
@@ -40,12 +47,14 @@ import {
   IslandIcon,
   Settings01Icon,
 } from "hugeicons-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export function NavUser() {
-  const { isMobile, toggleSidebar } = useSidebar();
+  const { isMobile, toggleSidebar, state } = useSidebar();
   const { data: user, isLoading } = useCurrentUser();
+  const { theme, setTheme } = useTheme();
   const supabase = useSupabase();
   const router = useRouter();
   const pathname = usePathname();
@@ -65,7 +74,11 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="default"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground items-center"
+              className={cn(
+                "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground items-center",
+                state === "collapsed" && "justify-center",
+                isMobile && state === "collapsed" && "justify-start ",
+              )}
             >
               <Avatar
                 className="size-6 "
@@ -73,18 +86,24 @@ export function NavUser() {
                 initials={`${user?.first_name[0]}${user?.last_name[0]}`}
                 src={user?.avatar_url}
               />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-bold">
-                  {user?.first_name} {user?.last_name}
-                </span>
-              </div>
-              <MoreHorizontal className="ml-auto size-4" />
+
+              {(state === "expanded" ||
+                (isMobile && state === "collapsed")) && (
+                <>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-bold">
+                      {user?.first_name} {user?.last_name}
+                    </span>
+                  </div>
+                  <MoreHorizontal className="ml-auto size-4" />
+                </>
+              )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className={cn(" rounded-md w-[12rem]")}
             side="top"
-            align="center"
+            align={state === "expanded" ? "center" : "start"}
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
@@ -106,7 +125,27 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <ThemeToggle />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="pl-3">
+                  <SunMoon strokeWidth={2} />
+                  Theme
+                </DropdownMenuSubTrigger>
+
+                <DropdownMenuSubContent sideOffset={10}>
+                  <DropdownMenuItem onSelect={() => setTheme("light")}>
+                    <Sun />
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setTheme("dark")}>
+                    <Moon />
+                    Dark
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setTheme("system")}>
+                    <MonitorCog />
+                    System
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
               <DropdownMenuItem
                 asChild
                 onSelect={() => {
