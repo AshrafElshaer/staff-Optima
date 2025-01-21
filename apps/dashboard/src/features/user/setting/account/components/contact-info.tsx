@@ -67,7 +67,7 @@ export function ContactInfo({ user }: { user: User }) {
           <div className="space-y-2 w-full md:w-1/3">
             <Label>Phone Number</Label>
             <PhoneInput
-              value={form.watch("phone_number")}
+              value={form.watch("phone_number")?.replace(/\s+/g, "")}
               onChange={(value) =>
                 form.setValue("phone_number", value, {
                   shouldDirty: true,
