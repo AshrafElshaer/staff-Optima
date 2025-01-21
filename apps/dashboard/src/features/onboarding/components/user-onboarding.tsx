@@ -60,6 +60,7 @@ import { useAction } from "next-safe-action/hooks";
 
 import { useRouter } from "next/navigation";
 
+import { PhoneInput } from "@/components/phone-number-input";
 import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -115,6 +116,15 @@ function UserForm() {
             error={form.formState.errors.last_name?.message}
           />
         </div>
+      </div>
+      <div className="space-y-2">
+        <Label>Phone Number</Label>
+        <PhoneInput
+          value={form.watch("phone_number")}
+          onChange={(value) => form.setValue("phone_number", value ?? "")}
+          placeholder="+1234567890"
+          error={form.formState.errors.phone_number?.message}
+        />
       </div>
       <div className="space-y-2">
         <Label>Email</Label>
