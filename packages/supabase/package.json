@@ -12,6 +12,7 @@
     "@optima/logger": "workspace:*",
     "@supabase/ssr": "^0.5.1",
     "@tiptap/core": "^2.10.3",
+    "libphonenumber-js": "^1.11.18",
     "react": "^19.0.0",
     "server-only": "^0.0.1",
     "supabase": "^2.0.0",

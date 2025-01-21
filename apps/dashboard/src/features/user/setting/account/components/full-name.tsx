@@ -59,6 +59,7 @@ export function FullName({ user }: { user: User }) {
             <Input
               placeholder="Enter your first name"
               {...form.register("first_name")}
+              error={form.formState.errors.first_name?.message}
             />
           </div>
           <div className="space-y-2 w-full md:w-1/3">
@@ -66,6 +67,7 @@ export function FullName({ user }: { user: User }) {
             <Input
               placeholder="Enter your last name"
               {...form.register("last_name")}
+              error={form.formState.errors.last_name?.message}
             />
           </div>
         </CardContent>

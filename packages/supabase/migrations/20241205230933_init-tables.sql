@@ -20,6 +20,7 @@ create table users (
     first_name text not null,
     last_name text not null,
     avatar_url text,
+    phone_number text not null default '',
     access_role user_role_enum not null,
 
     created_at timestamp with time zone default now() not null,

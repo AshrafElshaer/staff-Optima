@@ -6,6 +6,7 @@ type InputProps = React.ComponentProps<"input"> & {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   error?: string;
+  wrapperClassName?: string;
 };
 
 const Input = ({
@@ -14,14 +15,16 @@ const Input = ({
   startIcon,
   endIcon,
   error,
+  wrapperClassName,
   ...props
 }: InputProps) => {
   return (
-    <div className=" space-y-2 w-full ">
+    <div className={cn(" space-y-2 w-full ")}>
       <div
         className={cn(
-          "flex items-center rounded-md border relative ",
+          "flex items-center rounded-md border relative overflow-hidden",
           error && "border-destructive",
+          wrapperClassName,
         )}
       >
         <input
@@ -64,4 +67,4 @@ const UrlInput = ({ error, ...props }: InputProps) => {
   );
 };
 
-export { Input, UrlInput };
+export { Input, UrlInput, type InputProps };

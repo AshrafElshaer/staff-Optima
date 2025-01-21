@@ -1,3 +1,4 @@
+import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 import { userRoleEnum } from "./index";
@@ -129,6 +130,9 @@ export const userSchema = z.object({
   access_role: z.nativeEnum(userRoleEnum),
   created_at: z.string(),
   updated_at: z.string(),
+  phone_number: z.string().refine(isValidPhoneNumber, {
+    message: "Invalid phone number",
+  }),
 });
 
 export const userInsertSchema = userSchema.omit({
