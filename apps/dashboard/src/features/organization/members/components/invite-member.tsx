@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import type { z } from "zod";
 import { inviteMemberAction } from "../members.actions";
 import { AccessRoleSelector } from "./access-role-selector";
+import { PhoneInput } from "@/components/phone-number-input";
 
 export function InviteMember() {
   const [open, setOpen] = useState(false);
@@ -94,6 +95,15 @@ export function InviteMember() {
                 type="email"
                 {...form.register("email")}
                 error={form.formState.errors.email?.message}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-phone-number">Phone Number</Label>
+              <PhoneInput
+                value={form.watch("phone_number")}
+                onChange={(value) => form.setValue("phone_number", value ?? "")}
+                placeholder="+1234567890"
+                error={form.formState.errors.phone_number?.message}
               />
             </div>
             <div className="space-y-2">
