@@ -1,11 +1,7 @@
 {
   "name": "v1",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*",
-    "tooling/*"
-  ],
+  "workspaces": ["packages/*", "apps/*", "tooling/*"],
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
@@ -14,8 +10,11 @@
     "dev:jobs": "turbo jobs --filter=@optima/jobs",
     "dev:dashboard": "turbo dev --filter=@optima/dashboard",
     "dev:web": "turbo dev --filter=@optima/web",
+    "dev:jobs-web": "turbo dev --filter=@optima/jobs-web",
     "start:dashboard": "turbo start --filter=@optima/dashboard",
     "start:web": "turbo start --filter=@optima/web",
+    "start:jobs": "turbo start --filter=@optima/jobs",
+    "start:jobs-web": "turbo start --filter=@optima/jobs-web",
     "test": "turbo test --parallel",
     "format": "biome format --write .",
     "lint": "turbo lint && bun lint:repo",

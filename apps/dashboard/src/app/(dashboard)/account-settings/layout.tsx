@@ -29,9 +29,11 @@ const tabs = [
     label: "Notifications",
     href: "/account-settings/notifications",
     icon: Notification01Icon,
-    isDisabled: false,
+    isDisabled: true,
   },
 ];
+
+
 export default function AccountSettingsLayout({
   children,
 }: { children: React.ReactNode }) {

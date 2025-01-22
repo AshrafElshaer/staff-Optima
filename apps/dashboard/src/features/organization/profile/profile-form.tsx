@@ -318,7 +318,7 @@ export function OrganizationProfileForm({
           </div>
           <div className="flex items-center gap-4 w-full md:w-auto">
             <Link
-              href={`/jobs/${organization?.domain}`}
+              href={`https://jobs.staffoptima.co/${organization?.domain}`}
               className={buttonVariants({
                 variant: "secondary",
                 className: "w-full md:w-auto",
