@@ -231,7 +231,7 @@ export default function JobListingsPage() {
     );
   };
 
-  console.log(selectedFilters);
+
 
   return (
     <div className="flex flex-col gap-8">

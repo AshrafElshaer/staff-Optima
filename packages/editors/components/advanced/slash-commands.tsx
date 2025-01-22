@@ -1,4 +1,4 @@
-import { createBrowserClient } from "@/lib/supabase/browser";
+import { createBrowserClient } from "@optima/supabase/client";
 import { getOrganizationById } from "@optima/supabase/queries";
 import {
   CheckSquare,

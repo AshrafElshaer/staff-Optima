@@ -17,6 +17,7 @@ import {
 import { UploadImagesPlugin } from "novel/plugins";
 
 import { cx } from "class-variance-authority";
+import { ResizableImage } from "../ResizableImage";
 
 const aiHighlight = AIHighlight;
 const placeholder = Placeholder;
@@ -37,18 +38,9 @@ const color = Color;
 
 const textStyle = TextStyle;
 
-const tiptapImage = TiptapImage.extend({
-  addProseMirrorPlugins() {
-    return [
-      UploadImagesPlugin({
-        imageClass: cx("opacity-40 rounded-lg border border-stone-200"),
-      }),
-    ];
-  },
-}).configure({
-  allowBase64: true,
+const tiptapImage = ResizableImage.configure({
   HTMLAttributes: {
-    class: cx("rounded-lg border border-muted"),
+    class: "my-8 rounded-lg border ",
   },
 });
 

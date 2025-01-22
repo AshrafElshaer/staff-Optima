@@ -1,4 +1,4 @@
-import AdvancedEditor from "@/components/editors/advanced";
+import { AdvancedEditor } from "@optima/editors";
 import { createServerClient } from "@/lib/supabase/server";
 import { countriesMap } from "@optima/location";
 import { getOrganizationByDomain } from "@optima/supabase/queries";

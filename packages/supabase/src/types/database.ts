@@ -588,7 +588,7 @@ export type Database = {
           industry: string;
           logo_url: string | null;
           name: string;
-          profile: Json | null;
+          profile: string | null;
           state: string | null;
           updated_at: string;
           zip_code: string | null;
@@ -605,7 +605,7 @@ export type Database = {
           industry: string;
           logo_url?: string | null;
           name: string;
-          profile?: Json | null;
+          profile?: string | null;
           state?: string | null;
           updated_at?: string;
           zip_code?: string | null;
@@ -622,7 +622,7 @@ export type Database = {
           industry?: string;
           logo_url?: string | null;
           name?: string;
-          profile?: Json | null;
+          profile?: string | null;
           state?: string | null;
           updated_at?: string;
           zip_code?: string | null;

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@optima/analytics": "workspace:*",
+    "@optima/editors": "workspace:*",
     "@optima/kv": "workspace:*",
     "@optima/location": "workspace:*",
     "@optima/supabase": "workspace:*",

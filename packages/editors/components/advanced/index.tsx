@@ -12,21 +12,21 @@ import {
 } from "novel";
 import { handleCommandNavigation } from "novel/extensions";
 import { useState } from "react";
-import { ColorSelector } from "../selectors/color-selector";
-import { LinkSelector } from "../selectors/link-selector";
-import { NodeSelector } from "../selectors/node-selector";
-import { TextButtons } from "../selectors/text-buttons";
-import { defaultExtensions } from "./extensions";
+import { defaultExtensions } from "../extensions";
+import { ColorSelector } from "./selectors/color-selector";
+import { LinkSelector } from "./selectors/link-selector";
+import { NodeSelector } from "./selectors/node-selector";
+import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-commands";
 type AdvancedEditorProps = {
-  content: JSONContent | undefined;
-  onChange?: (content: JSONContent) => void;
+  content: HTMLContent | undefined;
+  onChange?: (content: HTMLContent) => void;
   editable?: boolean;
 };
 
 const extensions = [...defaultExtensions, slashCommand];
 
-export default function AdvancedEditor({
+export function AdvancedEditor({
   content,
   onChange,
   editable = true,
@@ -39,9 +39,9 @@ export default function AdvancedEditor({
     <EditorRoot>
       <EditorContent
         editable={editable}
-        initialContent={content}
+        initialContent={generateJSON(content ?? "", extensions)}
         onUpdate={({ editor }) => {
-          onChange?.(editor.getJSON());
+          onChange?.(editor.getHTML());
         }}
         extensions={extensions}
         immediatelyRender={false}

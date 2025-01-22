@@ -3,19 +3,6 @@ import { z } from "zod";
 
 import { userRoleEnum } from "./index";
 
-interface JSONContent {
-  [key: string]: unknown;
-  type?: string;
-  attrs?: Record<string, unknown>;
-  content?: JSONContent[];
-  marks?: {
-    type: string;
-    attrs?: Record<string, unknown>;
-    [key: string]: unknown;
-  }[];
-  text?: string;
-}
-
 export const organizationSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(2, {
@@ -35,7 +22,7 @@ export const organizationSchema = z.object({
     message: "Country is required",
   }),
   admin_id: z.string().uuid(),
-  profile: z.custom<JSONContent>().optional(),
+  profile: z.string().optional(),
   state: z.string().nullable(),
   zip_code: z.string().nullable(),
   created_at: z.string(),

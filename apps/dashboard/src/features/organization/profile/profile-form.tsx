@@ -1,12 +1,12 @@
 "use client";
 import { DropZone } from "@/components/drop-zone";
-import AdvancedEditor from "@/components/editors/advanced";
 import { CountrySelector } from "@/components/selectors/country-selector";
 import { OnEditToast } from "@/components/toasts/on-edit-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
 import { useSupabase } from "@/hooks/use-supabase";
 import { uploadOrganizationLogo } from "@/lib/supabase/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AdvancedEditor } from "@optima/editors";
 import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
 import { Avatar } from "@optima/ui/avatar";
@@ -73,9 +73,7 @@ export function OrganizationProfileForm({
     defaultValues: organization
       ? {
           ...organization,
-          profile: organization.profile
-            ? JSON.parse(organization.profile as string)
-            : null,
+          profile: organization.profile ?? undefined,
           logo_url: organization.logo_url ?? null,
           admin_id: organization.admin_id ?? undefined,
           address_1: organization.address_1 ?? null,
