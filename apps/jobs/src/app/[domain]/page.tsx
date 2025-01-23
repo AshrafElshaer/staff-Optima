@@ -1,10 +1,12 @@
-import { AdvancedEditor } from "@optima/editors";
 import { createServerClient } from "@/lib/supabase/server";
+import { AdvancedEditor } from "@optima/editors";
 import { countriesMap } from "@optima/location";
 import { getOrganizationByDomain } from "@optima/supabase/queries";
 import { Avatar } from "@optima/ui/avatar";
+import { EditorContent, EditorProvider } from "@tiptap/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Editor } from "./editor";
 
 export default async function OrganizationPage({
   params,
@@ -21,9 +23,8 @@ export default async function OrganizationPage({
     notFound();
   }
 
-  const profileContent = organization.profile
-    ? JSON.parse(organization.profile as string)
-    : {};
+  const profileContent = organization.profile ?? "";
+   
 
   const country = countriesMap.get(organization.country);
 
@@ -69,7 +70,7 @@ export default async function OrganizationPage({
         </div>
       </section>
       <section className="p-4 max-w-3xl mx-auto">
-        <AdvancedEditor content={profileContent} editable={false} />
+        <Editor content={profileContent} />
       </section>
     </main>
   );

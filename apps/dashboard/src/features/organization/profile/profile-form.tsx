@@ -48,9 +48,7 @@ export function OrganizationProfileForm({
           data
             ? {
                 ...data,
-                profile: data.profile
-                  ? JSON.parse(data.profile as string)
-                  : null,
+                profile: data.profile ?? undefined,
                 logo_url: data.logo_url ?? null,
                 admin_id: data.admin_id ?? undefined,
                 address_1: data.address_1 ?? null,
@@ -330,7 +328,7 @@ export function OrganizationProfileForm({
         <div className="w-full border rounded-md min-h-96 p-4 grid ">
           <AdvancedEditor
             key={form.formState.isDirty ? "dirty" : "clean"}
-            content={form.watch("profile")}
+            content={form.watch("profile")?.replace('"', " ") ?? ""}
             onChange={(content) => {
               form.setValue("profile", content, {
                 shouldDirty: true,

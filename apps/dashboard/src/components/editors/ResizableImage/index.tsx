@@ -55,9 +55,6 @@ export const ResizableImage = Node.create<ImageOptions>({
       src: {
         default: null,
       },
-      style: {
-        default: null,
-      },
       alt: {
         default: null,
       },
@@ -85,12 +82,12 @@ export const ResizableImage = Node.create<ImageOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { height, width, alt, style } = HTMLAttributes;
+    const { height, width, alt,  } = HTMLAttributes;
     const marginValue = alt.split("-")[1];
 
     const attributes = {
       ...HTMLAttributes,
-      style: `height: ${height} !important; width: ${width} !important; ${style} !important;`,
+      style: `height: ${height} !important; width: ${width} !important; ${marginValue} !important;`,
     };
     return ["img", mergeAttributes(this.options.HTMLAttributes, attributes)];
   },
@@ -118,8 +115,8 @@ export const ResizableImage = Node.create<ImageOptions>({
         find: inputRegex,
         type: this.type,
         getAttributes: (match) => {
-          const [, , alt, src, title, height, width, style] = match;
-          return { src, alt, title, height, width, style };
+          const [, , alt, src, title, height, width, ] = match;
+          return { src, alt, title, height, width,  };
         },
       }),
     ];

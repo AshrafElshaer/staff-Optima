@@ -14,7 +14,7 @@ import {
   UpdatedImage,
 } from "novel/extensions";
 
-import { cx } from "class-variance-authority";
+import { cn } from "@optima/ui/cn";
 import { ResizableImage } from "./ResizableImage";
 
 const aiHighlight = AIHighlight;
@@ -23,7 +23,7 @@ const highlight = HighlightExtension;
 const underline = TiptapUnderline;
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
-    class: cx(" underline underline-offset-[3px] cursor-pointer"),
+    class: cn(" underline underline-offset-[3px] cursor-pointer "),
   },
 });
 
@@ -42,61 +42,61 @@ const tiptapImage = ResizableImage.configure({
   },
 });
 
-const updatedImage = UpdatedImage.configure({
-  HTMLAttributes: {
-    class: cx("rounded-lg border border-muted"),
-  },
-});
+// const updatedImage = UpdatedImage.configure({
+//   HTMLAttributes: {
+//     class: cn("rounded-lg border border-muted"),
+//   },
+// });
 
 const taskList = TaskList.configure({
   HTMLAttributes: {
-    class: cx("not-prose pl-2 "),
+    class: cn("not-prose pl-2 "),
   },
 });
 const taskItem = TaskItem.configure({
   HTMLAttributes: {
-    class: cx("flex gap-2 items-start my-2"),
+    class: cn("flex gap-2 items-start my-2"),
   },
   nested: true,
 });
 
 const horizontalRule = HorizontalRule.configure({
   HTMLAttributes: {
-    class: cx("mt-4 mb-6 border-t border-muted-foreground"),
+    class: cn("mt-4 mb-6 border-t border-muted-foreground"),
   },
 });
 
 const starterKit = StarterKit.configure({
   bulletList: {
     HTMLAttributes: {
-      class: cx("list-disc list-outside leading-3 -mt-2"),
+      class: cn("list-disc list-outside leading-3 -mt-2 "),
     },
   },
   orderedList: {
     HTMLAttributes: {
-      class: cx("list-decimal list-outside leading-3 mt-2 ml-4"),
+      class: cn("list-decimal list-outside leading-3 mt-2 ml-4"),
     },
   },
   listItem: {
     HTMLAttributes: {
-      class: cx("leading-normal mb-2 ml-4"),
+      class: cn("leading-normal mb-2 ml-4 "),
     },
   },
   blockquote: {
     HTMLAttributes: {
-      class: cx("border-l-4 border-primary pl-4"),
+      class: cn("border-l-4 border-primary pl-4"),
     },
   },
   codeBlock: {
     HTMLAttributes: {
-      class: cx(
+      class: cn(
         "rounded-md bg-muted text-foreground border p-5 font-mono font-medium",
       ),
     },
   },
   code: {
     HTMLAttributes: {
-      class: cx(
+      class: cn(
         "rounded-md bg-muted text-foreground  px-1.5 py-1 font-mono font-medium",
       ),
       spellcheck: "false",
@@ -116,7 +116,7 @@ export const defaultExtensions = [
   placeholder,
   tiptapLink,
   tiptapImage,
-  updatedImage,
+  // updatedImage,
   taskList,
   taskItem,
   horizontalRule,
