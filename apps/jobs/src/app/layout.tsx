@@ -1,4 +1,4 @@
-import "@optima/ui/globals.css";
+import "../styles.css";
 
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
@@ -67,7 +67,6 @@ export default function RootLayout({
           "antialiased dark",
         )}
       >
-
         {children}
         <AnalyticsProvider />
       </body>

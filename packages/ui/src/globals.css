@@ -263,13 +263,6 @@
   @apply text-lg font-bold mb-4;
 }
 
-ol,
-ul,
-menu {
-  list-style: inherit;
-  margin: inherit;
-  padding: inherit;
-}
 
 
 

@@ -1,0 +1,11 @@
+@import "@optima/ui/globals.css";
+
+
+
+ol,
+ul,
+menu {
+  list-style: inherit;
+  margin: inherit;
+  padding: inherit;
+}
