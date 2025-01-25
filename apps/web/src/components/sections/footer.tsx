@@ -1,6 +1,60 @@
-import { buttonVariants } from "@optima/ui/button";
+import { Button, buttonVariants } from "@optima/ui/button";
 import { Icons } from "@optima/ui/icons";
+import { Input } from "@optima/ui/input";
 import Link from "next/link";
+import { FaGithub, FaXTwitter } from "react-icons/fa6";
+
+const socialLinks = [
+  {
+    name: "Twitter",
+    href: "https://twitter.com/staffoptima",
+    icon: <FaXTwitter size={24} />,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/staff-optima",
+    icon: <FaGithub size={24} />,
+  },
+];
+
+const links = [
+  {
+    title: "Resources",
+    links: [
+      {
+        name: "Support",
+        href: "/support",
+      },
+      {
+        name: "Features Request",
+        href: "https://github.com/staff-optima/staff-optima/issues",
+      },
+      {
+        name: "GitHub",
+        href: "https://github.com/staff-optima",
+      },
+      {
+        name: "Privacy Policy",
+        href: "/privacy",
+      },
+      {
+        name: "Terms of Service",
+        href: "/terms",
+      },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { name: "About", href: "/about" },
+      { name: "Updates", href: "/updates" },
+      {
+        name: "Open Startup",
+        href: "/open-startup",
+      },
+    ],
+  },
+];
 
 export function Footer() {
   return (
@@ -68,25 +122,62 @@ export function Footer() {
         </div>
       </div> */}
 
-      <div className=" w-full text-center mt-4 items-center justify-center py-12 border-t space-y-8">
-        <h1 className="text-center text-6xl md:text-8xl lg:text-[10rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-600 to-neutral-900 select-none ">
+      <section className=" px-4 sm:px-6 lg:px-8 py-10  sm:pt-16 lg:pt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+        {links.map((link) => (
+          <div key={link.title} className="flex flex-col ">
+            <p className="font-bold mb-4">{link.title}</p>
+            {link.links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={buttonVariants({
+                  variant: "link",
+                  className: "!justify-start px-0",
+                })}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        ))}
+
+        <div className="lg:col-span-2 flex flex-col lg:items-end gap-4">
+          <div className="flex items-center justify-start w-1/2">
+            {socialLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={buttonVariants({
+                  variant: "link",
+                })}
+              >
+                {link.icon}
+              </Link>
+            ))}
+          </div>
+          <div className="flex flex-col gap-4 w-1/2 ">
+            {/* <div className="w-1/2">
+            </div> */}
+            <Input placeholder="Enter your email to get updates" />
+
+            <Button>Subscribe</Button>
+          </div>
+        </div>
+      </section>
+
+      <section className=" w-full text-center mt-4 items-center justify-center py-12 space-y-8">
+        <h1 className="text-center text-6xl md:text-8xl lg:text-[10rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 to-neutral-900 select-none ">
           Staff Optima
         </h1>
-        <p className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-600 to-neutral-900 select-none">
+        <p className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-700 to-neutral-900 select-none">
           Hire Smarter, Hire Faster
         </p>
-      </div>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center text-sm  border-t p-4">
-        <p className=" mr-auto">
+      </section>
+
+      <div className=" text-sm text-center border-t p-4">
+        <p>
           &copy; {new Date().getFullYear()} Staff Optima. All rights reserved.
         </p>
-
-        <Link href="/privacy" className={buttonVariants({ variant: "link" })}>
-          Privacy Policy
-        </Link>
-        <Link href="/terms" className={buttonVariants({ variant: "link" })}>
-          Terms of Service
-        </Link>
       </div>
     </footer>
   );
