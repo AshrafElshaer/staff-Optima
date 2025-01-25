@@ -2,6 +2,7 @@
 
 import { PageTitle } from "@/components/page-title";
 import type { Department, JobListing } from "@optima/supabase/types";
+
 import {
   employmentTypeEnum,
   experienceLevelEnum,
@@ -24,12 +25,16 @@ import {
   Delete01Icon,
   Edit01Icon,
   FilterAddIcon,
+  GridViewIcon,
+  Location01Icon,
   Megaphone01Icon,
   Menu03Icon,
   MoreHorizontalIcon,
   UserAdd01Icon,
 } from "hugeicons-react";
 import { FaPause } from "react-icons/fa6";
+import { IoTimerOutline } from "react-icons/io5";
+import { MdSignalWifiStatusbarConnectedNoInternet1 } from "react-icons/md";
 
 interface JobListingWithDepartment extends JobListing {
   department: Department;
@@ -170,26 +175,54 @@ const filters = [
   {
     label: "Status",
     options: Object.values(jobStatusEnum),
-  },
-  {
-    label: "Department",
-    options: ["engineering", "product", "infrastructure", "design"],
+    icon: <MdSignalWifiStatusbarConnectedNoInternet1 className="size-4" />,
   },
   {
     label: "Type",
     options: Object.values(employmentTypeEnum),
+    icon: <IoTimerOutline className="size-4" />,
   },
   {
     label: "Location",
     options: Object.values(jobLocationEnum),
+    icon: <Location01Icon className="size-4" />,
   },
   {
     label: "Experience",
     options: Object.values(experienceLevelEnum),
+    icon: <BriefcaseIcon className="size-4" />,
   },
 ];
 
 export default function JobListingsPage() {
+  const supabase = useSupabase();
+  const { data: departments, isLoading: departmentsLoading } = useQuery({
+    queryKey: ["departments"],
+    queryFn: async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data: departments, error } = await getDepartmentsByOrganizationId(
+        supabase,
+        user.user_metadata.organization_id,
+      );
+      if (error) throw error;
+      return departments;
+    },
+  });
+  const adjustedFilters = useMemo(() => {
+    return [
+      {
+        label: "Department",
+        options: departments?.map((department) => department.name) || [],
+        icon: <GridViewIcon className="size-4" />,
+      },
+      ...filters,
+    ];
+  }, [departments]);
+
   const [selectedFilters, setSelectedFilters] = useState<
     {
       label: string;
@@ -231,8 +264,6 @@ export default function JobListingsPage() {
     );
   };
 
-
-
   return (
     <div className="flex flex-col gap-8">
       <section className="flex items-center justify-between">
@@ -244,86 +275,89 @@ export default function JobListingsPage() {
       </section>
       <section className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="min-w-fit py-2">
-              <FilterAddIcon className="size-4" /> Add Filter
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {filters.map((filter) => (
-              <DropdownMenuSub key={filter.label}>
-                <DropdownMenuSubTrigger>{filter.label}</DropdownMenuSubTrigger>
-                <DropdownMenuSubContent sideOffset={8} className="w-36">
-                  {filter.options.map((option) => (
-                    <DropdownMenuCheckboxItem
-                      checked={selectedFilters.some(
-                        (f) =>
-                          f.label === filter.label && f.value.includes(option),
-                      )}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          handleAddFilter(filter.label, option);
-                        } else {
-                          handleRemoveFilter(filter.label, option);
-                        }
-                      }}
-                      onSelect={(e) => {
-                        e.preventDefault();
-                      }}
-                      key={option}
-                      className="capitalize"
-                    >
-                      {option.split("_").join(" ")}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="min-w-fit py-2">
+                <FilterAddIcon className="size-4" /> Add Filter
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {adjustedFilters.map((filter) => (
+                <DropdownMenuSub key={filter.label}>
+                  <DropdownMenuSubTrigger className="flex items-center gap-2">
+                    {filter.icon}
+                    {filter.label}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent sideOffset={8} className="w-36">
+                    {filter.options.map((option) => (
+                      <DropdownMenuCheckboxItem
+                        checked={selectedFilters.some(
+                          (f) =>
+                            f.label === filter.label &&
+                            f.value.includes(option),
+                        )}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            handleAddFilter(filter.label, option);
+                          } else {
+                            handleRemoveFilter(filter.label, option);
+                          }
+                        }}
+                        onSelect={(e) => {
+                          e.preventDefault();
+                        }}
+                        key={option}
+                        className="capitalize"
+                      >
+                        {option.split("_").join(" ")}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {selectedFilters.length > 0 && (
             <>
               <div className="flex items-center gap-2 ">
                 {selectedFilters.map(
                   (filter) =>
-                  filter.value.length > 0 && (
-                    <div
-                      key={filter.label}
-                      className="flex items-stretch gap-2 text-sm bg-accent px-3 py-2 rounded-md font-medium border min-w-fit"
-                    >
-                      <p className="text-secondary-foreground">
-                        {filter.label}
-                      </p>
-                      <Separator orientation="vertical" />
-                      <div className="flex items-center gap-2">
-                        {filter.value.map((value) => (
-                          <p key={value} className="capitalize">
-                            {value.split("_").join(" ")},
-                          </p>
-                        ))}
-                      </div>
-                      <Separator orientation="vertical" />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveLabel(filter.label)}
+                    filter.value.length > 0 && (
+                      <div
+                        key={filter.label}
+                        className="flex items-stretch gap-2 text-sm bg-accent px-3 py-2 rounded-md font-medium border min-w-fit"
                       >
-                        <X className="size-4" />
-                      </button>
-                    </div>
-                  ),
-              )}
-            </div>
-            <Button
-              variant="outline"
-              onClick={handleClearFilters}
-              className="min-w-fit"
-            >
-              Clear all
-            </Button>
-          </>
+                        <p className="text-secondary-foreground">
+                          {filter.label}
+                        </p>
+                        <Separator orientation="vertical" />
+                        <div className="flex items-center gap-2">
+                          {filter.value.map((value) => (
+                            <p key={value} className="capitalize">
+                              {value.split("_").join(" ")},
+                            </p>
+                          ))}
+                        </div>
+                        <Separator orientation="vertical" />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveLabel(filter.label)}
+                        >
+                          <X className="size-4" />
+                        </button>
+                      </div>
+                    ),
+                )}
+              </div>
+              <Button
+                variant="outline"
+                onClick={handleClearFilters}
+                className="min-w-fit"
+              >
+                Clear all
+              </Button>
+            </>
           )}
-
         </div>
 
         <div className="w-full sm:w-fit ml-auto">
@@ -381,6 +415,8 @@ export default function JobListingsPage() {
   );
 }
 
+import { useSupabase } from "@/hooks/use-supabase";
+import { getDepartmentsByOrganizationId } from "@optima/supabase/queries";
 import { Badge } from "@optima/ui/badge";
 import { Button } from "@optima/ui/button";
 import {
@@ -400,8 +436,16 @@ import {
   HoverCardTrigger,
 } from "@optima/ui/hover-card";
 import { Input } from "@optima/ui/input";
-import { Check, FilterIcon, PlusIcon, SearchIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  BriefcaseIcon,
+  Check,
+  FilterIcon,
+  PlusIcon,
+  SearchIcon,
+  X,
+} from "lucide-react";
+import { useMemo, useState } from "react";
 
 function JobCardDropdown() {
   return (
