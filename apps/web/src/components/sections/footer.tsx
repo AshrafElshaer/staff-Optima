@@ -46,7 +46,7 @@ const links = [
   {
     title: "Company",
     links: [
-      { name: "About", href: "/about" },
+      { name: "Story", href: "/story" },
       { name: "Updates", href: "/updates" },
       {
         name: "Open Startup",
@@ -132,7 +132,7 @@ export function Footer() {
                 href={link.href}
                 className={buttonVariants({
                   variant: "link",
-                  className: "!justify-start px-0",
+                  className: "!justify-start !px-0",
                 })}
               >
                 {link.name}
@@ -142,7 +142,7 @@ export function Footer() {
         ))}
 
         <div className="lg:col-span-2 flex flex-col lg:items-end gap-4">
-          <div className="flex items-center justify-start w-1/2">
+          <div className="flex items-center justify-start w-full md:w-2/3">
             {socialLinks.map((link) => (
               <Link
                 key={link.name}
@@ -155,7 +155,7 @@ export function Footer() {
               </Link>
             ))}
           </div>
-          <div className="flex flex-col gap-4 w-1/2 ">
+          <div className="flex flex-col gap-4 w-full md:w-2/3 ">
             {/* <div className="w-1/2">
             </div> */}
             <Input placeholder="Enter your email to get updates" />

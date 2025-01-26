@@ -78,6 +78,17 @@ export const MobileNavbar = () => {
           >
             Updates
           </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            className="w-full justify-start text-lg py-6 rounded-none"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              router.push("/story");
+            }}
+          >
+            Story
+          </Button>
           <div className="p-4 mt-auto">
             <Button
               className="w-full justify-start mt-auto"

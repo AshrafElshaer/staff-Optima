@@ -22,10 +22,11 @@ export function Navbar() {
         "flex flex-col sm:flex-row sm:items-center space-y-10 sm:space-y-0 fixed top-4 left-4 right-4 z-50  max-w-3xl mx-auto px-4 py-3 rounded-md border bg-accent transition-all duration-300 h-12",
       )}
     >
-      <div className="flex items-center justify-between w-full sm:w-fit">
+      <div className="flex items-center justify-between w-full sm:w-fit gap-4">
         <Link href="/" className="cursor-pointer">
           <Icons.Logo />
         </Link>
+        <Separator orientation="vertical" className=" h-8 hidden sm:block" />
         <MobileNavbar />
       </div>
       <div className="items-center w-full hidden sm:flex">
@@ -68,6 +69,14 @@ export function Navbar() {
           }}
         >
           Updates
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            router.push("/story");
+          }}
+        >
+          Story
         </Button>
         <Separator orientation="vertical" className="ml-auto h-8" />
         <Button
