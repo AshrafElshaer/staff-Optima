@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@optima/ui/alert-dialog";
 import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { useReactFlow } from "@xyflow/react";
 import { Delete01Icon, Delete03Icon } from "hugeicons-react";

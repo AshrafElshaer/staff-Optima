@@ -3,7 +3,7 @@
 import { Button } from "@optima/ui/button";
 import { Card } from "@optima/ui/card";
 import { Icons } from "@optima/ui/icons";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
 import { AnimatePresence, motion } from "motion/react";

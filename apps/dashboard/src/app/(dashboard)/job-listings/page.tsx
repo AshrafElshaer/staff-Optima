@@ -444,7 +444,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@optima/ui/hover-card";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { useQuery } from "@tanstack/react-query";
 import {
   BriefcaseIcon,

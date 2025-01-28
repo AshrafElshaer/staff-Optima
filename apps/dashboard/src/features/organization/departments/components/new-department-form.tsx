@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { departmentInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { DialogClose, DialogFooter } from "@optima/ui/dialog";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";

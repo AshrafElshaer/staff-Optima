@@ -1,6 +1,6 @@
 import { Button, buttonVariants } from "@optima/ui/button";
 import { Icons } from "@optima/ui/icons";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import Link from "next/link";
 import { FaGithub, FaXTwitter } from "react-icons/fa6";
 

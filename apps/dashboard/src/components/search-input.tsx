@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Search01Icon } from "hugeicons-react";
 import { parseAsString, useQueryState } from "nuqs";
 

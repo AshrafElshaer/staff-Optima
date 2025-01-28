@@ -28,7 +28,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@optima/ui/form";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { format } from "date-fns";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

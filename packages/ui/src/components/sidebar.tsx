@@ -7,7 +7,7 @@ import * as React from "react";
 import { useIsMobile } from "../hooks/use-mobile";
 import { cn } from "../utils";
 import { Button } from "./button";
-import { Input } from "./input";
+import { Input } from "./inputs/input";
 import { Separator } from "./separator";
 import { Sheet, SheetContent } from "./sheet";
 import { Skeleton } from "./skeleton";

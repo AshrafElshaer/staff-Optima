@@ -3,7 +3,7 @@ import type { Department } from "@optima/supabase/types";
 import { departmentUpdateSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { DialogClose, DialogFooter } from "@optima/ui/dialog";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";

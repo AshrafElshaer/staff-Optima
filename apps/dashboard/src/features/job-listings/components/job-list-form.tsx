@@ -6,8 +6,8 @@ import { EmploymentTypeSelector } from "@/components/selectors/employment-type-s
 import { ExperienceLevelSelector } from "@/components/selectors/experience-level-selector";
 import { JobLocationSelector } from "@/components/selectors/job-location-selector";
 import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/input";
-import { TagsInput } from "@optima/ui/inputs";
+
+import { Input, TagsInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { CheckmarkBadge03Icon, Megaphone01Icon } from "hugeicons-react";
 import { useState } from "react";

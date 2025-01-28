@@ -6,7 +6,7 @@ import { useForwardedRef } from "../hooks/use-forward-ref";
 import { cn } from "../utils";
 import type { ButtonProps } from "./button";
 import { Button } from "./button";
-import { Input } from "./input";
+import { Input } from "./inputs/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 interface ColorPickerProps {

@@ -9,7 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@optima/ui/hover-card";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { generateJSON } from "@tiptap/react";
 

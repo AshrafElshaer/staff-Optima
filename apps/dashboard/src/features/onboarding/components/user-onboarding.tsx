@@ -53,7 +53,7 @@ import { useSession } from "@/hooks/use-session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 
 import { useAction } from "next-safe-action/hooks";

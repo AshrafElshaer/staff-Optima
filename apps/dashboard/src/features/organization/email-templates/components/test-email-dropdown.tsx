@@ -1,5 +1,5 @@
 import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@optima/ui/popover";
 import { MailSend01Icon } from "hugeicons-react";

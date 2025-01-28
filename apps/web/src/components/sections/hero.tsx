@@ -1,5 +1,5 @@
 import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import Image from "next/image";
 import React from "react";
 import { BorderBeam } from "../border-beam";
@@ -22,7 +22,11 @@ export function Hero() {
         tracking system.
       </p>
       <div className="flex items-center justify-center gap-2 max-w-sm mx-auto">
-        <Input type="email" placeholder="Email for waitlist" id="waitlist-email" />
+        <Input
+          type="email"
+          placeholder="Email for waitlist"
+          id="waitlist-email"
+        />
         <Button variant="default" type="button" className="min-w-fit">
           Join Waitlist
         </Button>

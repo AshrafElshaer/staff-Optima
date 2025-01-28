@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@optima/ui/card";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Separator } from "@optima/ui/separator";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";

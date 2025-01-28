@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@optima/ui/dialog";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Textarea } from "@optima/ui/textarea";
 import { Check, Loader } from "lucide-react";

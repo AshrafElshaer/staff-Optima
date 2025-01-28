@@ -2,14 +2,12 @@
 
 import { TextGenerateEffect } from "@/components/text-generate-effect";
 
-
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { organizationInsertSchema } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import { Input, UrlInput } from "@optima/ui/input";
+import { Input, UrlInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
-import {  Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useAction } from "next-safe-action/hooks";
 
@@ -70,7 +68,6 @@ export function OrganizationOnboarding() {
 
 function OrganizationForm() {
   const router = useRouter();
- 
 
   const form = useForm<z.infer<typeof organizationInsertSchema>>({
     resolver: zodResolver(organizationInsertSchema),

@@ -6,7 +6,7 @@ import {
 } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
 import { ColorPicker } from "@optima/ui/color-picker";
-import { Input } from "@optima/ui/input";
+import { Input } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Textarea } from "@optima/ui/textarea";
 import { useReactFlow } from "@xyflow/react";

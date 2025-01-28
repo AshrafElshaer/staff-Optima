@@ -11,7 +11,7 @@ import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
 import { Avatar } from "@optima/ui/avatar";
 import { Button, buttonVariants } from "@optima/ui/button";
-import { Input, UrlInput } from "@optima/ui/input";
+import { Input, UrlInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
 import { Plus } from "lucide-react";
