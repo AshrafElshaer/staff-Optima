@@ -42,14 +42,14 @@ export function JobListForm() {
           Provide essential information about the job posting.
         </p>
 
-        <div className="flex items-start gap-8 flex-1">
-          <div className="flex-1 space-y-6">
-            <div className="flex items-center gap-8">
-              <div className="space-y-2 flex-1">
+        <div className="flex flex-col lg:flex-row items-start gap-8 flex-1">
+          <div className="flex-1 space-y-6 w-full">
+            <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+              <div className="space-y-2  w-full">
                 <Label>Job Title</Label>
                 <Input placeholder="Senior Software Engineer" />
               </div>
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2  w-full">
                 <Label>Department</Label>
                 <DepartmentSelector
                   onChange={() => {}}
@@ -57,15 +57,15 @@ export function JobListForm() {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-8">
-              <div className="space-y-2 flex-1">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="space-y-2 flex-1 w-full">
                 <Label>Location</Label>
                 <JobLocationSelector
                   onChange={() => {}}
                   value={form.getValues("jobLocation")}
                 />
               </div>
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2 flex-1 w-full">
                 <Label>Employment Type</Label>
                 <EmploymentTypeSelector
                   onChange={() => {}}
@@ -73,12 +73,12 @@ export function JobListForm() {
                 />
               </div>
             </div>
-            <div className="flex items-center gap-8">
-              <div className="space-y-2 flex-1">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="space-y-2 flex-1 w-full">
                 <Label>Salary Range</Label>
                 <Input placeholder="$100,000 - $150,000" />
               </div>
-              <div className="space-y-2 flex-1">
+              <div className="space-y-2 flex-1 w-full">
                 <Label>Experience Level</Label>
                 <ExperienceLevelSelector
                   onChange={() => {}}
@@ -86,7 +86,7 @@ export function JobListForm() {
                 />
               </div>
             </div>
-            <div className="space-y-2 flex-1">
+            <div className="space-y-2 w-full">
               <Label>Required Skills</Label>
               <TagsInput
                 onChange={setSkills}
