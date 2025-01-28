@@ -268,10 +268,16 @@ export default function JobListingsPage() {
     <div className="flex flex-col gap-8">
       <section className="flex items-center justify-between">
         <PageTitle title="Job Listings" className="text-lg" />
-        <Button className="min-w-fit ">
+        <Link
+          href="/job-listings/new"
+          className={buttonVariants({
+            variant: "default",
+            className: "min-w-fit",
+          })}
+        >
           <PlusIcon className="size-4" />
-          Create Job Post
-        </Button>
+          Publish New Job
+        </Link>
       </section>
       <section className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
@@ -382,8 +388,11 @@ export default function JobListingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 py-0 space-y-2">
-              <p className="text-sm font-medium">5 Days left</p>
-              <Progress value={50} indicatorBg="destructive" />
+              <p className="text-sm ">
+                <span className="text-secondary-foreground">Deadline:</span>{" "}
+                <span>5 Days left</span>
+              </p>
+              <Progress value={50} indicatorBg="success" />
             </CardContent>
             <Separator />
             <CardFooter className="flex items-center gap-2 text-sm">
@@ -418,7 +427,7 @@ export default function JobListingsPage() {
 import { useSupabase } from "@/hooks/use-supabase";
 import { getDepartmentsByOrganizationId } from "@optima/supabase/queries";
 import { Badge } from "@optima/ui/badge";
-import { Button } from "@optima/ui/button";
+import { Button, buttonVariants } from "@optima/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -445,6 +454,7 @@ import {
   SearchIcon,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 function JobCardDropdown() {
