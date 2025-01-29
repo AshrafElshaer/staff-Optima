@@ -36,7 +36,7 @@ export function JobListForm() {
         </div>
       </section>
 
-      <section className="flex flex-col lg:flex-row items-start gap-8 flex-1">
+      <section className="flex flex-col lg:flex-row items-start gap-8 ">
         <div className="flex-1 space-y-6 w-full">
           <div className="flex flex-col md:flex-row items-center gap-8 w-full">
             <div className="space-y-2  w-full">
@@ -146,7 +146,7 @@ export function JobListForm() {
         <p className="text-muted-foreground mb-4">
           Provide a detailed description of the job posting.
         </p>
-        <div className="flex flex-col flex-1 border rounded-md">
+        <div className="flex flex-col flex-1 border rounded-md [&>*:first-child]:flex-1">
           <SimpleEditor
             content={""}
             onChange={(value) => {

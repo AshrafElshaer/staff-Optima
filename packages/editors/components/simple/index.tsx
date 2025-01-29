@@ -8,6 +8,7 @@ import { cn } from "@optima/ui/cn";
 // import { EditorContent, EditorRoot } from "novel";
 import { Placeholder } from "novel/extensions";
 import { handleCommandNavigation } from "novel/extensions";
+import { slashCommand } from "../advanced/slash-commands";
 import { defaultExtensions } from "../extensions";
 import { SimpleToolbar } from "./toolbar";
 
@@ -20,6 +21,7 @@ type EditorProps = {
 
 const extensions = [
   ...defaultExtensions,
+  slashCommand,
   Placeholder.configure({
     placeholder: "Write something...",
   }),
@@ -44,7 +46,7 @@ export function SimpleEditor({
         //   handleImageDrop(view, event, moved, uploadFn),
         attributes: {
           class:
-            "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full p-4",
+            "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full p-4 h-full",
         },
       }}
       content={content}
@@ -54,7 +56,7 @@ export function SimpleEditor({
       immediatelyRender={false}
       // className={cn("h-full w-full overflow-hidden", className)}
       editable={editable}
-      slotBefore={<SimpleToolbar />}
+      slotAfter={<SimpleToolbar />}
     >
       {/* <EditorContent /> */}
     </EditorProvider>
