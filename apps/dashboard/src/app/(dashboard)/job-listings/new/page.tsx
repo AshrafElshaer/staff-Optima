@@ -1,8 +1,7 @@
-import { BackButton } from "@/components/back-button";
+"use client";
+
 import { PageTitle } from "@/components/page-title";
 import { JobListForm } from "@/features/job-listings/components/job-list-form";
-import { Button } from "@optima/ui/button";
-import { CheckmarkBadge03Icon, Megaphone01Icon } from "hugeicons-react";
 
 export default function NewJobListingPage() {
   return (
