@@ -146,7 +146,7 @@ export function JobListForm() {
         <p className="text-muted-foreground mb-4">
           Provide a detailed description of the job posting.
         </p>
-        <div className="flex flex-col flex-1 gap-4 border rounded-md p-4">
+        <div className="flex flex-col flex-1 border rounded-md">
           <SimpleEditor
             content={""}
             onChange={(value) => {
