@@ -1,5 +1,6 @@
+"use client";
+
 import { Separator } from "@optima/ui/separator";
-import { useEditor } from "novel";
 import { useState } from "react";
 import { ColorSelector } from "../advanced/selectors/color-selector";
 import { LinkSelector } from "../advanced/selectors/link-selector";
