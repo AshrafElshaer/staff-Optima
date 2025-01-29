@@ -2,6 +2,7 @@
 
 import { generateJSON } from "@tiptap/core";
 import type { HTMLContent } from "@tiptap/react";
+import { EditorProvider } from "@tiptap/react";
 
 import { cn } from "@optima/ui/cn";
 import { EditorContent, EditorRoot } from "novel";
@@ -41,7 +42,6 @@ export function SimpleEditor({
         extensions={extensions}
         immediatelyRender={false}
         className={cn("h-full w-full overflow-hidden", className)}
-        // slotBefore={<SimpleToolbar />}
         editorProps={{
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
@@ -55,7 +55,9 @@ export function SimpleEditor({
               "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full p-4",
           },
         }}
-      />
+      >
+        <SimpleToolbar />
+      </EditorContent>
     </EditorRoot>
   );
 }

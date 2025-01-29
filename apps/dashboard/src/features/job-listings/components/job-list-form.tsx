@@ -146,7 +146,7 @@ export function JobListForm() {
         <p className="text-muted-foreground mb-4">
           Provide a detailed description of the job posting.
         </p>
-        <SimpleEditor
+        <AdvancedEditor
           className="border rounded-md flex-1"
           content={form.getValues("jobDescription") ?? ""}
           onChange={(content) => form.setValue("jobDescription", content)}
