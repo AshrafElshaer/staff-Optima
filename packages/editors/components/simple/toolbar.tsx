@@ -12,7 +12,7 @@ export function SimpleToolbar() {
   const [linkOpen, setLinkOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
   return (
-    <div className="flex items-center w-full border-b  overflow-x-auto">
+    <div className="flex items-center w-full border-t  overflow-x-auto">
       <NodeSelector open={open} onOpenChange={setOpen} size="default" />
       <Separator orientation="vertical" className="h-9" />
       <TextButtons size="default" />

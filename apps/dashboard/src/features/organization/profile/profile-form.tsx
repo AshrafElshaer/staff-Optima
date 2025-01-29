@@ -10,7 +10,7 @@ import { AdvancedEditor } from "@optima/editors";
 import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
 import { Avatar } from "@optima/ui/avatar";
-import { Button, buttonVariants } from "@optima/ui/button";
+import { Button } from "@optima/ui/button";
 import { Input, UrlInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
@@ -22,6 +22,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { updateOrganizationAction } from "../organization.actions";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 
 export function OrganizationProfileForm({
   organization,
@@ -123,224 +131,271 @@ export function OrganizationProfileForm({
   });
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-8 max-w-3xl mx-auto w-full"
-    >
-      <section className="flex justify-between items-center w-full gap-4">
-        <div className="space-y-2 w-full">
-          <Label className="font-semibold text-base">Organization Logo</Label>
-          <p className="text-muted-foreground text-sm">
-            Accepts : PNG, JPG, or SVG.
-            <br />
-            Max size : 1MB
-            <br />
-            Recommended dimensions: 200x200 pixels.
-          </p>
-        </div>
-        <DropZone
-          options={{
-            accept: {
-              "image/png": [".png"],
-              "image/jpeg": [".jpg", ".jpeg"],
-              "image/svg+xml": [".svg"],
-              "image/webp": [".webp"],
-              "image/x-icon": [".ico"],
-            },
-            maxSize: 1000000,
-            maxFiles: 1,
-            multiple: false,
-            onDrop: async (acceptedFiles) => {
-              const file = acceptedFiles[0];
-              if (file) {
-                await uploadLogo(file);
-              }
-            },
-            onDropRejected: (rejectedFiles) => {
-              for (const file of rejectedFiles) {
-                toast.error(file.errors[0]?.message);
-              }
-            },
-          }}
-        >
-          <Avatar
-            className="size-28"
-            shape="square"
-            initials={`${organization?.name[0]}${organization?.name[1]}`}
-            src={organization?.logo_url}
-          />
-          <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 grid place-items-center">
-            <Plus className="size-10 text-secondary-foreground" />
-          </div>
-        </DropZone>
-      </section>
-      <Separator />
-
-      <section className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
-        <div className="space-y-2 w-full md:w-2/3">
-          <Label htmlFor="name" className="font-semibold text-base">
-            Legal Name
-          </Label>
-          <p className="text-muted-foreground text-sm">
-            Organization's registered legal name
-          </p>
-        </div>
-        <div className="w-full md:w-1/3">
-          <Input
-            {...form.register("name")}
-            id="name"
-            placeholder="Acme Corp"
-            error={form.formState.errors.name?.message}
-          />
-        </div>
-      </section>
-      <Separator />
-
-      <section className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
-        <div className="space-y-2 w-full md:w-2/3">
-          <Label htmlFor="domain" className="font-semibold text-base">
-            Domain
-          </Label>
-          <p className="text-muted-foreground text-sm">
-            organization's official website domain.
-          </p>
-        </div>
-        <div className="w-full md:w-1/3">
-          <UrlInput
-            {...form.register("domain")}
-            id="domain"
-            placeholder="domain.com"
-            error={form.formState.errors.domain?.message}
-          />
-        </div>
-      </section>
-      <Separator />
-
-      <section className="flex flex-col  w-full gap-4">
-        <div className="space-y-2 w-full">
-          <Label className="font-semibold text-base">Location</Label>
-          <p className="text-muted-foreground text-sm">
-            organization's headquarter address
-          </p>
-        </div>
-        <div className="grid gap-y-4 gap-x-20 md:grid-cols-2 ">
-          <div className="w-full space-y-2">
-            <Label htmlFor="address_1">
-              Address 1{" "}
-              <span className="text-muted-foreground">( Optional )</span>
-            </Label>
-            <Input
-              {...form.register("address_1")}
-              id="address_1"
-              placeholder="123 Main st"
-              error={form.formState.errors.address_1?.message}
-            />
-          </div>
-          <div className="w-full space-y-2">
-            <Label htmlFor="address_2">
-              Address 2{" "}
-              <span className="text-muted-foreground">( Optional )</span>
-            </Label>
-            <Input
-              {...form.register("address_2")}
-              id="address_2"
-              placeholder="suite 542"
-              error={form.formState.errors.address_2?.message}
-            />
-          </div>
-          <div className="w-full space-y-2">
-            <Label htmlFor="city">
-              City <span className="text-muted-foreground">( Optional )</span>
-            </Label>
-            <Input
-              {...form.register("city")}
-              id="city"
-              placeholder="San Francisco"
-              error={form.formState.errors.city?.message}
-            />
-          </div>
-          <div className="w-full space-y-2">
-            <Label htmlFor="state">
-              State <span className="text-muted-foreground">( Optional )</span>
-            </Label>
-            <Input
-              {...form.register("state")}
-              id="state"
-              placeholder="California"
-              error={form.formState.errors.state?.message}
-            />
-          </div>
-          <div className="w-full space-y-2">
-            <Label htmlFor="zip_code">
-              Zip Code{" "}
-              <span className="text-muted-foreground">( Optional )</span>
-            </Label>
-            <Input
-              {...form.register("zip_code")}
-              id="zip_code"
-              placeholder="12345"
-              error={form.formState.errors.zip_code?.message}
-            />
-          </div>
-          <div className="w-full space-y-2 pb-20">
-            <Label>Country</Label>
-
-            <CountrySelector
-              value={form.watch("country") ?? null}
-              setValue={(value) => {
-                form.setValue("country", value, {
-                  shouldDirty: true,
-                });
-                if (form.formState.errors.country) {
-                  form.clearErrors("country");
-                }
-              }}
-              error={form.formState.errors.country?.message}
-            />
-          </div>
-        </div>
-      </section>
-
-      <Separator />
-
-      <section className="flex flex-col  w-full gap-4 ">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 max-w-3xl mx-auto w-full"
+      >
+        <section className="flex justify-between items-center w-full gap-4">
           <div className="space-y-2 w-full">
-            <Label className="font-semibold text-base">Profile</Label>
-            <p className="text-muted-foreground text-sm md:w-3/4">
-              Write a detailed profile showcasing your organization's mission,
-              values, services, and achievements.
+            <Label className="font-semibold text-base">Organization Logo</Label>
+            <p className="text-muted-foreground text-sm">
+              Accepts : PNG, JPG, or SVG.
+              <br />
+              Max size : 1MB
+              <br />
+              Recommended dimensions: 200x200 pixels.
             </p>
           </div>
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <Link
-              href={`https://jobs.staffoptima.co/${organization?.domain}`}
-              className={buttonVariants({
-                variant: "secondary",
-                className: "w-full md:w-auto",
-              })}
-              target="_blank"
-            >
-              Preview
-            </Link>
-          </div>
-        </div>
-        <div className="w-full border rounded-md min-h-96 p-4 grid ">
-          <AdvancedEditor
-            key={form.formState.isDirty ? "dirty" : "clean"}
-            content={form.watch("profile")?.replace('"', " ") ?? ""}
-            onChange={(content) => {
-              form.setValue("profile", content, {
-                shouldDirty: true,
-              });
+          <DropZone
+            options={{
+              accept: {
+                "image/png": [".png"],
+                "image/jpeg": [".jpg", ".jpeg"],
+                "image/svg+xml": [".svg"],
+                "image/webp": [".webp"],
+                "image/x-icon": [".ico"],
+              },
+              maxSize: 1000000,
+              maxFiles: 1,
+              multiple: false,
+              onDrop: async (acceptedFiles) => {
+                const file = acceptedFiles[0];
+                if (file) {
+                  await uploadLogo(file);
+                }
+              },
+              onDropRejected: (rejectedFiles) => {
+                for (const file of rejectedFiles) {
+                  toast.error(file.errors[0]?.message);
+                }
+              },
             }}
-          />
-        </div>
-      </section>
+          >
+            <Avatar
+              className="size-28"
+              shape="square"
+              initials={`${organization?.name[0]}${organization?.name[1]}`}
+              src={organization?.logo_url}
+            />
+            <div className="absolute inset-0 bg-background/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 grid place-items-center">
+              <Plus className="size-10 text-secondary-foreground" />
+            </div>
+          </DropZone>
+        </section>
+        <Separator />
 
-      <button type="submit" ref={formSubmitRef} className="hidden">
-        save
-      </button>
-    </form>
+        <section className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
+          <div className="space-y-2 w-full md:w-2/3">
+            <Label className="font-semibold text-base">Legal Name</Label>
+            <p className="text-muted-foreground text-sm">
+              Organization's registered legal name
+            </p>
+          </div>
+          <div className="w-full md:w-1/3">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Acme Corp" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </section>
+        <Separator />
+
+        <section className="flex flex-col md:flex-row justify-between items-center w-full gap-4">
+          <div className="space-y-2 w-full md:w-2/3">
+            <Label className="font-semibold text-base">Domain</Label>
+            <p className="text-muted-foreground text-sm">
+              organization's official website domain.
+            </p>
+          </div>
+          <div className="w-full md:w-1/3">
+            <FormField
+              control={form.control}
+              name="domain"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <UrlInput placeholder="domain.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </section>
+        <Separator />
+
+        <section className="flex flex-col w-full gap-4">
+          <div className="space-y-2 w-full">
+            <Label className="font-semibold text-base">Location</Label>
+            <p className="text-muted-foreground text-sm">
+              organization's headquarter address
+            </p>
+          </div>
+          <div className="grid gap-y-4 gap-x-20 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="address_1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Address 1 <span className="text-muted-foreground">( Optional )</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="123 Main st" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="address_2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Address 2 <span className="text-muted-foreground">( Optional )</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="suite 542" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    City <span className="text-muted-foreground">( Optional )</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="San Francisco" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    State <span className="text-muted-foreground">( Optional )</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="California" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="zip_code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Zip Code <span className="text-muted-foreground">( Optional )</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="12345" {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem className="pb-20">
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <CountrySelector
+                      value={field.value ?? null}
+                      setValue={(value) => {
+                        form.setValue("country", value, {
+                          shouldDirty: true,
+                        });
+                        if (form.formState.errors.country) {
+                          form.clearErrors("country");
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </section>
+
+        <Separator />
+
+        <section className="flex flex-col w-full gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="space-y-2 w-full">
+              <Label className="font-semibold text-base">Profile</Label>
+              <p className="text-muted-foreground text-sm md:w-3/4">
+                Write a detailed profile showcasing your organization's mission,
+                values, services, and achievements.
+              </p>
+            </div>
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <Link
+                href={`https://jobs.staffoptima.co/${organization?.domain}`}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2 w-full md:w-auto"
+                target="_blank"
+              >
+                Preview
+              </Link>
+            </div>
+          </div>
+          <FormField
+            control={form.control}
+            name="profile"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="w-full border rounded-md min-h-96 p-4 grid">
+                    <AdvancedEditor
+                      key={form.formState.isDirty ? "dirty" : "clean"}
+                      content={field.value?.replace('"', " ") ?? ""}
+                      onChange={(content) => {
+                        form.setValue("profile", content, {
+                          shouldDirty: true,
+                        });
+                      }}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </section>
+
+        <button type="submit" ref={formSubmitRef} className="hidden">
+          save
+        </button>
+      </form>
+    </Form>
   );
 }

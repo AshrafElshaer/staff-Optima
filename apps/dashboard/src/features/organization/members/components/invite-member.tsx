@@ -7,16 +7,13 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@optima/ui/dialog";
 import { Input } from "@optima/ui/inputs";
-import { Label } from "@optima/ui/label";
-import { Textarea } from "@optima/ui/textarea";
-import { Check, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,6 +22,14 @@ import type { z } from "zod";
 import { inviteMemberAction } from "../members.actions";
 import { AccessRoleSelector } from "./access-role-selector";
 import { PhoneInput } from "@/components/phone-number-input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 
 export function InviteMember() {
   const [open, setOpen] = useState(false);
@@ -64,73 +69,109 @@ export function InviteMember() {
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="p-4 space-y-4">
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="edit-first-name">First Name</Label>
-                <Input
-                  id="edit-first-name"
-                  placeholder="Matt"
-                  {...form.register("first_name")}
-                  error={form.formState.errors.first_name?.message}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="p-4 space-y-4">
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <FormField
+                  control={form.control}
+                  name="first_name"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>First Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Matt" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="last_name"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Last Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Welsh" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="edit-last-name">Last Name</Label>
-                <Input
-                  id="edit-last-name"
-                  placeholder="Welsh"
-                  {...form.register("last_name")}
-                  error={form.formState.errors.last_name?.message}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-email">Email</Label>
-              <Input
-                id="edit-email"
-                className="peer pe-9"
-                placeholder="example@domain.com"
-                type="email"
-                {...form.register("email")}
-                error={form.formState.errors.email?.message}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-phone-number">Phone Number</Label>
-              <PhoneInput
-                value={form.watch("phone_number")}
-                onChange={(value) => form.setValue("phone_number", value ?? "")}
-                placeholder="+1234567890"
-                error={form.formState.errors.phone_number?.message}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-access-role">Access Role</Label>
-              <AccessRoleSelector
-                value={form.watch("access_role")}
-                onChange={(value) => {
-                  form.setValue("access_role", value);
-                  form.trigger("access_role");
-                }}
-                error={form.formState.errors.access_role?.message}
-              />
-            </div>
-          </div>
 
-          <DialogFooter className="border-t border-border px-6 py-4">
-            <DialogClose asChild>
-              <Button type="button" variant="outline" disabled={isExecuting}>
-                Cancel
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="peer pe-9"
+                        placeholder="example@domain.com"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone_number"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone Number</FormLabel>
+                    <FormControl>
+                      <PhoneInput
+                        value={field.value}
+                        onChange={(value) => field.onChange(value ?? "")}
+                        placeholder="+1234567890"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="access_role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Access Role</FormLabel>
+                    <FormControl>
+                      <AccessRoleSelector
+                        value={field.value}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.trigger("access_role");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <DialogFooter className="border-t border-border px-6 py-4">
+              <DialogClose asChild>
+                <Button type="button" variant="outline" disabled={isExecuting}>
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button type="submit" disabled={isExecuting}>
+                {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
+                Invite
               </Button>
-            </DialogClose>
-            <Button type="submit" disabled={isExecuting}>
-              {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
-              Invite
-            </Button>
-          </DialogFooter>
-        </form>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

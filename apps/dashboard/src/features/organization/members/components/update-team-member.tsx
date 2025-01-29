@@ -13,11 +13,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@optima/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 import { Input } from "@optima/ui/inputs";
-import { Label } from "@optima/ui/label";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -58,65 +65,91 @@ export function UpdateMember({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="p-4 space-y-4">
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="edit-first-name">First Name</Label>
-                <Input
-                  id="edit-first-name"
-                  placeholder="Matt"
-                  {...form.register("first_name")}
-                  error={form.formState.errors.first_name?.message}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="p-4 space-y-4">
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <FormField
+                  control={form.control}
+                  name="first_name"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel htmlFor="edit-first-name">First Name</FormLabel>
+                      <FormControl>
+                        <Input id="edit-first-name" placeholder="Matt" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="last_name"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel htmlFor="edit-last-name">Last Name</FormLabel>
+                      <FormControl>
+                        <Input id="edit-last-name" placeholder="Welsh" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="edit-last-name">Last Name</Label>
-                <Input
-                  id="edit-last-name"
-                  placeholder="Welsh"
-                  {...form.register("last_name")}
-                  error={form.formState.errors.last_name?.message}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-email">Email</Label>
-              <Input
-                id="edit-email"
-                className="peer pe-9"
-                placeholder="example@domain.com"
-                type="email"
-                {...form.register("email")}
-                error={form.formState.errors.email?.message}
-                disabled
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-access-role">Access Role</Label>
-              <AccessRoleSelector
-                value={form.watch("access_role") as UserAccessRole}
-                onChange={(value) => {
-                  form.setValue("access_role", value);
-                  form.trigger("access_role");
-                }}
-                error={form.formState.errors.access_role?.message}
-              />
-            </div>
-          </div>
 
-          <DialogFooter className="border-t border-border px-6 py-4">
-            <DialogClose asChild>
-              <Button type="button" variant="outline" disabled={isExecuting}>
-                Cancel
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="edit-email">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="edit-email"
+                        className="peer pe-9"
+                        placeholder="example@domain.com"
+                        type="email"
+                        disabled
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="access_role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="edit-access-role">Access Role</FormLabel>
+                    <FormControl>
+                      <AccessRoleSelector
+                        value={field.value as UserAccessRole}
+                        onChange={field.onChange}
+                        error={form.formState.errors.access_role?.message}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <DialogFooter className="border-t border-border px-6 py-4">
+              <DialogClose asChild>
+                <Button type="button" variant="outline" disabled={isExecuting}>
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button type="submit" disabled={isExecuting}>
+                {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
+                Save
               </Button>
-            </DialogClose>
-            <Button type="submit" disabled={isExecuting}>
-              {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
-              Save
-            </Button>
-          </DialogFooter>
-        </form>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

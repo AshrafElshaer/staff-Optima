@@ -11,15 +11,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@optima/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 import { Input } from "@optima/ui/inputs";
-import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
 import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
 import type { z } from "zod";
+
 export function FullName({ user }: { user: User }) {
   const { execute: updateUser, isExecuting } = useAction(updateUserAction, {
     onSuccess: ({ data }) => {
@@ -34,6 +41,7 @@ export function FullName({ user }: { user: User }) {
       toast.error(error.serverError);
     },
   });
+
   const form = useForm<z.infer<typeof userUpdateSchema>>({
     resolver: zodResolver(userUpdateSchema),
     defaultValues: {
@@ -42,6 +50,7 @@ export function FullName({ user }: { user: User }) {
       last_name: user.last_name,
     },
   });
+
   function onSubmit(values: z.infer<typeof userUpdateSchema>) {
     updateUser(values);
   }
@@ -52,48 +61,60 @@ export function FullName({ user }: { user: User }) {
         <CardTitle className="font-semibold ">Full Name</CardTitle>
       </CardHeader>
       <Separator />
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="space-y-2 w-full md:w-1/3">
-            <Label>First Name</Label>
-            <Input
-              placeholder="Enter your first name"
-              {...form.register("first_name")}
-              error={form.formState.errors.first_name?.message}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="first_name"
+              render={({ field }) => (
+                <FormItem className="space-y-2 w-full md:w-1/3">
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your first name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="space-y-2 w-full md:w-1/3">
-            <Label>Last Name</Label>
-            <Input
-              placeholder="Enter your last name"
-              {...form.register("last_name")}
-              error={form.formState.errors.last_name?.message}
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem className="space-y-2 w-full md:w-1/3">
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your last name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </CardContent>
-        <Separator />
-        <CardFooter className="flex justify-end p-3 gap-2 items-center">
-          {form.formState.isDirty && (
+          </CardContent>
+          <Separator />
+          <CardFooter className="flex justify-end p-3 gap-2 items-center">
+            {form.formState.isDirty && (
+              <Button
+                variant="outline"
+                type="button"
+                disabled={!form.formState.isDirty || isExecuting}
+                onClick={() => {
+                  form.reset();
+                }}
+              >
+                Reset
+              </Button>
+            )}
             <Button
-              variant="outline"
-              type="button"
               disabled={!form.formState.isDirty || isExecuting}
-              onClick={() => {
-                form.reset();
-              }}
+              type="submit"
             >
-              Reset
+              {isExecuting ? <Loader className="w-4 h-4 animate-spin" /> : null}
+              Save
             </Button>
-          )}
-          <Button
-            disabled={!form.formState.isDirty || isExecuting}
-            type="submit"
-          >
-            {isExecuting ? <Loader className="w-4 h-4 animate-spin" /> : null}
-            Save
-          </Button>
-        </CardFooter>
-      </form>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 }

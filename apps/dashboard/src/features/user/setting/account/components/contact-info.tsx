@@ -1,9 +1,7 @@
 "use client";
 import { Button } from "@optima/ui/button";
-
 import { Label } from "@optima/ui/label";
 import { parsePhoneNumber } from "react-phone-number-input";
-
 import { PhoneInput } from "@/components/phone-number-input";
 import { updateUserAction } from "@/features/user/user.actions";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +21,15 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
+
 export function ContactInfo({ user }: { user: User }) {
   const { execute: updateUser, isExecuting } = useAction(updateUserAction, {
     onSuccess: () => {
@@ -51,54 +58,68 @@ export function ContactInfo({ user }: { user: User }) {
     <Card>
       <CardHeader>
         <CardTitle className="font-semibold ">Contact Information</CardTitle>
-        {/* <CardDescription>Manage your account settings and preferences.</CardDescription> */}
       </CardHeader>
       <Separator />
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="space-y-2 w-full md:w-1/3">
-            <Label>Email Address</Label>
-            <Input
-              placeholder="example@domain.com"
-              {...form.register("email")}
-              error={form.formState.errors.email?.message}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="space-y-2 w-full md:w-1/3">
+                  <FormLabel>Email Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="example@domain.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="space-y-2 w-full md:w-1/3">
-            <Label>Phone Number</Label>
-            <PhoneInput
-              value={form.watch("phone_number")?.replace(/\s+/g, "")}
-              onChange={(value) =>
-                form.setValue("phone_number", value, {
-                  shouldDirty: true,
-                })
-              }
-              defaultCountry={phoneNumberCountry}
-              error={form.formState.errors.phone_number?.message}
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem className="space-y-2 w-full md:w-1/3">
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <PhoneInput
+                      value={field.value?.replace(/\s+/g, "")}
+                      onChange={(value) =>
+                        form.setValue("phone_number", value, {
+                          shouldDirty: true,
+                        })
+                      }
+                      defaultCountry={phoneNumberCountry}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </CardContent>
-        <Separator />
-        <CardFooter className="flex justify-end p-3 gap-2 items-center">
-          {form.formState.isDirty && (
+          </CardContent>
+          <Separator />
+          <CardFooter className="flex justify-end p-3 gap-2 items-center">
+            {form.formState.isDirty && (
+              <Button
+                variant="outline"
+                disabled={isExecuting}
+                onClick={() => form.reset()}
+                type="button"
+              >
+                Reset
+              </Button>
+            )}
             <Button
-              variant="outline"
-              disabled={isExecuting}
-              onClick={() => form.reset()}
-              type="button"
+              disabled={!form.formState.isDirty || isExecuting}
+              type="submit"
             >
-              Reset
+              {isExecuting ? <Loader className="w-4 h-4 animate-spin" /> : null}
+              Save
             </Button>
-          )}
-          <Button
-            disabled={!form.formState.isDirty || isExecuting}
-            type="submit"
-          >
-            {isExecuting ? <Loader className="w-4 h-4 animate-spin" /> : null}
-            Save
-          </Button>
-        </CardFooter>
-      </form>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 }

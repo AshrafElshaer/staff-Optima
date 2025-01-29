@@ -2,8 +2,29 @@
 
 import { TextGenerateEffect } from "@/components/text-generate-effect";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCountdown } from "usehooks-ts";
+import { useSession } from "@/hooks/use-session";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { userInsertSchema } from "@optima/supabase/validations";
+import { Button } from "@optima/ui/button";
+import { Input } from "@optima/ui/inputs";
+import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
+import { PhoneInput } from "@/components/phone-number-input";
+import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
+import { onboardUserAction } from "../onboarding.actions";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 
 export function UserOnboarding() {
   const [counter, { startCountdown }] = useCountdown({
@@ -49,24 +70,6 @@ export function UserOnboarding() {
   );
 }
 
-import { useSession } from "@/hooks/use-session";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { userInsertSchema } from "@optima/supabase/validations";
-import { Button } from "@optima/ui/button";
-import { Input } from "@optima/ui/inputs";
-import { Label } from "@optima/ui/label";
-
-import { useAction } from "next-safe-action/hooks";
-
-import { useRouter } from "next/navigation";
-
-import { PhoneInput } from "@/components/phone-number-input";
-import { Loader } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import type { z } from "zod";
-import { onboardUserAction } from "../onboarding.actions";
-
 function UserForm() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -97,60 +100,85 @@ function UserForm() {
   }, [session?.user.email]);
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-      <div className="flex items-center gap-2">
-        <div className="space-y-2 ">
-          <Label>First Name</Label>
-          <Input
-            {...form.register("first_name")}
-            placeholder="John"
-            error={form.formState.errors.first_name?.message}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+        <div className="flex items-center gap-2">
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="John" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
 
-        <div className="space-y-2">
-          <Label>Last Name</Label>
-          <Input
-            {...form.register("last_name")}
-            placeholder="Doe"
-            error={form.formState.errors.last_name?.message}
-          />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label>Phone Number</Label>
-        <PhoneInput
-          value={form.watch("phone_number")}
-          onChange={(value) => form.setValue("phone_number", value ?? "")}
-          placeholder="+1234567890"
-          error={form.formState.errors.phone_number?.message}
+        <FormField
+          control={form.control}
+          name="phone_number"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <PhoneInput
+                  value={field.value}
+                  onChange={(value) => field.onChange(value ?? "")}
+                  placeholder="+1234567890"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="space-y-2">
-        <Label>Email</Label>
-        <Input
-          {...form.register("email")}
-          placeholder="john.doe@example.com"
-          error={form.formState.errors.email?.message}
-          disabled
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="space-y-2">
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="john.doe@example.com"
+                  {...field}
+                  disabled
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      {/* <TimezoneSelector
-        value={form.watch("timezone")}
-        onValueChange={(value) => form.setValue("timezone", value)}
-      /> */}
-
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={form.formState.isSubmitting || status === "hasSucceeded"}
-      >
-        {form.formState.isSubmitting ? (
-          <Loader className="size-4 animate-spin " />
-        ) : null}
-        Continue
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={form.formState.isSubmitting || status === "hasSucceeded"}
+        >
+          {form.formState.isSubmitting ? (
+            <Loader className="size-4 animate-spin " />
+          ) : null}
+          Continue
+        </Button>
+      </form>
+    </Form>
   );
 }

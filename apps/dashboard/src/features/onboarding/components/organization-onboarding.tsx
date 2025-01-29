@@ -22,6 +22,16 @@ import { useCountdown } from "usehooks-ts";
 import type { z } from "zod";
 import { onboardOrganizationAction } from "../onboarding.actions";
 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
+
 export function OrganizationOnboarding() {
   const [counter, { startCountdown }] = useCountdown({
     countStart: 3,
@@ -71,6 +81,20 @@ function OrganizationForm() {
 
   const form = useForm<z.infer<typeof organizationInsertSchema>>({
     resolver: zodResolver(organizationInsertSchema),
+    defaultValues: {
+      country: "",
+      address_1: "",
+      address_2: "",
+      city: "",
+      state: "",
+      zip_code: "",
+      industry: "",
+      domain: "",
+      name: "",
+      profile: "",
+
+      
+    },
   });
 
   const { executeAsync: createOrganization, status } = useAction(
@@ -96,114 +120,168 @@ function OrganizationForm() {
   }, []);
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-      <div className="space-y-2 w-full">
-        <Label>Organization Name</Label>
-        <Input
-          {...form.register("name")}
-          placeholder="Acme Corp"
-          error={form.formState.errors.name?.message}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Organization Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Acme Corp" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div className="flex flex-col sm:flex-row  gap-2">
-        <div className="space-y-2 w-full">
-          <Label>Domain</Label>
 
-          <UrlInput
-            {...form.register("domain")}
-            placeholder="domain.example"
-            error={form.formState.errors.domain?.message}
+        <div className="flex flex-col sm:flex-row gap-2">
+          <FormField
+            control={form.control}
+            name="domain"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Domain</FormLabel>
+                <FormControl>
+                  <UrlInput placeholder="domain.example" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <div className="space-y-2 w-full">
-          <Label>Industry</Label>
-          <Input
-            {...form.register("industry")}
-            placeholder="Technology"
-            error={form.formState.errors.industry?.message}
-          />
-        </div>
-      </div>
-      <div className="flex flex-col sm:flex-row gap-2 w-full">
-        <div className="space-y-2 w-full">
-          <Label>
-            Address 1{" "}
-            <span className="text-muted-foreground">( Optional )</span>
-          </Label>
-          <Input
-            {...form.register("address_1")}
-            placeholder="123 Main st"
-            error={form.formState.errors.address_1?.message}
+
+          <FormField
+            control={form.control}
+            name="industry"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Industry</FormLabel>
+                <FormControl>
+                  <Input placeholder="Technology" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
 
-        <div className="space-y-2 w-full">
-          <Label>
-            Address 2{" "}
-            <span className="text-muted-foreground">( Optional )</span>
-          </Label>
-          <Input
-            {...form.register("address_2")}
-            placeholder="suite #512"
-            error={form.formState.errors.address_2?.message}
+        <div className="flex flex-col sm:flex-row gap-2">
+          <FormField
+            control={form.control}
+            name="address_1"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  Address 1 <span className="text-muted-foreground">( Optional )</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="123 Main st" {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-      </div>
 
-      <div className="flex flex-col sm:flex-row gap-2 w-full">
-        <div className="space-y-2 w-full">
-          <Label>
-            City <span className="text-muted-foreground">( Optional )</span>
-          </Label>
-          <Input
-            {...form.register("city")}
-            placeholder="New York"
-            error={form.formState.errors.city?.message}
+          <FormField
+            control={form.control}
+            name="address_2"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  Address 2 <span className="text-muted-foreground">( Optional )</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="suite #512" {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
-        <div className="space-y-2 w-full">
-          <Label>
-            State <span className="text-muted-foreground">( Optional )</span>
-          </Label>
-          <Input
-            {...form.register("state")}
-            placeholder="Texas"
-            error={form.formState.errors.state?.message}
+
+        <div className="flex flex-col sm:flex-row gap-2">
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  City <span className="text-muted-foreground">( Optional )</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="New York" {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  State <span className="text-muted-foreground">( Optional )</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Texas" {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="zip_code"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>
+                  Zip Code <span className="text-muted-foreground">( Optional )</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="12345" {...field} value={field.value || ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
-        <div className="space-y-2 w-full">
-          <Label>
-            Zip Code <span className="text-muted-foreground">( Optional )</span>
-          </Label>
-          <Input
-            {...form.register("zip_code")}
-            placeholder="12345"
-            error={form.formState.errors.zip_code?.message}
-          />
-        </div>
-      </div>
-      <div className="space-y-2 w-full">
-        <Label>Country</Label>
-        <CountrySelector
-          value={form.watch("country")}
-          setValue={(value) => {
-            form.setValue("country", value);
-            form.clearErrors("country");
-          }}
-          error={form.formState.errors.country?.message}
+
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Country</FormLabel>
+              <FormControl>
+                <CountrySelector
+                  value={field.value}
+                  setValue={(value) => {
+                    field.onChange(value);
+                    form.clearErrors("country");
+                  }}
+                  error={form.formState.errors.country?.message}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={form.formState.isSubmitting || status === "hasSucceeded"}
-      >
-        {form.formState.isSubmitting ? (
-          <Loader className="size-4 animate-spin mr-2" />
-        ) : null}
-        Complete Setup
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={form.formState.isSubmitting || status === "hasSucceeded"}
+        >
+          {form.formState.isSubmitting ? (
+            <Loader className="size-4 animate-spin mr-2" />
+          ) : null}
+          Complete Setup
+        </Button>
+      </form>
+    </Form>
   );
 }
