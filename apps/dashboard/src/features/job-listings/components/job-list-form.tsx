@@ -5,7 +5,7 @@ import { DepartmentSelector } from "@/components/selectors/department-selector";
 import { EmploymentTypeSelector } from "@/components/selectors/employment-type-selector";
 import { ExperienceLevelSelector } from "@/components/selectors/experience-level-selector";
 import { JobLocationSelector } from "@/components/selectors/job-location-selector";
-import { SimpleEditor } from "@optima/editors";
+import { AdvancedEditor } from "@optima/editors";
 import { Button } from "@optima/ui/button";
 
 import { Input, TagsInput } from "@optima/ui/inputs";
