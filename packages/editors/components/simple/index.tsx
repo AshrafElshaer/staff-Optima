@@ -41,7 +41,7 @@ export function SimpleEditor({
         extensions={extensions}
         immediatelyRender={false}
         className={cn("h-full w-full overflow-hidden", className)}
-        slotBefore={<SimpleToolbar />}
+        // slotBefore={<SimpleToolbar />}
         editorProps={{
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
