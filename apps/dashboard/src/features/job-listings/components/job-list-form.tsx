@@ -5,7 +5,7 @@ import { DepartmentSelector } from "@/components/selectors/department-selector";
 import { EmploymentTypeSelector } from "@/components/selectors/employment-type-selector";
 import { ExperienceLevelSelector } from "@/components/selectors/experience-level-selector";
 import { JobLocationSelector } from "@/components/selectors/job-location-selector";
-import { AdvancedEditor } from "@optima/editors";
+import {  SimpleEditor } from "@optima/editors";
 import { Button } from "@optima/ui/button";
 
 import { Input, TagsInput } from "@optima/ui/inputs";
@@ -147,9 +147,11 @@ export function JobListForm() {
           Provide a detailed description of the job posting.
         </p>
         <div className="flex flex-col flex-1 gap-4 border rounded-md p-4">
-          <AdvancedEditor
-            content={form.getValues("jobDescription") ?? ""}
-            onChange={(content) => form.setValue("jobDescription", content)}
+          <SimpleEditor
+            content={""}
+            onChange={(value) => {
+              console.log(value);
+            }}
           />
         </div>
       </section>

@@ -1,3 +1,4 @@
+import { useCurrentEditor, useEditor } from "@tiptap/react";
 import {
   Check,
   CheckSquare,
@@ -11,7 +12,7 @@ import {
   TextIcon,
   TextQuote,
 } from "lucide-react";
-import { EditorBubbleItem, type EditorInstance, useEditor } from "novel";
+import { EditorBubbleItem, type EditorInstance } from "novel";
 
 import { Button } from "@optima/ui/button";
 import { PopoverContent, PopoverTrigger } from "@optima/ui/popover";
@@ -104,7 +105,7 @@ export const NodeSelector = ({
   onOpenChange,
   size = "sm",
 }: NodeSelectorProps) => {
-  const { editor } = useEditor();
+  const { editor } = useCurrentEditor();
   if (!editor) return null;
 
   const activeItem = items.filter((item) => item.isActive(editor)).pop() ?? {
@@ -128,13 +129,14 @@ export const NodeSelector = ({
         </span>
         <Separator className="my-1" />
         {items.map((item, index) => (
-          <EditorBubbleItem
+          <button
             key={index.toString()}
-            onSelect={(editor) => {
+            type="button"
+            onClick={() => {
               item.command(editor);
               onOpenChange(false);
             }}
-            className="flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm hover:bg-accent"
+            className="flex cursor-pointer items-center justify-between rounded-sm px-2 py-1 text-sm hover:bg-accent w-full"
           >
             <div className="flex items-center space-x-2">
               <div className="rounded-sm border p-1">
@@ -143,7 +145,7 @@ export const NodeSelector = ({
               <span>{item.name}</span>
             </div>
             {activeItem.name === item.name && <Check className="h-4 w-4" />}
-          </EditorBubbleItem>
+          </button>
         ))}
       </PopoverContent>
     </Popover>

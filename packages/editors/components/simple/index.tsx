@@ -2,10 +2,10 @@
 
 import { generateJSON } from "@tiptap/core";
 import type { HTMLContent } from "@tiptap/react";
-import { EditorProvider } from "@tiptap/react";
+import { EditorContent, EditorProvider } from "@tiptap/react";
 
 import { cn } from "@optima/ui/cn";
-import { EditorContent, EditorRoot } from "novel";
+// import { EditorContent, EditorRoot } from "novel";
 import { Placeholder } from "novel/extensions";
 import { handleCommandNavigation } from "novel/extensions";
 import { defaultExtensions } from "../extensions";
@@ -32,32 +32,31 @@ export function SimpleEditor({
   className,
 }: EditorProps) {
   return (
-    <EditorRoot>
-      <EditorContent
-        editable={editable}
-        initialContent={generateJSON(content ?? "", extensions)}
-        onUpdate={({ editor }) => {
-          onChange?.(editor.getHTML());
-        }}
-        extensions={extensions}
-        immediatelyRender={false}
-        className={cn("h-full w-full overflow-hidden", className)}
-        editorProps={{
-          handleDOMEvents: {
-            keydown: (_view, event) => handleCommandNavigation(event),
-          },
-          // handlePaste: (view, event) =>
-          //   handleImagePaste(view, event, uploadFn),
-          // handleDrop: (view, event, _slice, moved) =>
-          //   handleImageDrop(view, event, moved, uploadFn),
-          attributes: {
-            class:
-              "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full p-4",
-          },
-        }}
-      >
-        <SimpleToolbar />
-      </EditorContent>
-    </EditorRoot>
+    <EditorProvider
+      extensions={extensions}
+      editorProps={{
+        handleDOMEvents: {
+          keydown: (_view, event) => handleCommandNavigation(event),
+        },
+        // handlePaste: (view, event) =>
+        //   handleImagePaste(view, event, uploadFn),
+        // handleDrop: (view, event, _slice, moved) =>
+        //   handleImageDrop(view, event, moved, uploadFn),
+        attributes: {
+          class:
+            "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full p-4",
+        },
+      }}
+      content={content}
+      onUpdate={({ editor }) => {
+        onChange?.(editor.getHTML());
+      }}
+      immediatelyRender={false}
+      // className={cn("h-full w-full overflow-hidden", className)}
+      editable={editable}
+      slotBefore={<SimpleToolbar />}
+    >
+      {/* <EditorContent /> */}
+    </EditorProvider>
   );
 }
