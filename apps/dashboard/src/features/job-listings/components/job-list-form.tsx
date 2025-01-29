@@ -146,11 +146,12 @@ export function JobListForm() {
         <p className="text-muted-foreground mb-4">
           Provide a detailed description of the job posting.
         </p>
-        <AdvancedEditor
-          className="border rounded-md flex-1"
-          content={form.getValues("jobDescription") ?? ""}
-          onChange={(content) => form.setValue("jobDescription", content)}
-        />
+        <div className="flex flex-col flex-1 gap-4 border rounded-md p-4">
+          <AdvancedEditor
+            content={form.getValues("jobDescription") ?? ""}
+            onChange={(content) => form.setValue("jobDescription", content)}
+          />
+        </div>
       </section>
     </div>
   );
