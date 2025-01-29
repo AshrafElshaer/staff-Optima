@@ -33,9 +33,14 @@ export function getUrlFromString(str: string) {
 interface LinkSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  size?: "sm" | "lg" | "icon" | "default";
 }
 
-export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
+export const LinkSelector = ({
+  open,
+  onOpenChange,
+  size = "sm",
+}: LinkSelectorProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { editor } = useEditor();
 
@@ -49,9 +54,10 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
         <Button
-          size="sm"
+          size={size}
           variant="ghost"
           className="gap-1 rounded-none border-none"
+          disabled={editor.state.selection.empty}
         >
           <Link04Icon size={16} />
           <p

@@ -90,9 +90,14 @@ const HIGHLIGHT_COLORS: BubbleColorMenuItem[] = [
 interface ColorSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  size?: "sm" | "lg" | "icon" | "default";
 }
 
-export const ColorSelector = ({ open, onOpenChange }: ColorSelectorProps) => {
+export const ColorSelector = ({
+  open,
+  onOpenChange,
+  size = "sm",
+}: ColorSelectorProps) => {
   const { editor } = useEditor();
 
   if (!editor) return null;
@@ -107,7 +112,7 @@ export const ColorSelector = ({ open, onOpenChange }: ColorSelectorProps) => {
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        <Button size="sm" className="gap-2 rounded-none" variant="ghost">
+        <Button size={size} className="gap-2 rounded-none" variant="ghost">
           <span
             className="rounded-sm px-1"
             style={{

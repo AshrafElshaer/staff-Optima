@@ -18,13 +18,16 @@ import { LinkSelector } from "./selectors/link-selector";
 import { NodeSelector } from "./selectors/node-selector";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-commands";
+
+import { Placeholder } from "novel/extensions";
+
 type AdvancedEditorProps = {
   content: HTMLContent | undefined;
   onChange?: (content: HTMLContent) => void;
   editable?: boolean;
 };
-
-const extensions = [...defaultExtensions, slashCommand];
+const placeholder = Placeholder;
+const extensions = [...defaultExtensions, placeholder, slashCommand];
 
 export function AdvancedEditor({
   content,

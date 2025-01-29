@@ -13,7 +13,11 @@ import {
 import { EditorBubbleItem, useEditor } from "novel";
 import type { SelectorItem } from "./node-selector";
 
-export const TextButtons = () => {
+export const TextButtons = ({
+  size = "sm",
+}: {
+  size?: "sm" | "lg" | "icon" | "default";
+}) => {
   const { editor } = useEditor();
   if (!editor) return null;
 
@@ -73,7 +77,7 @@ export const TextButtons = () => {
           }}
         >
           <Button
-            size="sm"
+            size={size}
             className="rounded-none"
             variant="ghost"
             type="button"

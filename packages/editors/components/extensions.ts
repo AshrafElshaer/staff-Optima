@@ -18,7 +18,7 @@ import { cn } from "@optima/ui/cn";
 import { ResizableImage } from "./ResizableImage";
 
 const aiHighlight = AIHighlight;
-const placeholder = Placeholder;
+
 const highlight = HighlightExtension;
 const underline = TiptapUnderline;
 const tiptapLink = TiptapLink.configure({
@@ -113,10 +113,8 @@ const starterKit = StarterKit.configure({
 
 export const defaultExtensions = [
   starterKit,
-  placeholder,
   tiptapLink,
   tiptapImage,
-  // updatedImage,
   taskList,
   taskItem,
   horizontalRule,

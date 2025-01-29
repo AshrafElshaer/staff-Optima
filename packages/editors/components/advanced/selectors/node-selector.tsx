@@ -96,9 +96,14 @@ const items: SelectorItem[] = [
 interface NodeSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  size?: "sm" | "lg" | "icon" | "default";
 }
 
-export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
+export const NodeSelector = ({
+  open,
+  onOpenChange,
+  size = "sm",
+}: NodeSelectorProps) => {
   const { editor } = useEditor();
   if (!editor) return null;
 
@@ -112,7 +117,7 @@ export const NodeSelector = ({ open, onOpenChange }: NodeSelectorProps) => {
         asChild
         className="gap-2 rounded-none border-none hover:bg-accent focus:ring-0"
       >
-        <Button size="sm" variant="ghost" className="gap-2" type="button">
+        <Button size={size} variant="ghost" className="gap-2" type="button">
           <span className="whitespace-nowrap text-sm">{activeItem.name}</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
