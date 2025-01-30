@@ -11,7 +11,7 @@ import {
   useEffect,
   useRef,
 } from "react";
-
+import { useCurrentEditor } from "@tiptap/react";
 export function isValidUrl(url: string) {
   try {
     new URL(url);
@@ -42,7 +42,7 @@ export const LinkSelector = ({
   size = "sm",
 }: LinkSelectorProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { editor } = useEditor();
+  const { editor } = useCurrentEditor();
 
   // Autofocus on input by default
   useEffect(() => {

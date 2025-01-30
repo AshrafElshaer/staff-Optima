@@ -1,5 +1,6 @@
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
+import { useCurrentEditor } from "@tiptap/react";
 import {
   AlignCenterIcon,
   AlignLeftIcon,
@@ -18,7 +19,7 @@ export const TextButtons = ({
 }: {
   size?: "sm" | "lg" | "icon" | "default";
 }) => {
-  const { editor } = useEditor();
+  const { editor } = useCurrentEditor();
   if (!editor) return null;
 
   const items: SelectorItem[] = [
@@ -79,14 +80,10 @@ export const TextButtons = ({
           <Button
             size={size}
             className="rounded-none"
-            variant="ghost"
+            variant={item.isActive(editor) ? "secondary" : "ghost"}
             type="button"
           >
-            <item.icon
-              className={cn("h-4 w-4", {
-                "text-tag-success-text": item.isActive(editor),
-              })}
-            />
+            <item.icon size={14} />
           </Button>
         </EditorBubbleItem>
       ))}

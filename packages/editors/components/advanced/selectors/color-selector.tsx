@@ -3,6 +3,7 @@ import { EditorBubbleItem, useEditor } from "novel";
 
 import { Button } from "@optima/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@optima/ui/popover";
+import { useCurrentEditor } from "@tiptap/react";
 
 export interface BubbleColorMenuItem {
   name: string;
@@ -98,7 +99,7 @@ export const ColorSelector = ({
   onOpenChange,
   size = "sm",
 }: ColorSelectorProps) => {
-  const { editor } = useEditor();
+  const { editor } = useCurrentEditor();
 
   if (!editor) return null;
   const activeColorItem = TEXT_COLORS.find(({ color }) =>

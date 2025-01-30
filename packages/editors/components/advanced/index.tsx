@@ -100,7 +100,7 @@ export function AdvancedEditor({
           <NodeSelector open={openNode} onOpenChange={setOpenNode} />
           <LinkSelector open={openLink} onOpenChange={setOpenLink} />
           <TextButtons />
-          {/* <ColorSelector open={openColor} onOpenChange={setOpenColor} /> */}
+          <ColorSelector open={openColor} onOpenChange={setOpenColor} />
         </EditorBubble>
       </EditorContent>
     </EditorRoot>
