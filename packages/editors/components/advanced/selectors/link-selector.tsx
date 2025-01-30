@@ -1,17 +1,10 @@
 import { Button } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "@optima/ui/popover";
+import { useCurrentEditor } from "@tiptap/react";
 import { Link04Icon } from "hugeicons-react";
 import { Check, Trash } from "lucide-react";
-import { useEditor } from "novel";
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useRef,
-} from "react";
-import { useCurrentEditor } from "@tiptap/react";
+import { useEffect, useRef } from "react";
 export function isValidUrl(url: string) {
   try {
     new URL(url);

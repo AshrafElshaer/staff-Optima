@@ -1,10 +1,11 @@
 import * as React from "react";
 
+import type { TextareaHTMLAttributes } from "react";
 import { cn } from "../utils";
 
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
-  React.ComponentProps<"textarea"> & { error?: string }
+  TextareaHTMLAttributes<HTMLTextAreaElement> & { error?: string }
 >(({ className, error, ...props }, ref) => {
   return (
     <div className="space-y-1">
@@ -17,6 +18,7 @@ const Textarea = React.forwardRef<
         ref={ref}
         {...props}
       />
+
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
