@@ -95,7 +95,7 @@ export function AdvancedEditor({
           tippyOptions={{
             placement: "top",
           }}
-          className="flex w-fit max-w-[90vw] overflow-hidden rounded border border-muted bg-background shadow-xl"
+          className="flex w-fit max-w-[90vw] overflow-hidden rounded border  bg-background shadow-xl"
         >
           <NodeSelector open={openNode} onOpenChange={setOpenNode} />
           <LinkSelector open={openLink} onOpenChange={setOpenLink} />
