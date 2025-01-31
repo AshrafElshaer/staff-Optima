@@ -7,6 +7,7 @@ import { ExperienceLevelSelector } from "@/components/selectors/experience-level
 import { JobLocationSelector } from "@/components/selectors/job-location-selector";
 import { SimpleEditor } from "@optima/editors";
 import { Button } from "@optima/ui/button";
+import { Checkbox } from "@optima/ui/checkbox";
 
 import { AutoResizeTextArea, Input, TagsInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
@@ -14,11 +15,27 @@ import { CheckmarkBadge03Icon, Megaphone01Icon } from "hugeicons-react";
 import { PlusIcon, X } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+const COMPANY_BENEFITS = [
+  "Health Insurance",
+  "Dental Insurance",
+  "Vision Insurance",
+  "Mental Health Resources",
+  "401(k) Retirement Plan",
+  "Competitive Salary with Performance Bonuses",
+  "Stock Options / Equity Grants",
+  "Profit Sharing or Revenue Sharing",
+  "Paid Time Off (PTO)",
+  "Flexible Spending Accounts (FSAs)",
+  "Employee Assistance Program (EAP)",
+  "Employee Discounts",
+];
 export function JobListForm() {
   const form = useForm();
 
   const [skills, setSkills] = useState<{ id: string; text: string }[]>([]);
   const [customQuestions, setCustomQuestions] = useState<string[]>([""]);
+  const [companyBenefits, setCompanyBenefits] = useState<string[]>([]);
 
   return (
     <div className="flex flex-col gap-12 flex-1">
@@ -147,6 +164,27 @@ export function JobListForm() {
         </div>
       </section>
 
+      <section className="w-full space-y-8">
+        <Label className="font-medium">Company Benefits</Label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
+          {COMPANY_BENEFITS.map((benefit) => (
+            <div className="flex items-start gap-2" key={benefit}>
+              <Checkbox
+                id={benefit}
+                checked={companyBenefits.includes(benefit)}
+                onCheckedChange={(checked) =>
+                  setCompanyBenefits(
+                    checked
+                      ? [...companyBenefits, benefit]
+                      : companyBenefits.filter((b) => b !== benefit),
+                  )
+                }
+              />
+              <Label htmlFor={benefit}>{benefit}</Label>
+            </div>
+          ))}
+        </div>
+      </section>
       <section className="w-full flex-1 flex flex-col min-h-96 ">
         <Label className="mb-2">Job Description</Label>
         <p className="text-muted-foreground mb-4">

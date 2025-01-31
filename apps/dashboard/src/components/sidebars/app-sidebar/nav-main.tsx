@@ -43,7 +43,9 @@ export function NavMain({
         {items.map((item) => {
           const isActive =
             pathname === item.url ||
-            item.url === pathname.split("/").slice(0, 3).join("/");
+            (pathname.includes("/organization")
+              ? item.url === pathname.split("/").slice(0, 3).join("/")
+              : item.url === pathname.split("/").slice(0, 2).join("/"));
           return (
             <SidebarMenuButton
               asChild
