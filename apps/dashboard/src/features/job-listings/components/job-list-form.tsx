@@ -165,7 +165,12 @@ export function JobListForm() {
       </section>
 
       <section className="w-full space-y-8">
-        <Label className="font-medium">Company Benefits</Label>
+        <Label className="font-medium">
+          Company Benefits{" "}
+          <span className="text-muted-foreground text-sm ml-2">
+            (Optional)
+          </span>
+        </Label>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-6">
           {COMPANY_BENEFITS.map((benefit) => (
             <div className="flex items-start gap-2" key={benefit}>
