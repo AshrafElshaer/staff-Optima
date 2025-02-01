@@ -47,7 +47,7 @@ export default function EmailEditor({
         initialContent={content}
         onUpdate={({ editor }) => {
           onChange?.(editor.getHTML());
-          console.log(editor.getHTML());
+
         }}
         extensions={extensions}
         immediatelyRender={false}

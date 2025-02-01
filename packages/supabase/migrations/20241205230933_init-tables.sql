@@ -124,13 +124,16 @@ create table job_listings (
     created_by uuid references users(id)  on delete set null,
     department_id uuid references departments(id) on delete set null,
     title text not null,
-    details jsonb not null,
     employment_type employment_type_enum not null,
     salary_range text,
     experience_level experience_level_enum not null,
     status job_status_enum default 'draft',
-    screening_questions jsonb ,
     location job_location_enum not null,
+
+    screening_questions text[],
+    skills text[],
+    benefits text[],
+    job_details text not null,
 
 
     created_at timestamp with time zone default now() not null,

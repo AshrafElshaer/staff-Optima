@@ -16,6 +16,7 @@ export function BackButton({
       onClick={() => href ? router.push(href) : router.back()}
       variant="outline"
       className={className}
+      type="button"
     >
       <ArrowLeft01Icon strokeWidth={2} size={16} /> <span>Back</span>
     </Button>

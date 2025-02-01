@@ -1,8 +1,8 @@
-"use client";
-
 import { PageTitle } from "@/components/page-title";
 import type { Department, JobListing } from "@optima/supabase/types";
 
+import { createServerClient } from "@/lib/supabase/server";
+import { getJobListings } from "@optima/supabase/queries";
 import {
   employmentTypeEnum,
   experienceLevelEnum,
@@ -32,144 +32,11 @@ import {
   MoreHorizontalIcon,
   UserAdd01Icon,
 } from "hugeicons-react";
+import { headers } from "next/headers";
 import { FaPause } from "react-icons/fa6";
 import { IoTimerOutline } from "react-icons/io5";
 import { MdSignalWifiStatusbarConnectedNoInternet1 } from "react-icons/md";
 
-interface JobListingWithDepartment extends JobListing {
-  department: Department;
-}
-
-const demoJobListing: JobListingWithDepartment[] = [
-  {
-    id: "1",
-    created_at: new Date().toISOString(),
-    created_by: "1",
-    department_id: "1",
-    title: "Senior Frontend Engineer",
-    details: {
-      description:
-        "Looking for an experienced frontend developer with React expertise",
-    },
-    employment_type: "full_time",
-    experience_level: "senior",
-    status: "published",
-    location: "remote",
-    organization_id: null,
-    salary_range: "$120k-150k",
-    screening_questions: null,
-    updated_at: "",
-    department: {
-      id: "1",
-      name: "Engineering",
-      created_at: new Date().toISOString(),
-      organization_id: null,
-      updated_at: "",
-    },
-  },
-  {
-    id: "2",
-    created_at: new Date().toISOString(),
-    created_by: "1",
-    department_id: "2",
-    title: "Product Manager",
-    details: {
-      description: "Lead product strategy and execution for our core platform",
-    },
-    employment_type: "full_time",
-    experience_level: "lead",
-    status: "published",
-    location: "hybrid",
-    organization_id: null,
-    salary_range: "$140k-180k",
-    screening_questions: null,
-    updated_at: "",
-    department: {
-      id: "2",
-      name: "Product",
-      created_at: new Date().toISOString(),
-      organization_id: null,
-      updated_at: "",
-    },
-  },
-  {
-    id: "3",
-    created_at: new Date().toISOString(),
-    created_by: "1",
-    department_id: "3",
-    title: "DevOps Engineer",
-    details: {
-      description:
-        "Build and maintain our cloud infrastructure and CI/CD pipelines",
-    },
-    employment_type: "contract",
-    experience_level: "mid",
-    status: "published",
-    location: "remote",
-    organization_id: null,
-    salary_range: "$100k-130k",
-    screening_questions: null,
-    updated_at: "",
-    department: {
-      id: "3",
-      name: "Infrastructure",
-      created_at: new Date().toISOString(),
-      organization_id: null,
-      updated_at: "",
-    },
-  },
-  {
-    id: "4",
-    created_at: new Date().toISOString(),
-    created_by: "1",
-    department_id: "4",
-    title: "UX Designer",
-    details: {
-      description:
-        "Create delightful user experiences for our enterprise products",
-    },
-    employment_type: "full_time",
-    experience_level: "mid",
-    status: "draft",
-    location: "on_site",
-    organization_id: null,
-    salary_range: "$90k-120k",
-    screening_questions: null,
-    updated_at: "",
-    department: {
-      id: "4",
-      name: "Design",
-      created_at: new Date().toISOString(),
-      organization_id: null,
-      updated_at: "",
-    },
-  },
-  {
-    id: "5",
-    created_at: new Date().toISOString(),
-    created_by: "1",
-    department_id: "1",
-    title: "Backend Engineer Intern",
-    details: {
-      description: "Join our backend team and learn modern API development",
-    },
-    employment_type: "internship",
-    experience_level: "junior",
-    status: "published",
-    location: "hybrid",
-    organization_id: null,
-    salary_range: "$30/hr",
-    screening_questions: null,
-    updated_at: "",
-    department: {
-      id: "1",
-      name: "Engineering",
-      created_at: new Date().toISOString(),
-      organization_id: null,
-      updated_at: "",
-    },
-  },
-];
 
 const filters = [
   {
@@ -194,75 +61,80 @@ const filters = [
   },
 ];
 
-export default function JobListingsPage() {
-  const supabase = useSupabase();
-  const { data: departments, isLoading: departmentsLoading } = useQuery({
-    queryKey: ["departments"],
-    queryFn: async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return [];
+export default async function JobListingsPage() {
+  const supabase = await createServerClient();
+  const headersList = await headers();
+  const organizationId = headersList.get("x-organization-id");
+  const { data: jobListings,error } = await  getJobListings(supabase, organizationId ?? "");
 
-      const { data: departments, error } = await getDepartmentsByOrganizationId(
-        supabase,
-        user.user_metadata.organization_id,
-      );
-      if (error) throw error;
-      return departments;
-    },
-  });
-  const adjustedFilters = useMemo(() => {
-    return [
-      {
-        label: "Department",
-        options: departments?.map((department) => department.name) || [],
-        icon: <GridViewIcon className="size-4" />,
-      },
-      ...filters,
-    ];
-  }, [departments]);
+  //   queryKey: ["departments"],
+  //   queryFn: async () => {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+  //     if (!user) return [];
 
-  const [selectedFilters, setSelectedFilters] = useState<
-    {
-      label: string;
-      value: string[];
-    }[]
-  >([]);
+  //     const { data: departments, error } = await getDepartmentsByOrganizationId(
+  //       supabase,
+  //       user.user_metadata.organization_id,
+  //     );
+  //     if (error) throw error;
+  //     return departments;
+  //   },
+  // });
+  // const adjustedFilters = useMemo(() => {
+  //   return [
+  //     {
+  //       label: "Department",
+  //       options: departments?.map((department) => department.name) || [],
+  //       icon: <GridViewIcon className="size-4" />,
+  //     },
+  //     ...filters,
+  //   ];
+  // }, [departments]);
 
-  const handleAddFilter = (label: string, value: string) => {
-    setSelectedFilters((prev) => {
-      const existingFilter = prev.find((filter) => filter.label === label);
-      if (existingFilter) {
-        return prev.map((filter) =>
-          filter.label === label
-            ? { ...filter, value: [...filter.value, value] }
-            : filter,
-        );
-      }
-      return [...prev, { label, value: [value] }];
-    });
-  };
+  // const [selectedFilters, setSelectedFilters] = useState<
+  //   {
+  //     label: string;
+  //     value: string[];
+  //   }[]
+  // >([]);
 
-  const handleRemoveFilter = (label: string, value: string) => {
-    setSelectedFilters((prev) =>
-      prev.map((filter) =>
-        filter.label === label
-          ? { ...filter, value: filter.value.filter((v) => v !== value) }
-          : filter,
-      ),
-    );
-  };
+  // const handleAddFilter = (label: string, value: string) => {
+  //   setSelectedFilters((prev) => {
+  //     const existingFilter = prev.find((filter) => filter.label === label);
+  //     if (existingFilter) {
+  //       return prev.map((filter) =>
+  //         filter.label === label
+  //           ? { ...filter, value: [...filter.value, value] }
+  //           : filter,
+  //       );
+  //     }
+  //     return [...prev, { label, value: [value] }];
+  //   });
+  // };
 
-  const handleClearFilters = () => {
-    setSelectedFilters([]);
-  };
+  // const handleRemoveFilter = (label: string, value: string) => {
+  //   setSelectedFilters((prev) =>
+  //     prev.map((filter) =>
+  //       filter.label === label
+  //         ? { ...filter, value: filter.value.filter((v) => v !== value) }
+  //         : filter,
+  //     ),
+  //   );
+  // };
 
-  const handleRemoveLabel = (label: string) => {
-    setSelectedFilters((prev) =>
-      prev.filter((filter) => filter.label !== label),
-    );
-  };
+  // const handleClearFilters = () => {
+  //   setSelectedFilters([]);
+  // };
+
+  // const handleRemoveLabel = (label: string) => {
+  //   setSelectedFilters((prev) =>
+  //     prev.filter((filter) => filter.label !== label),
+  //   );
+  // };
+
+
 
   return (
     <div className="flex flex-col gap-8">
@@ -279,7 +151,7 @@ export default function JobListingsPage() {
           Publish New Job
         </Link>
       </section>
-      <section className="flex flex-col sm:flex-row items-center gap-4">
+      {/* <section className="flex flex-col sm:flex-row items-center gap-4">
         <div className="flex items-center gap-2 overflow-x-scroll w-full scrollbar-hide">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -372,52 +244,10 @@ export default function JobListingsPage() {
             startIcon={<SearchIcon className="size-5" />}
           />
         </div>
-      </section>
+      </section> */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {demoJobListing.map((job) => (
-          <Card key={job.id} className=" bg-accent space-y-2">
-            <CardHeader className="p-4 pb-0 ">
-              <CardTitle className="flex items-center">
-                {job.title}
-                <JobCardDropdown />
-              </CardTitle>
-              <CardDescription className="text-secondary-foreground capitalize">
-                {job.department.name} •{" "}
-                {job.employment_type.split("_").join(" ")} -{" "}
-                {job.location.split("_").join(" ")}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-4 py-0 space-y-2">
-              <p className="text-sm ">
-                <span className="text-secondary-foreground">Deadline:</span>{" "}
-                <span>5 Days left</span>
-              </p>
-              <Progress value={50} indicatorBg="success" />
-            </CardContent>
-            <Separator />
-            <CardFooter className="flex items-center gap-2 text-sm">
-              <HoverCard openDelay={0} closeDelay={0}>
-                <HoverCardTrigger className="flex items-center gap-2">
-                  <Calendar03Icon className="size-4" />
-                  <p className=" font-medium">
-                    {new Date(job.created_at).toLocaleDateString()}
-                  </p>
-                </HoverCardTrigger>
-                <HoverCardContent className="bg-background">
-                  <p className=" font-medium">Published At</p>
-                </HoverCardContent>
-              </HoverCard>
-              <HoverCard openDelay={0} closeDelay={0}>
-                <HoverCardTrigger className="flex items-center gap-2 ml-auto">
-                  <UserAdd01Icon className="size-4" />
-                  <p className=" font-medium">12</p>
-                </HoverCardTrigger>
-                <HoverCardContent className="bg-background">
-                  <p className=" font-medium">Applications</p>
-                </HoverCardContent>
-              </HoverCard>
-            </CardFooter>
-          </Card>
+        {jobListings?.map((job) => (
+          <JobListingCard key={job.id} job={job as unknown as JobListing & { department: Department }} />
         ))}
       </section>
     </div>
@@ -444,8 +274,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@optima/ui/hover-card";
-import { Input } from "@optima/ui/inputs";
-import { useQuery } from "@tanstack/react-query";
+// import { Input } from "@optima/ui/inputs";
+// import { useQuery } from "@tanstack/react-query";
 import {
   BriefcaseIcon,
   Check,
@@ -455,41 +285,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { JobListingCard } from "@/features/job-listings/components/job-card";
+// import { useMemo, useState } from "react";
 
-function JobCardDropdown() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="ml-auto ">
-        <MoreHorizontalIcon className="size-5" strokeWidth={4} />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-36">
-        <DropdownMenuItem>
-          <Edit01Icon size={18} strokeWidth={2} />
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <Menu03Icon size={18} strokeWidth={2} />
-            Actions
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent sideOffset={8} className="w-36">
-            <DropdownMenuItem>
-              <Megaphone01Icon size={18} strokeWidth={2} />
-              Publish
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <FaPause size={18} strokeWidth={2} />
-              Pause
-            </DropdownMenuItem>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Delete01Icon size={18} strokeWidth={2} />
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+

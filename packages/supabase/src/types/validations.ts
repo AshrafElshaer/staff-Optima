@@ -1,7 +1,13 @@
 import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
-import { userRoleEnum } from "./index";
+import {
+  employmentTypeEnum,
+  experienceLevelEnum,
+  jobLocationEnum,
+  jobStatusEnum,
+  userRoleEnum,
+} from "./index";
 
 export const organizationSchema = z.object({
   id: z.string().uuid(),
@@ -161,3 +167,38 @@ export const emailTemplateUpdateSchema = emailTemplateSchema
   .required({
     id: true,
   });
+
+export const jobListingSchema = z.object({
+  benefits: z.array(z.string()).nullable(),
+  created_at: z.string(),
+  created_by: z.string().nullable(),
+  department_id: z.string().nullable(),
+  employment_type: z.nativeEnum(employmentTypeEnum),
+  experience_level: z.nativeEnum(experienceLevelEnum),
+  id: z.string(),
+  job_details: z.string().min(10, {
+    message: "Job details must be at least 10 characters",
+  }),
+  location: z.nativeEnum(jobLocationEnum),
+  organization_id: z.string().nullable(),
+  salary_range: z.string().nullable(),
+  screening_questions: z.array(z.string()).nullable(),
+  skills: z.array(z.string()).nullable(),
+  status: z.nativeEnum(jobStatusEnum).nullable(),
+  title: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  updated_at: z.string(),
+});
+
+export const jobListingInsertSchema = jobListingSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+  organization_id: true,
+  created_by: true,
+});
+
+export const jobListingUpdateSchema = jobListingSchema.partial().required({
+  id: true,
+});
