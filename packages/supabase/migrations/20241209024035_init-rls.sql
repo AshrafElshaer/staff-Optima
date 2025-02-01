@@ -58,16 +58,16 @@ create policy "Admin Can Delete User" on users for delete using (is_user_admin()
 
 
 -- Job Listings
-alter table job_listings enable row level security;
+alter table job_posts enable row level security;
 
-create policy "Organization admin , recruiter or hiring_manager Can Create Job Post" on job_listings for insert with check (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager');
+create policy "Organization admin , recruiter or hiring_manager Can Create Job Post" on job_posts for insert with check (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager');
 
-create policy "Public Can View Job Post" on job_listings for select using (true);
+create policy "Public Can View Job Post" on job_posts for select using (true);
 
-create policy "Admin Or Creator Can Update Job Post" on job_listings for update using 
+create policy "Admin Or Creator Can Update Job Post" on job_posts for update using 
 (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager' or auth.uid() = created_by);
 
-create policy "Admin Or Creator Can Delete Job Post" on job_listings for delete using (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager' or auth.uid() = created_by);
+create policy "Admin Or Creator Can Delete Job Post" on job_posts for delete using (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager' or auth.uid() = created_by);
 
 
 -- Candidates

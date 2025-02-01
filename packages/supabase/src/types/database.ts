@@ -147,7 +147,7 @@ export type Database = {
             foreignKeyName: "applications_job_id_fkey";
             columns: ["job_id"];
             isOneToOne: false;
-            referencedRelation: "job_listings";
+            referencedRelation: "job_posts";
             referencedColumns: ["id"];
           },
           {
@@ -466,7 +466,7 @@ export type Database = {
           },
         ];
       };
-      job_listings: {
+      job_posts: {
         Row: {
           benefits: string[] | null;
           created_at: string;

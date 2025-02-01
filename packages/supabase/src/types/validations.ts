@@ -168,7 +168,7 @@ export const emailTemplateUpdateSchema = emailTemplateSchema
     id: true,
   });
 
-export const jobListingSchema = z.object({
+export const jobPostSchema = z.object({
   benefits: z.array(z.string()).nullable(),
   created_at: z.string(),
   created_by: z.string().nullable(),
@@ -191,7 +191,7 @@ export const jobListingSchema = z.object({
   updated_at: z.string(),
 });
 
-export const jobListingInsertSchema = jobListingSchema.omit({
+export const jobPostInsertSchema = jobPostSchema.omit({
   id: true,
   created_at: true,
   updated_at: true,
@@ -199,6 +199,6 @@ export const jobListingInsertSchema = jobListingSchema.omit({
   created_by: true,
 });
 
-export const jobListingUpdateSchema = jobListingSchema.partial().required({
+export const jobPostUpdateSchema = jobPostSchema.partial().required({
   id: true,
 });

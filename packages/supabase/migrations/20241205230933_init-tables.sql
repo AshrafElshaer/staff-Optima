@@ -118,7 +118,7 @@ create type job_status_enum as enum ('published', 'draft', 'closed', 'paused');
 create type job_location_enum as enum ('remote','hybrid','on_site');
 
 
-create table job_listings (
+create table job_posts (
     id uuid primary key default gen_random_uuid(),
     organization_id uuid references organizations(id) not null on delete cascade,
     created_by uuid references users(id)  on delete set null,

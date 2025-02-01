@@ -35,8 +35,8 @@ const links = [
     icon: <Calendar03Icon strokeWidth={2} size={20} />,
   },
   {
-    title: "Job Listings",
-    url: "/job-listings",
+    title: "Job Posts",
+    url: "/job-posts",
     icon: <JobLinkIcon strokeWidth={2} size={20} />,
   },
   // {

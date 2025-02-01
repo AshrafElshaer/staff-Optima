@@ -10,7 +10,7 @@ import { Button } from "@optima/ui/button";
 import { Checkbox } from "@optima/ui/checkbox";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { jobListingSchema } from "@optima/supabase/validations";
+import { jobPostSchema } from "@optima/supabase/validations";
 import {
   Form,
   FormControl,
@@ -28,7 +28,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { createJobListingAction } from "../job-listings.actions";
+import { createJobPostAction } from "../job-posts.actions";
 import { Loader } from "lucide-react";
 
 const COMPANY_BENEFITS = [
@@ -46,9 +46,9 @@ const COMPANY_BENEFITS = [
   "Employee Discounts",
 ];
 
-export function JobListForm() {
-  const { execute: createJobListing, isExecuting: isCreating } = useAction(
-    createJobListingAction,
+export function JobPostForm() {
+  const { execute: createJobPost, isExecuting: isCreating } = useAction(
+    createJobPostAction,
     {
       onSuccess: () => {
         toast.success("Job listing created successfully");
@@ -58,8 +58,8 @@ export function JobListForm() {
       },
     },
   );
-  const form = useForm<z.infer<typeof jobListingSchema>>({
-    resolver: zodResolver(jobListingSchema),
+  const form = useForm<z.infer<typeof jobPostSchema>>({
+    resolver: zodResolver(jobPostSchema),
     defaultValues: {
       id: "",
       benefits: [],
@@ -77,7 +77,7 @@ export function JobListForm() {
     },
   });
 
-  function handleSubmit(data: z.infer<typeof jobListingSchema>) {
+  function handleSubmit(data: z.infer<typeof jobPostSchema>) {
     if (data.id.length > 0) {
       // updateJobListing(data);
     } else {
@@ -89,7 +89,7 @@ export function JobListForm() {
         created_by,
         ...rest
       } = data;
-      createJobListing(rest);
+      createJobPost(rest);
     }
   }
 

@@ -1,8 +1,8 @@
 import { PageTitle } from "@/components/page-title";
-import type { Department, JobListing } from "@optima/supabase/types";
+import type { Department, JobPost } from "@optima/supabase/types";
 
 import { createServerClient } from "@/lib/supabase/server";
-import { getJobListings } from "@optima/supabase/queries";
+import { getJobPostsWithApplicationsCount } from "@optima/supabase/queries";
 import {
   employmentTypeEnum,
   experienceLevelEnum,
@@ -37,7 +37,6 @@ import { FaPause } from "react-icons/fa6";
 import { IoTimerOutline } from "react-icons/io5";
 import { MdSignalWifiStatusbarConnectedNoInternet1 } from "react-icons/md";
 
-
 const filters = [
   {
     label: "Status",
@@ -61,11 +60,14 @@ const filters = [
   },
 ];
 
-export default async function JobListingsPage() {
+export default async function JobPostsPage() {
   const supabase = await createServerClient();
   const headersList = await headers();
   const organizationId = headersList.get("x-organization-id");
-  const { data: jobListings,error } = await  getJobListings(supabase, organizationId ?? "");
+  const { data: jobPosts, error } = await getJobPostsWithApplicationsCount(
+    supabase,
+    organizationId ?? "",
+  );
 
   //   queryKey: ["departments"],
   //   queryFn: async () => {
@@ -133,8 +135,6 @@ export default async function JobListingsPage() {
   //     prev.filter((filter) => filter.label !== label),
   //   );
   // };
-
-
 
   return (
     <div className="flex flex-col gap-8">
@@ -246,14 +246,22 @@ export default async function JobListingsPage() {
         </div>
       </section> */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {jobListings?.map((job) => (
-          <JobListingCard key={job.id} job={job as unknown as JobListing & { department: Department }} />
+        {jobPosts?.map((job) => (
+          <JobListingCard
+            key={job.id}
+            job={
+              job as unknown as JobPost & {
+                department: Department & { applications: [{ count: number }] };
+              }
+            }
+          />
         ))}
       </section>
     </div>
   );
 }
 
+import { JobListingCard } from "@/features/job-posts/components/job-card";
 import { useSupabase } from "@/hooks/use-supabase";
 import { getDepartmentsByOrganizationId } from "@optima/supabase/queries";
 import { Badge } from "@optima/ui/badge";
@@ -285,7 +293,4 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { JobListingCard } from "@/features/job-listings/components/job-card";
 // import { useMemo, useState } from "react";
-
-
