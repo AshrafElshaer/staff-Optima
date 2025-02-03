@@ -33,16 +33,16 @@ const invoices = [
     status: "paid",
   },
   {
-    id: 5, 
+    id: 5,
     date: new Date(2024, 0, 10),
-    amount: 149.50,
+    amount: 149.5,
     status: "pending",
   },
   {
     id: 6,
     date: new Date(2024, 0, 5),
     amount: 499.99,
-    status: "failed", 
+    status: "failed",
   },
   {
     id: 7,
@@ -75,7 +75,11 @@ export default function OrganizationBillingPage() {
             <Calendar01Icon strokeWidth={2} size={16} />
             12/23/2024 - 01/01/2025
           </Button> */}
-          <DatePickerWithRange className="w-fit" />
+          <DatePickerWithRange
+            className="w-fit"
+            date={undefined}
+            setDate={() => {}}
+          />
         </div>
       </section>
       <BillingTable data={invoices} columns={columns} />

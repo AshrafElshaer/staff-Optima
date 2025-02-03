@@ -2,21 +2,41 @@
 
 import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import * as React from "react";
+import type * as React from "react";
 import type { DateRange } from "react-day-picker";
 
+import { useIsMobile } from "../hooks/use-mobile";
 import { cn } from "../utils";
 import { Button } from "./button";
-import { Calendar } from "./calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Calendar, type CalendarProps } from "./calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverContentWithoutPortal,
+  PopoverTrigger,
+} from "./popover";
+
+interface DatePickerWithRangeProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  setDate: (date: DateRange | undefined) => void;
+  date: DateRange | undefined;
+  fromDate?: Date;
+  toDate?: Date;
+}
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
+  setDate,
+  date,
+  fromDate,
+  toDate,
+}: DatePickerWithRangeProps) {
+  // const [selectedDate, setSelectedDate] = React.useState<DateRange | undefined>(
+  //   date,
+  // );
+  //   to: addDays(new Date(), 1),
+  // });
+  const isMobile = useIsMobile();
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -45,16 +65,18 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContentWithoutPortal className="w-auto p-0">
           <Calendar
             initialFocus
             mode="range"
             defaultMonth={date?.from}
             selected={date}
+            numberOfMonths={isMobile ? 1 : 2}
             onSelect={setDate}
-            numberOfMonths={2}
+            fromDate={fromDate}
+            toDate={toDate}
           />
-        </PopoverContent>
+        </PopoverContentWithoutPortal>
       </Popover>
     </div>
   );

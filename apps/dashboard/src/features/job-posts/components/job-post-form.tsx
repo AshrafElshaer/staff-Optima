@@ -31,6 +31,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { createJobPostAction, updateJobPostAction } from "../job-posts.actions";
+import { PublishJobDialog } from "./publish-job-dialog";
 
 const COMPANY_BENEFITS = [
   "Health Insurance",
@@ -48,6 +49,7 @@ const COMPANY_BENEFITS = [
 ];
 
 export function JobPostForm({ job }: { job?: JobPost }) {
+  const [openPublishDialog, setOpenPublishDialog] = useState(false);
   const { execute: createJobPost, isExecuting: isCreating } = useAction(
     createJobPostAction,
     {
@@ -136,10 +138,23 @@ export function JobPostForm({ job }: { job?: JobPost }) {
               className="w-full sm:w-auto"
               type="button"
               disabled={isCreating || isUpdating}
+              onClick={() => {
+                if (form.formState.isValid) {
+                  form.trigger();
+                  setOpenPublishDialog(true);
+                } else {
+                  form.trigger();
+                }
+              }}
             >
               <Megaphone01Icon className="size-4" strokeWidth={2} />
               Publish
             </Button>
+            <PublishJobDialog
+              job={form.getValues()}
+              open={openPublishDialog}
+              setOpen={setOpenPublishDialog}
+            />
           </div>
         </section>
 
@@ -344,10 +359,9 @@ export function JobPostForm({ job }: { job?: JobPost }) {
                 variant="secondary"
                 type="button"
                 onClick={() =>
-                  form.setValue("screening_questions", [
-                    ...(form.getValues("screening_questions") || []),
-                    "",
-                    ],
+                  form.setValue(
+                    "screening_questions",
+                    [...(form.getValues("screening_questions") || []), ""],
                     {
                       shouldDirty: true,
                     },
@@ -389,9 +403,9 @@ export function JobPostForm({ job }: { job?: JobPost }) {
                               : (form.watch("benefits") || []).filter(
                                   (b) => b !== benefit,
                                 ),
-                              {
-                                shouldDirty: true,
-                              },
+                            {
+                              shouldDirty: true,
+                            },
                           )
                         }
                       />
