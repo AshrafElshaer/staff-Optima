@@ -1,39 +1,19 @@
 import { PageTitle } from "@/components/page-title";
-import type { Department, JobPost } from "@optima/supabase/types";
-
+import { JobListingCard } from "@/features/job-posts/components/job-card";
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPostsWithApplicationsCount } from "@optima/supabase/queries";
+import type { Department, JobPost } from "@optima/supabase/types";
 import {
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
   jobStatusEnum,
 } from "@optima/supabase/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@optima/ui/card";
-import { Progress } from "@optima/ui/progress";
-import { Separator } from "@optima/ui/separator";
-import {
-  Calendar01Icon,
-  Calendar03Icon,
-  Delete01Icon,
-  Edit01Icon,
-  FilterAddIcon,
-  GridViewIcon,
-  Location01Icon,
-  Megaphone01Icon,
-  Menu03Icon,
-  MoreHorizontalIcon,
-  UserAdd01Icon,
-} from "hugeicons-react";
+import { buttonVariants } from "@optima/ui/button";
+import { Location01Icon } from "hugeicons-react";
+import { BriefcaseIcon, PlusIcon } from "lucide-react";
 import { headers } from "next/headers";
-import { FaPause } from "react-icons/fa6";
+import Link from "next/link";
 import { IoTimerOutline } from "react-icons/io5";
 import { MdSignalWifiStatusbarConnectedNoInternet1 } from "react-icons/md";
 
@@ -141,7 +121,7 @@ export default async function JobPostsPage() {
       <section className="flex items-center justify-between">
         <PageTitle title="Job Listings" className="text-lg" />
         <Link
-          href="/job-listings/new"
+          href="/job-posts/new"
           className={buttonVariants({
             variant: "default",
             className: "min-w-fit",
@@ -251,7 +231,8 @@ export default async function JobPostsPage() {
             key={job.id}
             job={
               job as unknown as JobPost & {
-                department: Department & { applications: [{ count: number }] };
+                department: Department;
+                applications: [{ count: number }];
               }
             }
           />
@@ -260,37 +241,3 @@ export default async function JobPostsPage() {
     </div>
   );
 }
-
-import { JobListingCard } from "@/features/job-posts/components/job-card";
-import { useSupabase } from "@/hooks/use-supabase";
-import { getDepartmentsByOrganizationId } from "@optima/supabase/queries";
-import { Badge } from "@optima/ui/badge";
-import { Button, buttonVariants } from "@optima/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@optima/ui/dropdown-menu";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@optima/ui/hover-card";
-// import { Input } from "@optima/ui/inputs";
-// import { useQuery } from "@tanstack/react-query";
-import {
-  BriefcaseIcon,
-  Check,
-  FilterIcon,
-  PlusIcon,
-  SearchIcon,
-  X,
-} from "lucide-react";
-import Link from "next/link";
-// import { useMemo, useState } from "react";

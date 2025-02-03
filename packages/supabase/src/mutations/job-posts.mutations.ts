@@ -9,7 +9,6 @@ export async function createJobPost(
 
 export async function updateJobPost(
   supabase: SupabaseInstance,
-  id: string,
   data: TablesUpdate<"job_posts">,
 ) {
   if (!data.id) throw new Error("Job post id is required");
@@ -17,7 +16,7 @@ export async function updateJobPost(
   return await supabase
     .from("job_posts")
     .update(data)
-    .eq("id", id)
+    .eq("id", data.id)
     .select()
     .single();
 }

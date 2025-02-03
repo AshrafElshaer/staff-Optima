@@ -34,11 +34,13 @@ import { Progress } from "@optima/ui/progress";
 import { Separator } from "@optima/ui/separator";
 import { Calendar03Icon } from "hugeicons-react";
 
+import Link from "next/link";
 import { FaPause } from "react-icons/fa";
 
 interface JobCardProps {
   job: JobPost & {
-    department: Department & { applications: [{ count: number }] };
+    department: Department;
+    applications: [{ count: number }];
   };
 }
 
@@ -48,7 +50,7 @@ export function JobListingCard({ job }: JobCardProps) {
       <CardHeader className="p-4 pb-0 ">
         <CardTitle className="flex items-center">
           {job.title}
-          {/* <JobCardDropdown /> */}
+          <JobCardDropdown jobId={job.id} />
         </CardTitle>
         <CardDescription className="text-secondary-foreground capitalize">
           {job.department.name} • {job.employment_type.split("_").join(" ")} -{" "}
@@ -72,13 +74,15 @@ export function JobListingCard({ job }: JobCardProps) {
             </p>
           </HoverCardTrigger>
           <HoverCardContent className="bg-background">
-            <p className=" font-medium">Published At</p>
+            <p className=" font-medium">Created At</p>
           </HoverCardContent>
         </HoverCard>
         <HoverCard openDelay={0} closeDelay={0}>
-          <HoverCardTrigger className="flex items-center gap-2 ml-auto">
-            <UserAdd01Icon className="size-4" />
-            <p className=" font-medium">12</p>
+          <HoverCardTrigger className="flex items-center gap-2 ml-auto" asChild>
+            <Link href={`/candidates?jobId=${job.id}`}>
+              <UserAdd01Icon className="size-4" />
+              <p className=" font-medium">{job.applications[0].count}</p>
+            </Link>
           </HoverCardTrigger>
           <HoverCardContent className="bg-background">
             <p className=" font-medium">Applications</p>
@@ -89,17 +93,19 @@ export function JobListingCard({ job }: JobCardProps) {
   );
 }
 
-function JobCardDropdown() {
+function JobCardDropdown({ jobId }: { jobId: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="ml-auto ">
         <MoreHorizontalIcon className="size-5" strokeWidth={4} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-36">
-        <DropdownMenuItem>
-          <Edit01Icon size={18} strokeWidth={2} />
-          Edit
-        </DropdownMenuItem>
+        <Link href={`/job-posts/${jobId}`}>
+          <DropdownMenuItem>
+            <Edit01Icon size={18} strokeWidth={2} />
+            Edit
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Menu03Icon size={18} strokeWidth={2} />

@@ -23,10 +23,7 @@ export default function ResizableImageWrapper(props: NodeViewProps) {
           : "0 auto";
 
 
-    // props.updateAttributes({
-    //   alt: `${props.node.attrs.alt.split("-")[0]}-${margin}`,
-    // });
-    // setMargin(margin);
+   
   }
 
   return (

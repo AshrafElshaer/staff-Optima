@@ -10,6 +10,7 @@ import { Button } from "@optima/ui/button";
 import { Checkbox } from "@optima/ui/checkbox";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { JobPost } from "@optima/supabase/types";
 import { jobPostSchema } from "@optima/supabase/validations";
 import {
   Form,
@@ -23,13 +24,13 @@ import { AutoResizeTextArea, Input, TagsInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { CheckmarkBadge03Icon, Megaphone01Icon } from "hugeicons-react";
 import { PlusIcon, X } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { createJobPostAction } from "../job-posts.actions";
-import { Loader } from "lucide-react";
+import { createJobPostAction, updateJobPostAction } from "../job-posts.actions";
 
 const COMPANY_BENEFITS = [
   "Health Insurance",
@@ -46,40 +47,56 @@ const COMPANY_BENEFITS = [
   "Employee Discounts",
 ];
 
-export function JobPostForm() {
+export function JobPostForm({ job }: { job?: JobPost }) {
   const { execute: createJobPost, isExecuting: isCreating } = useAction(
     createJobPostAction,
     {
       onSuccess: () => {
-        toast.success("Job listing created successfully");
+        toast.success("Job post created successfully");
       },
       onError: ({ error }) => {
         toast.error(error.serverError);
       },
     },
   );
+
+  const { execute: updateJobPost, isExecuting: isUpdating } = useAction(
+    updateJobPostAction,
+    {
+      onSuccess: ({ data }) => {
+        toast.success("Job post updated successfully");
+        form.reset(data);
+      },
+      onError: ({ error }) => {
+        toast.error(error.serverError);
+      },
+    },
+  );
+
   const form = useForm<z.infer<typeof jobPostSchema>>({
     resolver: zodResolver(jobPostSchema),
-    defaultValues: {
-      id: "",
-      benefits: [],
-      screening_questions: [],
-      skills: [],
-      salary_range: "",
-      title: "",
-      department_id: "",
-      job_details: "",
-      created_at: "",
-      updated_at: "",
-      organization_id: "",
-      created_by: "",
-      status: "draft",
-    },
+    defaultValues: job
+      ? job
+      : {
+          id: "",
+          benefits: [],
+          screening_questions: [],
+          skills: [],
+          salary_range: "",
+          title: "",
+          department_id: "",
+          job_details: "",
+          created_at: "",
+          updated_at: "",
+          organization_id: "",
+          created_by: "",
+          status: "draft",
+        },
   });
 
   function handleSubmit(data: z.infer<typeof jobPostSchema>) {
     if (data.id.length > 0) {
-      // updateJobListing(data);
+      updateJobPost(data);
     } else {
       const {
         id,
@@ -106,19 +123,19 @@ export function JobPostForm() {
               variant="outline"
               className="w-full sm:w-auto"
               type="submit"
-              disabled={isCreating}
+              disabled={isCreating || isUpdating || !form.formState.isDirty}
             >
-              {isCreating ? (
+              {isCreating || isUpdating ? (
                 <Loader className="size-4 animate-spin" />
               ) : (
                 <CheckmarkBadge03Icon className="size-4" strokeWidth={2} />
               )}
-              Save as Draft
+              Save
             </Button>
             <Button
               className="w-full sm:w-auto"
               type="button"
-              disabled={isCreating}
+              disabled={isCreating || isUpdating}
             >
               <Megaphone01Icon className="size-4" strokeWidth={2} />
               Publish
@@ -330,7 +347,11 @@ export function JobPostForm() {
                   form.setValue("screening_questions", [
                     ...(form.getValues("screening_questions") || []),
                     "",
-                  ])
+                    ],
+                    {
+                      shouldDirty: true,
+                    },
+                  )
                 }
               >
                 <PlusIcon className="size-4" />
@@ -368,6 +389,9 @@ export function JobPostForm() {
                               : (form.watch("benefits") || []).filter(
                                   (b) => b !== benefit,
                                 ),
+                              {
+                                shouldDirty: true,
+                              },
                           )
                         }
                       />
