@@ -9,10 +9,11 @@
     <br />
     <a href="https://staffoptima.co"><strong>Website</strong></a> · 
     <a href="https://github.com/AshrafElshaer/staff-optima/issues"><strong>Issues</strong></a> · 
-    <a href="#whats-included"><strong>What's included</strong></a> ·
+    <a href="#features"><strong>Features</strong></a> ·
+    <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
     <a href="#prerequisites"><strong>Prerequisites</strong></a> ·
     <a href="#getting-started"><strong>Getting Started</strong></a> ·
-    <a href="#how-to-use"><strong>How to use</strong></a>
+    <a href="#license"><strong>License</strong></a>
   </p>
 </p>
 
