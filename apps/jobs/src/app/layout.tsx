@@ -1,7 +1,10 @@
+import { Footer } from "@/components/footer";
 import "../styles.css";
 
+import { ReactQueryProvider } from "@/components/react-query-provider";
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
+
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -67,8 +70,11 @@ export default function RootLayout({
           "antialiased dark",
         )}
       >
-        {children}
-        <AnalyticsProvider />
+        <ReactQueryProvider>
+          {children}
+          <AnalyticsProvider />
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );
