@@ -2,13 +2,13 @@
 
 
 <p align="center">
-	<h1 align="center"><b>Create v1</b></h1>
+	<h1 align="center"><b>Staff Optima</b></h1>
 <p align="center">
-    An open-source starter kit based on <a href="https://midday.ai">Midday</a>.
+    An open-source modern Applicant Tracking System (ATS)
     <br />
     <br />
-    <a href="https://v1.run"><strong>Website</strong></a> · 
-    <a href="https://github.com/midday-ai/v1/issues"><strong>Issues</strong></a> · 
+    <a href="https://staffoptima.co"><strong>Website</strong></a> · 
+    <a href="https://github.com/AshrafElshaer/staff-optima/issues"><strong>Issues</strong></a> · 
     <a href="#whats-included"><strong>What's included</strong></a> ·
     <a href="#prerequisites"><strong>Prerequisites</strong></a> ·
     <a href="#getting-started"><strong>Getting Started</strong></a> ·
@@ -16,9 +16,26 @@
   </p>
 </p>
 
-Everything you need to build a production ready SaaS, it's a opinionated stack based on learnings from building Midday using the latest Next.js framework, it's a monorepo with a focus on code reuse and best practices that will grow with your business.
+## Introduction
 
-## What's included
+Staff Optima is a modern, open-source Applicant Tracking System (ATS) designed to streamline your hiring process. Built with cutting-edge technologies, it helps organizations manage their recruitment workflow efficiently - from job posting and candidate screening to interview scheduling and offer management. Our platform emphasizes user experience, scalability, and integration capabilities while maintaining the flexibility and transparency that comes with open-source software.
+
+
+## Features
+
+
+- **Job Posting**: Create and manage job listings with ease with integrated apps like LinkedIn, X, and more.
+- **Candidate Management**: Track applications, resumes, and interview notes in one place.
+- **Interview Scheduling**: Schedule interviews with ease and send automated reminders.
+- **Reporting and Analytics**: Get insights into your hiring process with built-in reports and analytics.
+- **Integration**: Integrate with your existing tools and workflows.
+- **Customizable Workflow**: Tailor the process * stages to your needs.
+- **Automated Communication**: Send automated emails to candidates at each stage of the hiring process.
+
+
+
+
+## Tech Stack
 
 [Next.js](https://nextjs.org/) - Framework<br>
 [Turborepo](https://turbo.build) - Build system<br>
@@ -30,7 +47,6 @@ Everything you need to build a production ready SaaS, it's a opinionated stack b
 [Upstash](https://upstash.com/) - Cache and rate limiting<br>
 [React Email](https://react.email/) - Email templates<br>
 [Resend](https://resend.com/) - Email delivery<br>
-[i18n](https://next-international.vercel.app/) - Internationalization<br>
 [Sentry](https://sentry.io/) - Error handling/monitoring<br>
 [Dub](https://dub.sh/) - Sharable links<br>
 [Trigger.dev](https://trigger.dev/) - Background jobs<br>
@@ -45,17 +61,18 @@ Everything you need to build a production ready SaaS, it's a opinionated stack b
 ```
 .
 ├── apps                         # App workspace
-│    ├── api                     # Supabase (API, Auth, Storage, Realtime, Edge Functions)
-│    ├── app                     # App - your product
+│    ├── dashboard               # Dashboard - your product
 │    ├── web                     # Marketing site
-│    └── ...
+│    ├── jobs                    # Organization jobs & Profile
 ├── packages                     # Shared packages between apps
 │    ├── analytics               # OpenPanel analytics
 │    ├── email                   # React email library
+│    ├── editors                 # React Tiptap editors
 │    ├── jobs                    # Trigger.dev background jobs
 │    ├── kv                      # Upstash rate-limited key-value storage
+│    ├── locations               # Locations & Timezones
 │    ├── logger                  # Logger library
-│    ├── supabase                # Supabase - Queries, Mutations, Clients
+│    ├── supabase                # Supabase - Migrations, Queries, Mutations & zod schemas
 │    └── ui                      # Shared UI components (Shadcn)
 ├── tooling                      # are the shared configuration that are used by the apps and packages
 │    └── typescript              # Shared TypeScript configuration
@@ -83,7 +100,7 @@ OpenPanel<br>
 Clone this repo locally with the following command:
 
 ```bash
-bunx degit midday-ai/v1 v1
+git clone https://github.com/AshrafElshaer/staff-Optima.git
 ```
 
 1. Install dependencies using bun:
@@ -96,8 +113,8 @@ bun i
 
 ```sh
 # Copy .env.example to .env for each app
-cp apps/api/.env.example apps/api/.env
-cp apps/app/.env.example apps/app/.env
+cp apps/dashboard/.env.example apps/dashboard/.env
+cp apps/jobs/.env.example apps/jobs/.env
 cp apps/web/.env.example apps/web/.env
 ```
 
@@ -106,32 +123,36 @@ cp apps/web/.env.example apps/web/.env
 ```ts
 bun dev // starts everything in development mode (web, app, api, email)
 bun dev:web // starts the web app in development mode
-bun dev:app // starts the app in development mode
-bun dev:api // starts the api in development mode
-bun dev:email // starts the email app in development mode
+bun dev:dashboard // starts the dashboard in development mode
+bun dev:jobs-web // starts the jobs-web in development mode
 
 // Database
-bun migrate // run migrations
-bun seed // run seed
+cd packages/supabase
+bunx supabase login // login to supabase
+bunx supabase link // link the database to the project
+bunx supabase db push // push the migrations to the database
+
 ```
 
-## How to use
-This boilerplate is inspired by our work on Midday, and it's designed to serve as a reference for real-world apps. Feel free to dive into the code and see how we've tackled various features. Whether you're looking to understand authentication flows, database interactions, or UI components, you'll find practical, battle-tested implementations throughout the codebase. It's not just a starting point; it's a learning resource that can help you build your own applications.
 
-With this, you have a great starting point for your own project.
+### Hosting
 
-## Deploy to Vercel
+- Supabase (database, storage, realtime, auth)
+- Vercel (Website, edge-config, and metrics)
+- Upstash (redis)
 
-Vercel deployment will guide you through creating a Supabase account and project.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmidday-ai%2Fv1&env=RESEND_API_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,SENTRY_AUTH_TOKEN,NEXT_PUBLIC_SENTRY_DSN,SENTRY_ORG,SENTRY_PROJECT,DUB_API_KEY,NEXT_PUBLIC_OPENPANEL_CLIENT_ID,OPENPANEL_SECRET_KEY&project-name=create-v1&repository-name=create-v1&redirect-url=https%3A%2F%2Fv1.run&demo-title=Create%20v1&demo-description=An%20open-source%20starter%20kit%20based%20on%20Midday.&demo-url=https%3A%2F%2Fv1.run&demo-image=https%3A%2F%2Fv1.run%2Fopengraph-image.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6)
+## Repo Activity
 
-## Recognition
+![Alt](https://repobeats.axiom.co/api/embed/d1fbd60f7653ef45e48cf5c9157350056d40155d.svg "Repobeats analytics image")
 
-<a href="https://news.ycombinator.com/item?id=41408929">
-  <img
-    style="width: 250px; height: 54px;" width="250" height="54"
-    alt="Featured on Hacker News"
-    src="https://hackernews-badge.vercel.app/api?id=41408929"
-  />
-</a>
+## License
+
+This project is licensed under the **[AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)** for non-commercial use. 
+
+### Commercial Use
+
+For commercial use or deployments requiring a setup fee, please contact us
+for a commercial license at [engineer@staffoptima.co](mailto:engineer@staffoptima.co).
+
+By using this software, you agree to the terms of the license.
