@@ -20,26 +20,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@optima/ui/select";
+import { Skeleton } from "@optima/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
-export function PositionsFilters() {
+
+export function PositionsFilters({
+  organizationId,
+}: {
+  organizationId: string;
+}) {
   const [filters, setFilters] = useQueryStates(filterSearchParamsParser, {
     shallow: false,
   });
   const supabase = createBrowserClient();
 
-  const { data: departments } = useQuery({
+  const { data: departments, isLoading } = useQuery({
     queryKey: ["departments"],
     queryFn: async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error("User not found");
-      }
       const { data, error } = await getDepartmentsByOrganizationId(
         supabase,
-        user.user_metadata.organization_id,
+        organizationId,
       );
       if (error) {
         throw new Error(error.message);
@@ -61,11 +61,19 @@ export function PositionsFilters() {
             <SelectValue placeholder="Select a department" />
           </SelectTrigger>
           <SelectContent>
-            {departments?.map((department) => (
-              <SelectItem key={department.id} value={department.id}>
-                {department.name}
-              </SelectItem>
-            ))}
+            {isLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3].map((item) => (
+                  <Skeleton key={item} className="h-4 w-full" />
+                ))}
+              </div>
+            ) : (
+              departments?.map((department) => (
+                <SelectItem key={department.id} value={department.id}>
+                  {department.name}
+                </SelectItem>
+              ))
+            )}
           </SelectContent>
         </Select>
       </div>

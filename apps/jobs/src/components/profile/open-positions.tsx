@@ -40,7 +40,7 @@ export async function OpenPositions({
           {jobPosts?.length}
         </Badge>
       </div>
-      <PositionsFilters />
+      <PositionsFilters organizationId={organizationId} />
       <div className="grid grid-cols-1  gap-4">
         {jobPosts && jobPosts.length > 0 ? (
           Object.entries(groupedJobPosts!).map(([departmentId, posts]) => (
