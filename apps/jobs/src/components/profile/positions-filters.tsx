@@ -144,7 +144,7 @@ export function PositionsFilters({
       {Object.values(filters).some((filter) => filter.length > 0) && (
         <Button
           variant="secondary"
-          className="w-full col-span-2"
+          className="w-full md:col-span-2"
           onClick={() =>
             setFilters({
               department: [],

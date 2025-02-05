@@ -8,6 +8,8 @@ import { cn } from "@optima/ui/cn";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
+
 import localFont from "next/font/local";
 
 const baseUrl = "https://staffoptima.co";
@@ -67,13 +69,20 @@ export default function RootLayout({
       <body
         className={cn(
           `${DepartureMono.variable} ${GeistSans.variable} ${GeistMono.variable}`,
-          "antialiased dark",
+          "antialiased",
         )}
       >
         <ReactQueryProvider>
-          {children}
-          <AnalyticsProvider />
-          <Footer />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <AnalyticsProvider />
+            <Footer />
+          </ThemeProvider>
         </ReactQueryProvider>
       </body>
     </html>

@@ -35,22 +35,7 @@ export default async function OrganizationPage({
 
   return (
     <main className="flex flex-col  gap-4">
-      <header className="flex justify-center w-full  sticky top-0 bg-secondary z-10 p-4">
-        <Link
-          href={`https://${organization.domain}`}
-          target="_blank"
-          className="flex items-center gap-4"
-        >
-          <Avatar
-            src={organization.logo_url}
-            initials={organization.name.slice(0, 2)}
-            shape="square"
-            size="large"
-          />
-
-          <h1 className="text-3xl font-bold">{organization.name}</h1>
-        </Link>
-      </header>
+    
       <section className="p-4 max-w-3xl flex items-start justify-between gap-4 w-full mx-auto">
         <div className="flex flex-col gap-1">
           <h2 className=" text-secondary-foreground">Industry</h2>

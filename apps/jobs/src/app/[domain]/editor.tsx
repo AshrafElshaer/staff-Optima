@@ -8,6 +8,7 @@ export function Editor({ content }: { content: string }) {
     content,
     editable: false,
     extensions: defaultExtensions,
+    immediatelyRender: false,
   });
   return <EditorContent editor={editor} />;
 }

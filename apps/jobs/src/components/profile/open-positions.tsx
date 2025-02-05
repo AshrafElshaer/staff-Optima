@@ -45,7 +45,7 @@ export async function OpenPositions({
         {jobPosts && jobPosts.length > 0 ? (
           Object.entries(groupedJobPosts!).map(([departmentId, posts]) => (
             <div key={departmentId} className="space-y-4">
-              <h3 className="text-xl font-semibold">
+              <h3 className="text-xl font-semibold mb-4">
                 {posts[0]?.department.name} Department
               </h3>
               {posts.map((jobPost) => (
