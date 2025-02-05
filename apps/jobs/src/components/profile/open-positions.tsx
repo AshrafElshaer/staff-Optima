@@ -60,7 +60,7 @@ export async function OpenPositions({
           ))
         ) : (
           <div className="flex items-center justify-center h-60 border rounded-md ">
-            <p className="text-sm">No job posts found</p>
+            <p className="text-sm">No jobs are currently open</p>
           </div>
         )}
       </div>
