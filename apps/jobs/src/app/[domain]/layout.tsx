@@ -32,8 +32,6 @@ export default function OrganizationLayout({
     },
   });
 
-  console.log(pathname, domain);
-
   return (
     <div className="flex flex-col min-h-[calc(100svh-53px)]">
       <header className="flex items-center justify-center w-full  sticky top-0 bg-secondary z-10 p-4">
