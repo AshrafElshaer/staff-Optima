@@ -20,7 +20,6 @@ export function JobNavigation() {
         href={overviewPath}
         className={buttonVariants({
           variant: isOverview ? "secondary" : "ghost",
-          size: "lg",
         })}
       >
         <GrOverview className="size-4" />
@@ -30,7 +29,6 @@ export function JobNavigation() {
         href={applicationsPath}
         className={buttonVariants({
           variant: isApplications ? "secondary" : "ghost",
-          size: "lg",
         })}
       >
         <FileEditIcon className="size-4" strokeWidth={2} />
