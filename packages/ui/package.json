@@ -71,7 +71,9 @@
     "./toggle-group": "./src/components/toggle-group.tsx",
     "./tooltip": "./src/components/tooltip.tsx",
     "./color-picker": "./src/components/color-picker.tsx",
-    "./hooks": "./src/hooks/index.ts"
+    "./hooks": "./src/hooks/index.ts",
+    "./selectors": "./src/components/selectors/index.ts",
+    "./date-picker": "./src/components/date-picker.tsx"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -119,6 +121,7 @@
     "react-colorful": "^5.6.1",
     "react-day-picker": "8.10.1",
     "react-hook-form": "^7.54.2",
+    "react-phone-number-input": "^3.4.11",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.14.1",
     "sonner": "^1.7.0",

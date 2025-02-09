@@ -9,6 +9,7 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import localFont from "next/font/local";
 
@@ -73,16 +74,18 @@ export default function RootLayout({
         )}
       >
         <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          <NuqsAdapter>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
           >
             {children}
             <AnalyticsProvider />
-            <Footer />
-          </ThemeProvider>
+              <Footer />
+            </ThemeProvider>
+          </NuqsAdapter>
         </ReactQueryProvider>
       </body>
     </html>

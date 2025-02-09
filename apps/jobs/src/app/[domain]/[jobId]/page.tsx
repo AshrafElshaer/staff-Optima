@@ -16,7 +16,7 @@ export default async function JobPostPage({
   const supabase = await createServerClient();
   const { data: job, error } = await getJobPostById(supabase, jobId);
   return (
-    <div className="flex flex-col gap-4  sm:col-span-5">
+    <div className="flex flex-col gap-4  ">
       <JobNavigation />
       <Editor content={job?.job_details ?? ""} />
       <Link
