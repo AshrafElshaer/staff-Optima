@@ -7,12 +7,15 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../utils";
 import { buttonVariants } from "./button";
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  hideNavigation?: boolean;
+};
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  hideNavigation = false,
   ...props
 }: CalendarProps) {
   return (
@@ -28,6 +31,7 @@ function Calendar({
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+          hideNavigation && "hidden",
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",

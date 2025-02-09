@@ -73,7 +73,8 @@
     "./color-picker": "./src/components/color-picker.tsx",
     "./hooks": "./src/hooks/index.ts",
     "./selectors": "./src/components/selectors/index.ts",
-    "./date-picker": "./src/components/date-picker.tsx"
+    "./date-picker": "./src/components/date-picker.tsx",
+    "./date-picker-with-select": "./src/components/date-picker-with-select.tsx"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

@@ -2,21 +2,29 @@
 import type { JobPost } from "@optima/supabase/types";
 import { Button } from "@optima/ui/button";
 import { DatePicker } from "@optima/ui/date-picker"; // Fixed import path
+import { DatePickerWithSelect } from "@optima/ui/date-picker-with-select";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@optima/ui/dropdown-menu";
-import { Input } from "@optima/ui/inputs";
-import { PhoneInput } from "@optima/ui/inputs";
+import {
+  AutoResizeTextArea,
+  Input,
+  PhoneInput,
+  UrlInput,
+} from "@optima/ui/inputs";
+
 import { Label } from "@optima/ui/label";
 import { CountrySelector, TimezoneSelector } from "@optima/ui/selectors";
+import { Separator } from "@optima/ui/separator";
 import { Textarea } from "@optima/ui/textarea";
 import { AiBeautifyIcon, SentIcon } from "hugeicons-react";
+import { TransitionRightIcon } from "hugeicons-react";
+import { X } from "lucide-react";
 import { useState } from "react";
 import { IoIosSend } from "react-icons/io";
-
 type ApplicationFormProps = {
   job: JobPost;
 };
@@ -47,22 +55,25 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   });
 
   const [experience, setExperience] = useState<
-    {
-      company: string;
-      title: string;
-      startDate: string;
-      endDate: string;
-      description: string;
-    }[]
-  >([
-    {
+    Record<
+      string,
+      {
+        company: string;
+        position: string;
+        startDate: string;
+        endDate: string;
+        description: string;
+      }
+    >
+  >({
+    "0": {
       company: "",
-      title: "",
+      position: "",
       startDate: "",
       endDate: "",
       description: "",
     },
-  ]);
+  });
 
   return (
     <section className="flex flex-col gap-4">
@@ -118,7 +129,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       </div>
 
       {Object.entries(education).map(([index, edu]) => (
-        <div key={index}>
+        <div key={index} className="space-y-4">
           <div className="flex flex-col md:flex-row items-center gap-8 w-full">
             <div className="space-y-2 w-full">
               <Label>School</Label>
@@ -156,7 +167,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
           <div className="flex flex-col md:flex-row items-center gap-8 w-full mt-4">
             <div className="space-y-2 w-full">
               <Label>Graduation Date</Label>
-              <DatePicker
+              <DatePickerWithSelect
                 date={
                   edu.graduationDate ? new Date(edu.graduationDate) : undefined
                 }
@@ -164,12 +175,12 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   setEducation((prev) => {
                     const updated = { ...prev };
                     if (updated[index]) {
-                      updated[index].graduationDate =
-                        date?.toISOString() ?? "";
+                      updated[index].graduationDate = date?.toISOString() ?? "";
                     }
                     return updated;
                   });
                 }}
+                toDate={new Date()}
               />
             </div>
             <div className="space-y-2 w-full">
@@ -189,6 +200,24 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               />
             </div>
           </div>
+          {Number(index) > 0 && (
+            <div className="flex justify-end">
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => {
+                  setEducation((prev) => {
+                    const updated = { ...prev };
+                    delete updated[index];
+                    return updated;
+                  });
+                }}
+              >
+                Remove
+              </Button>
+            </div>
+          )}
+          <Separator />
         </div>
       ))}
       <Button
@@ -209,28 +238,144 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         Add Education or Certification
       </Button>
 
-      {/* <div className="flex flex-col md:flex-row items-center gap-8 w-full">
-        <div className="space-y-2 w-full">
-          <Label>School</Label>
-          <Input placeholder="University of California, Los Angeles" />
-        </div>
-        <div className="space-y-2 w-full">
-          <Label>Degree</Label>
-          <Input placeholder="Bachelor of Science" />
-        </div>
+      {/* Experience */}
+      <Label className="text-lg font-bold">Experience</Label>
+      <div className="flex  items-center gap-2 p-4 border rounded-md">
+        <AiBeautifyIcon className="size-5" />
+        Autofill from resume
+        <Button className="ml-auto">Upload</Button>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-8 w-full">
-        <div className="space-y-2 w-full">
-          <Label>Graduation Date</Label>
-          {/* <DateInput /> */}
-      {/* <Input type="date" /> */}
-      {/* </div> */}
-      {/* <div className="space-y-2 w-full">
-          <Label>GPA</Label>
-          <Input placeholder="3.5" />
-        </div> */}
-      {/* </div> */}
+      {Object.entries(experience).map(([index, exp]) => (
+        <div key={index} className="space-y-4">
+          <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+            <div className="space-y-2 w-full">
+              <Label>Company</Label>
+              <Input
+                placeholder="Google"
+                value={exp.company}
+                onChange={(e) => {
+                  setExperience((prev) => {
+                    const updated = { ...prev };
+                    if (updated[index]) {
+                      updated[index].company = e.target.value;
+                    }
+                    return updated;
+                  });
+                }}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <Label>Position</Label>
+              <Input
+                placeholder="Software Engineer"
+                value={exp.position}
+                onChange={(e) => {
+                  setExperience((prev) => {
+                    const updated = { ...prev };
+                    if (updated[index]) {
+                      updated[index].position = e.target.value;
+                    }
+                    return updated;
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+            <div className="space-y-2 w-full">
+              <Label>Start Date</Label>
+              <DatePickerWithSelect
+                date={exp.startDate ? new Date(exp.startDate) : undefined}
+                setDate={(date) => {
+                  setExperience((prev) => {
+                    const updated = { ...prev };
+                    if (updated[index]) {
+                      updated[index].startDate = date?.toISOString() ?? "";
+                    }
+                    return updated;
+                  });
+                }}
+                toDate={new Date()}
+              />
+            </div>
+            <div className="space-y-2 w-full">
+              <Label>
+                End Date
+                <span className="text-sm text-muted-foreground ml-2">
+                  if Present, leave blank
+                </span>
+              </Label>
+              <DatePickerWithSelect
+                date={exp.endDate ? new Date(exp.endDate) : undefined}
+                setDate={(date) => {
+                  setExperience((prev) => {
+                    const updated = { ...prev };
+                    if (updated[index]) {
+                      updated[index].endDate = date?.toISOString() ?? "";
+                    }
+                    return updated;
+                  });
+                }}
+                toDate={new Date()}
+              />
+            </div>
+          </div>
+          <div className="space-y-2 w-full">
+            <Label>Key Responsibilities & Achievements</Label>
+            <AutoResizeTextArea
+              placeholder="I was responsible for..."
+              value={exp.description}
+              onChange={(e) => {
+                setExperience((prev) => {
+                  const updated = { ...prev };
+                  if (updated[index]) {
+                    updated[index].description = e.target.value;
+                  }
+                  return updated;
+                });
+              }}
+              defaultRows={3}
+            />
+          </div>
+          {Number(index) > 0 && (
+            <div className="flex justify-end">
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => {
+                  setExperience((prev) => {
+                    const updated = { ...prev };
+                    delete updated[index];
+                    return updated;
+                  });
+                }}
+              >
+                Remove
+              </Button>
+            </div>
+          )}
+          <Separator />
+        </div>
+      ))}
+      <Button
+        variant="outline"
+        onClick={() => {
+          const newIndex = Object.keys(experience).length.toString();
+          setExperience((prev) => ({
+            ...prev,
+            [newIndex]: {
+              company: "",
+              position: "",
+              startDate: "",
+              endDate: "",
+              description: "",
+            },
+          }));
+        }}
+      >
+        Add Experience
+      </Button>
 
       {/* Social Links */}
 
@@ -242,11 +387,26 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         {Object.keys(links).map((key) => (
           <div className="space-y-2 w-full" key={key}>
             <Label className="capitalize">{key}</Label>
-            <Input
-              placeholder={`https://www.${key}.com/john-doe`}
-              value={links[key]}
-              onChange={(e) => setLinks({ ...links, [key]: e.target.value })}
-            />
+            <div className="flex items-center gap-2 w-full">
+              <UrlInput
+                placeholder={`www.${key}.com/john-doe`}
+                value={links[key]}
+                onChange={(e) => setLinks({ ...links, [key]: e.target.value })}
+              />
+              {key !== "linkedin" && (
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => {
+                    const updatedLinks = { ...links };
+                    delete updatedLinks[key];
+                    setLinks(updatedLinks);
+                  }}
+                >
+                  <X />
+                </Button>
+              )}
+            </div>
           </div>
         ))}
       </div>

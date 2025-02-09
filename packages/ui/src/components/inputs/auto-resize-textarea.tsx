@@ -5,14 +5,16 @@ import { cn } from "../../utils/cn";
 import { Textarea } from "../textarea";
 
 interface AutoResizeTextAreaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  defaultRows?: number;
+}
 
 export function AutoResizeTextArea({
   onChange,
   className,
+  defaultRows = 1,
   ...props
 }: AutoResizeTextAreaProps) {
-  const defaultRows = 1;
   const maxRows = undefined; // You can set a max number of rows
 
   const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
