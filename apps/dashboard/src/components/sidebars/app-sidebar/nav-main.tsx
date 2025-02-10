@@ -13,6 +13,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -26,11 +27,13 @@ import { usePathname } from "next/navigation";
 export function NavMain({
   items,
   label,
+  
 }: {
   items: {
     title: string;
     url: string;
     icon: React.ReactNode;
+    isError?: boolean;
   }[];
   label: string;
 }) {
@@ -64,6 +67,11 @@ export function NavMain({
               >
                 {item.icon}
                 {item.title}
+                {item.isError && (
+                  <div className="ml-auto bg-destructive size-2  rounded-full"/>
+                    
+
+                )}
                 {isActive && (
                   <div
                     className={cn(

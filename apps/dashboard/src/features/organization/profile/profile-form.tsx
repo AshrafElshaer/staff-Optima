@@ -11,6 +11,14 @@ import type { Organization } from "@optima/supabase/types";
 import { organizationSchema } from "@optima/supabase/validations";
 import { Avatar } from "@optima/ui/avatar";
 import { Button } from "@optima/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@optima/ui/form";
 import { Input, UrlInput } from "@optima/ui/inputs";
 import { Label } from "@optima/ui/label";
 import { Separator } from "@optima/ui/separator";
@@ -22,14 +30,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { updateOrganizationAction } from "../organization.actions";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@optima/ui/form";
+import { DomainVerification } from "./domain-verification";
 
 export function OrganizationProfileForm({
   organization,
@@ -89,8 +90,25 @@ export function OrganizationProfileForm({
       : undefined,
   });
 
+
+
   function onSubmit(values: z.infer<typeof organizationSchema>) {
-    updateOrganization(values);
+    const touchedFields = Object.keys(form.formState.touchedFields).map(
+      (key) => {
+        return {
+          [key]: values[key as keyof typeof values],
+        };
+      },
+    );
+    const payload = {
+      id: values.id,
+      profile: values.profile,
+      ...Object.assign({}, ...touchedFields),
+    };
+
+
+
+    updateOrganization(payload);
   }
 
   async function uploadLogo(file: File) {
@@ -231,6 +249,7 @@ export function OrganizationProfileForm({
             />
           </div>
         </section>
+        <DomainVerification organizationId={form.getValues("id")} />
         <Separator />
 
         <section className="flex flex-col w-full gap-4">
@@ -247,10 +266,15 @@ export function OrganizationProfileForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Address 1 <span className="text-muted-foreground">( Optional )</span>
+                    Address 1{" "}
+                    <span className="text-muted-foreground">( Optional )</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="123 Main st" {...field} value={field.value ?? ''} />
+                    <Input
+                      placeholder="123 Main st"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -263,10 +287,15 @@ export function OrganizationProfileForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Address 2 <span className="text-muted-foreground">( Optional )</span>
+                    Address 2{" "}
+                    <span className="text-muted-foreground">( Optional )</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="suite 542" {...field} value={field.value ?? ''} />
+                    <Input
+                      placeholder="suite 542"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -279,10 +308,15 @@ export function OrganizationProfileForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    City <span className="text-muted-foreground">( Optional )</span>
+                    City{" "}
+                    <span className="text-muted-foreground">( Optional )</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="San Francisco" {...field} value={field.value ?? ''} />
+                    <Input
+                      placeholder="San Francisco"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -295,10 +329,15 @@ export function OrganizationProfileForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    State <span className="text-muted-foreground">( Optional )</span>
+                    State{" "}
+                    <span className="text-muted-foreground">( Optional )</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="California" {...field} value={field.value ?? ''} />
+                    <Input
+                      placeholder="California"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -311,10 +350,15 @@ export function OrganizationProfileForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Zip Code <span className="text-muted-foreground">( Optional )</span>
+                    Zip Code{" "}
+                    <span className="text-muted-foreground">( Optional )</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="12345" {...field} value={field.value ?? ''} />
+                    <Input
+                      placeholder="12345"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

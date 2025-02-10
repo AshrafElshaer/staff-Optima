@@ -1,8 +1,10 @@
 "use server";
+import crypto from "node:crypto";
 import { authActionClient } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
 // import { uploadOrganizationLogo } from "@/lib/supabase/storage/uploads";
 import {
+  createDomainVerification,
   createOrganization,
   createUser,
   createUserAdmin,
@@ -12,7 +14,6 @@ import {
   userInsertSchema,
 } from "@optima/supabase/validations";
 import { z } from "zod";
-// import { zfd } from "zod-form-data";
 
 export const onboardUserAction = authActionClient
   .metadata({
@@ -57,6 +58,19 @@ export const onboardOrganizationAction = authActionClient
 
     if (error) {
       throw new Error(error.message);
+    }
+
+    const { error: domainVerificationError } = await createDomainVerification(
+      supabase,
+      {
+        organization_id: organization.id,
+        domain: organization.domain,
+        verification_token: crypto.randomBytes(16).toString("hex"),
+      },
+    );
+
+    if (domainVerificationError) {
+      throw new Error(domainVerificationError.message);
     }
 
     return organization;

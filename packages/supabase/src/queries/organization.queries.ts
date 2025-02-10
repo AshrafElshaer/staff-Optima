@@ -17,3 +17,25 @@ export async function getOrganizationByDomain(
     .eq("domain", domain)
     .single();
 }
+
+export async function getDomainVerificationByToken(
+  supabase: SupabaseInstance,
+  token: string,
+) {
+  return supabase
+    .from("domain_verification")
+    .select("*")
+    .eq("verification_token", token)
+    .single();
+}
+
+export async function getDomainVerificationByOrganizationId(
+  supabase: SupabaseInstance,
+  organizationId: string,
+) {
+  return supabase
+    .from("domain_verification")
+    .select("*")
+    .eq("organization_id", organizationId)
+    .single();
+}

@@ -22,17 +22,13 @@ import {
 import { useRouter } from "next/navigation";
 import type * as React from "react";
 
+import { useOrganization } from "@/hooks/use-organization";
 import { cn } from "@optima/ui/cn";
 import { Building2 } from "lucide-react";
 import { HiArrowUturnLeft } from "react-icons/hi2";
 import { NavMain } from "../app-sidebar/nav-main";
 
 const general = [
-  {
-    title: "Public Profile",
-    url: "/organization",
-    icon: <Profile02Icon strokeWidth={2} size={20} />,
-  },
   {
     title: "Departments",
     url: "/organization/departments",
@@ -79,6 +75,17 @@ export function OrganizationSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
   const { state } = useSidebar();
+  const { data: organization } = useOrganization();
+  const settings = [
+    {
+      title: "Public Profile",
+      url: "/organization",
+      icon: <Profile02Icon strokeWidth={2} size={20} />,
+      isError: !organization?.is_domain_verified,
+    },
+    ...general,
+  ];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -99,7 +106,7 @@ export function OrganizationSidebar({
       </SidebarHeader>
       <Separator />
       <SidebarContent>
-        <NavMain items={general} label="General" />
+        <NavMain items={settings} label="General" />
         <NavMain items={applications} label="Applications" />
         <NavMain items={communication} label="Communication" />
       </SidebarContent>

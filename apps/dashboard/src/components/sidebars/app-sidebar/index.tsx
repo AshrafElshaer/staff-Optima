@@ -2,6 +2,7 @@
 
 import type * as React from "react";
 
+import { useOrganization } from "@/hooks/use-organization";
 import { useSession } from "@/hooks/use-session";
 import { userRoleEnum } from "@optima/supabase/types";
 import { Icons } from "@optima/ui/icons";
@@ -58,15 +59,17 @@ const communication = [
   },
 ];
 
-const settings = [
-  {
-    title: "Organization",
-    url: "/organization",
-    icon: <Icons.Building strokeWidth={2} className="size-[20px]" />,
-  },
-];
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = useSession();
+  const { data: organization } = useOrganization();
+  const settings = [
+    {
+      title: "Organization",
+      url: "/organization",
+      icon: <Icons.Building strokeWidth={2} className="size-[20px]" />,
+      isError: !organization?.is_domain_verified,
+    },
+  ];
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
