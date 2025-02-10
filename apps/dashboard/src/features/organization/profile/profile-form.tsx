@@ -86,9 +86,7 @@ export function OrganizationProfileForm({
       queryClient.invalidateQueries({
         queryKey: ["organization"],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["domain-verification", input.id],
-      });
+    
     },
   });
 
