@@ -195,6 +195,7 @@ create table applications(
     id uuid primary key default gen_random_uuid(),
     job_id uuid references job_listings(id) on delete cascade,
     organization_id uuid references organizations(id) not null on delete cascade,
+    department_id uuid references departments(id) not null on delete set null,
     candidate_id uuid references candidates(id) on delete cascade,
     stage_id uuid references application_stages(id) on delete set null,
     source text,

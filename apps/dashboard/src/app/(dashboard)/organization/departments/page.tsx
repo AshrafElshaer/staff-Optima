@@ -53,6 +53,10 @@ export default async function OrganizationDepartmentsPage({
       name,
     });
 
+  console.dir(departments, {
+    depth: Number.POSITIVE_INFINITY,
+  });
+
   return (
     <main className="flex flex-col gap-6">
       <PageTitle title="Manage and view all departments within your organization. Use departments to organize job listings and streamline operations." />
@@ -90,7 +94,7 @@ export default async function OrganizationDepartmentsPage({
                 <Tooltip>
                   <TooltipTrigger className="flex items-center gap-2">
                     <JobLinkIcon size={18} strokeWidth={2} />
-                    <p className=" ">{department.job_listings.length}</p>
+                    <p className=" ">{department.job_posts.length}</p>
                   </TooltipTrigger>
                   <TooltipContent className="bg-background">
                     <p>Job Listings</p>
@@ -100,7 +104,9 @@ export default async function OrganizationDepartmentsPage({
                 <Tooltip>
                   <TooltipTrigger className="flex items-center gap-2">
                     <UserIcon size={18} strokeWidth={2} />
-                    <p className=" ">{department.applications.length}</p>
+                    <p className=" ">
+                      {department.applications.length}
+                    </p>
                   </TooltipTrigger>
                   <TooltipContent className="bg-background">
                     <p>Applicants</p>

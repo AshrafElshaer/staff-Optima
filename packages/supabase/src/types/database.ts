@@ -103,6 +103,7 @@ export type Database = {
           candidate_id: string | null;
           candidate_match: number;
           created_at: string;
+          department_id: string | null;
           id: string;
           job_id: string | null;
           organization_id: string | null;
@@ -115,6 +116,7 @@ export type Database = {
           candidate_id?: string | null;
           candidate_match: number;
           created_at?: string;
+          department_id?: string | null;
           id?: string;
           job_id?: string | null;
           organization_id?: string | null;
@@ -127,6 +129,7 @@ export type Database = {
           candidate_id?: string | null;
           candidate_match?: number;
           created_at?: string;
+          department_id?: string | null;
           id?: string;
           job_id?: string | null;
           organization_id?: string | null;
@@ -141,6 +144,13 @@ export type Database = {
             columns: ["candidate_id"];
             isOneToOne: false;
             referencedRelation: "candidates";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "applications_department_id_fkey";
+            columns: ["department_id"];
+            isOneToOne: false;
+            referencedRelation: "departments";
             referencedColumns: ["id"];
           },
           {
