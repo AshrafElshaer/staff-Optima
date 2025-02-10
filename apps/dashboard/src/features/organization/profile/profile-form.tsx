@@ -50,12 +50,12 @@ export function OrganizationProfileForm({
     reset: resetAction,
   } = useAction(updateOrganizationAction, {
     onError: () => {
-      setTimeout(() => {
-        resetAction();
-      }, 3000);
       queryClient.invalidateQueries({
         queryKey: ["domain-verification"],
       });
+      setTimeout(() => {
+        resetAction();
+      }, 3000);
     },
     onSuccess: ({ data, input }) => {
       queryClient.invalidateQueries({
