@@ -13,6 +13,7 @@ import {
 } from "@optima/ui/card";
 import { Separator } from "@optima/ui/separator";
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -105,7 +106,13 @@ export function DomainVerification({
         </CardDescription>
       </CardHeader>
       <Separator />
-      <CardContent className="overflow-x-auto">
+      <CardContent className="overflow-x-auto space-y-4">
+        {domainVerification.verification_date ? (
+          <p className="text-secondary-foreground">
+            Verified at{" "}
+            {moment(domainVerification.verification_date).format("MMM D, YYYY")}
+          </p>
+        ) : null}
         <table className="w-full border-collapse border">
           <thead>
             <tr className="divide-x *:text-left *:p-2 *:text-sm *:font-medium *:text-muted-foreground border-b">
@@ -118,7 +125,7 @@ export function DomainVerification({
           </thead>
           <tbody>
             <tr className="divide-x">
-              <td className="p-2 text-sm flex items-center justify-between relative" >
+              <td className="p-2 text-sm flex items-center justify-between relative">
                 staffoptima_verification
                 <CopyToClipboard text="staffoptima_verification" />
               </td>

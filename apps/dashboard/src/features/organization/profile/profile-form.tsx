@@ -25,6 +25,7 @@ import { Separator } from "@optima/ui/separator";
 import { Plus } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -39,6 +40,7 @@ export function OrganizationProfileForm({
 }) {
   const formSubmitRef = useRef<HTMLButtonElement | null>(null);
   const supabase = useSupabase();
+  const router = useRouter();
   const {
     execute: updateOrganization,
     executeAsync: updateOrganizationAsync,
@@ -51,7 +53,12 @@ export function OrganizationProfileForm({
         resetAction();
       }, 3000);
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data, input }) => {
+      if (input.domain) {
+        toast.warning(
+          "Domain verification is required. Please re-verify your domain.",
+        );
+      }
       setTimeout(() => {
         form.reset(
           data
@@ -71,6 +78,9 @@ export function OrganizationProfileForm({
         );
         dismissToast();
         resetAction();
+        if (input.domain) {
+          router.refresh();
+        }
       }, 3000);
     },
   });
@@ -90,8 +100,6 @@ export function OrganizationProfileForm({
       : undefined,
   });
 
-
-
   function onSubmit(values: z.infer<typeof organizationSchema>) {
     const touchedFields = Object.keys(form.formState.touchedFields).map(
       (key) => {
@@ -105,8 +113,6 @@ export function OrganizationProfileForm({
       profile: values.profile,
       ...Object.assign({}, ...touchedFields),
     };
-
-
 
     updateOrganization(payload);
   }
