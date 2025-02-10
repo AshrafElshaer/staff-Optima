@@ -4,6 +4,7 @@ import { CountrySelector } from "@/components/selectors/country-selector";
 import { OnEditToast } from "@/components/toasts/on-edit-toast";
 import { useActionBar } from "@/hooks/use-action-bar";
 import { useSupabase } from "@/hooks/use-supabase";
+import { queryClient } from "@/lib/react-query";
 import { uploadOrganizationLogo } from "@/lib/supabase/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AdvancedEditor } from "@optima/editors";
@@ -82,6 +83,12 @@ export function OrganizationProfileForm({
           router.refresh();
         }
       }, 3000);
+      queryClient.invalidateQueries({
+        queryKey: ["organization"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["domain-verification", input.id],
+      });
     },
   });
 

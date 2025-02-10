@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@optima/ui/card";
+import { cn } from "@optima/ui/cn";
 import { Separator } from "@optima/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
@@ -72,7 +73,12 @@ export function DomainVerification({
   }
 
   return (
-    <Card>
+    <Card
+      className={cn(
+        status === "pending" && "border-warning",
+        status === "failed" && "border-destructive",
+      )}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           Domain Verification
