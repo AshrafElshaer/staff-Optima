@@ -18,7 +18,7 @@ export function CopyToClipboard({ text }: { text: string }) {
     <Button
       variant="ghost"
       size="icon"
-      className="disabled:opacity-100"
+      className="disabled:opacity-100 relative"
       onClick={handleCopy}
       aria-label={copied ? "Copied" : "Copy to clipboard"}
       disabled={copied}

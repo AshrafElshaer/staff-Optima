@@ -82,9 +82,11 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
-              <AnalyticsProvider />
-              <Footer />
+              <>
+                {children}
+                <AnalyticsProvider />
+                <Footer />
+              </>
             </ThemeProvider>
           </NuqsAdapter>
         </QueryClientProvider>

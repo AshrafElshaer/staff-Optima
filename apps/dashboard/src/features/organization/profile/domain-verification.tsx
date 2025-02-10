@@ -118,12 +118,12 @@ export function DomainVerification({
           </thead>
           <tbody>
             <tr className="divide-x">
-              <td className="p-2 text-sm flex items-center justify-between">
+              <td className="p-2 text-sm flex items-center justify-between relative" >
                 staffoptima_verification
                 <CopyToClipboard text="staffoptima_verification" />
               </td>
               <td className="p-2 text-sm ">TXT</td>
-              <td className="p-2 text-sm flex items-center justify-between">
+              <td className="p-2 text-sm flex items-center justify-between relative">
                 {domainVerification.verification_token}
                 <CopyToClipboard text={domainVerification.verification_token} />
               </td>

@@ -4,17 +4,15 @@ import React from "react";
 // @ts-ignore
 import { type VariantProps, tv } from "tailwind-variants";
 
-import Image from "next/image";
 import { VisuallyHidden } from "./visually-hidden";
 
 const avatarGroupStyles = tv({
   base: "flex items-center justify-center -space-x-2 [&_[data-slot=avatar]]:ring-2 [&_[data-slot=avatar]]:ring-bg",
 });
 
-interface AvatarGroupProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarGroupStyles> {
+interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
+  className?: string;
 }
 
 const AvatarGroup = ({ className, ...props }: AvatarGroupProps) => {
@@ -100,10 +98,12 @@ const Avatar = ({
           </text>
         </svg>
       )}
-      {src && <Image src={src} alt={alt} fill className="object-cover" />}
-      {status && (
+      {src ? (
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
+      ) : null}
+      {status ? (
         <AvatarBadge size={size} status={status} aria-label={status} />
-      )}
+      ) : null}
     </span>
   );
 };
