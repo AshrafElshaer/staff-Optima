@@ -31,7 +31,9 @@ export const Toaster = ({ ...props }: ToasterProps) => {
         closeButton: true,
         classNames: {
           closeButton:
-            "[&_svg]:size-5 size-6 absolute top-1/2 transform -translate-y-1/2 right-2 lg:right-3 left-auto grid place-content-center rounded-md border-0 [&_svg]:text-foreground !bg-transparent",
+            "[&_svg]:size-5 size-6 absolute top-[22px] right-2  left-auto grid place-content-center rounded-md border-0 [&_svg]:text-foreground !bg-transparent",
+          icon: "absolute top-5 left-4",
+          title: "pl-5",
         },
       }}
       expand={false}

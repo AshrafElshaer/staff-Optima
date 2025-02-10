@@ -2,7 +2,8 @@ import type { SupabaseInstance, TablesInsert, TablesUpdate } from "../types";
 
 type OrganizationInsert = TablesInsert<"organizations">;
 type OrganizationUpdate = TablesUpdate<"organizations">;
-
+type DomainVerificationInsert = TablesInsert<"domain_verification">;
+type DomainVerificationUpdate = TablesUpdate<"domain_verification">;
 export async function createOrganization(
   supabase: SupabaseInstance,
   data: OrganizationInsert,
@@ -74,6 +75,28 @@ export async function deleteOrganization(
     .from("organizations")
     .delete()
     .eq("id", organizationId)
+    .select()
+    .single();
+}
+
+export async function createDomainVerification(
+  supabase: SupabaseInstance,
+  data: DomainVerificationInsert,
+) {
+  return supabase.from("domain_verification").insert(data).select().single();
+}
+
+export async function updateDomainVerification(
+  supabase: SupabaseInstance,
+  data: DomainVerificationUpdate,
+) {
+  if (!data.id) {
+    throw new Error("Domain verification id is required");
+  }
+  return supabase
+    .from("domain_verification")
+    .update(data)
+    .eq("id", data.id)
     .select()
     .single();
 }

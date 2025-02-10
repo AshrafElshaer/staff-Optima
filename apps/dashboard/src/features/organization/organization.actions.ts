@@ -1,30 +1,15 @@
 "use server";
 import { authActionClient } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
-import { InvitationEmail } from "@optima/email";
+
+import { resolveTxt } from "node:dns/promises";
 import {
-  createApplicationStage,
-  createDepartment,
-  createUser,
-  deleteApplicationStage,
-  deleteDepartment,
-  deleteUser,
-  reorderApplicationStages,
-  updateApplicationStage,
-  updateDepartment,
+  updateDomainVerification,
   updateOrganization,
-  updateUser,
 } from "@optima/supabase/mutations";
-import { getOrganizationById } from "@optima/supabase/queries";
 import {
-  departmentInsertSchema,
-  departmentUpdateSchema,
-  organizationSchema,
+  domainVerificationSchema,
   organizationUpdateSchema,
-  pipelineStageInsertSchema,
-  pipelineStageUpdateSchema,
-  userInsertSchema,
-  userUpdateSchema,
 } from "@optima/supabase/validations";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -43,8 +28,8 @@ export const updateOrganizationAction = authActionClient
 
     const payload = {
       ...parsedInput,
-      profile: parsedInput.profile ?? null,
     };
+
     const { data, error } = await updateOrganization(supabase, payload);
 
     if (error) {
@@ -56,5 +41,66 @@ export const updateOrganizationAction = authActionClient
     return data;
   });
 
+export const verifyDomainAction = authActionClient
+  .metadata({
+    name: "verifyDomain",
+    track: {
+      event: "verify-domain",
+      channel: "organization",
+    },
+  })
+  .schema(domainVerificationSchema)
+  .action(async ({ parsedInput }) => {
+    const supabase = await createServerClient({
+      isAdmin: true,
+    });
 
+    let records: string[][] | null = null;
+    try {
+      records = await resolveTxt(
+        `staffoptima_verification.${parsedInput.domain}`,
+      );
+    } catch (error) {
+      console.log({ error });
+      await updateDomainVerification(supabase, {
+        id: parsedInput.id,
+        verification_status: "failed",
+      });
+      throw new Error(
+        "Unable to verify domain. Please check your DNS settings and try again.",
+      );
+    }
 
+    const isValid = records.flat().includes(parsedInput.verification_token);
+
+    if (!isValid) {
+      await updateDomainVerification(supabase, {
+        id: parsedInput.id,
+        verification_status: "failed",
+      });
+
+      throw new Error("Invalid verification token");
+    }
+
+    const { data, error } = await updateDomainVerification(supabase, {
+      id: parsedInput.id,
+      verification_status: "verified",
+      verification_date: new Date().toISOString(),
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    const { error: organizationError } = await updateOrganization(supabase, {
+      id: parsedInput.organization_id,
+      is_domain_verified: true,
+    });
+
+    if (organizationError) {
+      throw new Error(organizationError.message);
+    }
+
+    revalidatePath("/organization");
+
+    return data;
+  });

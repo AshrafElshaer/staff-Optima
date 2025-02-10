@@ -36,6 +36,7 @@ create table organizations (
     name text not null,
     logo_url text,
     domain text not null,
+    is_domain_verified boolean not null default false,
     admin_id uuid references users(id) on delete set null,
     industry text not null,
     profile json,
@@ -48,12 +49,26 @@ create table organizations (
     country text not null,
 
 
+
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null
 );
 
 create index idx_organizations_id on organizations(id);
 create index idx_organizations_domain on organizations(domain);
+
+create type domain_verification_status_enum as enum ('pending', 'verified', 'failed');
+
+create table domain_verification (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) on delete cascade not null,
+    domain text not null,
+    verification_token text not null,
+    verification_status domain_verification_status_enum not null default 'pending',
+    verification_date timestamp with time zone,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
 
 create table organization_members (
     organization_id uuid references organizations(id) not null on delete cascade,

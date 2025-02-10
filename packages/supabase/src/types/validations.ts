@@ -17,6 +17,7 @@ export const organizationSchema = z.object({
   domain: z
     .string()
     .regex(/^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, "Invalid domain format"),
+  is_domain_verified: z.boolean().optional(),
   industry: z.string().min(2, {
     message: "Industry is required",
   }),
@@ -41,6 +42,7 @@ export const organizationInsertSchema = organizationSchema.omit({
   updated_at: true,
   admin_id: true,
   logo_url: true,
+  is_domain_verified: true,
 });
 
 export const organizationUpdateSchema = organizationSchema.partial().required({
@@ -61,6 +63,18 @@ export const organizationMemberInsertSchema = organizationMemberSchema.omit({
 export const organizationMemberUpdateSchema =
   organizationMemberSchema.partial();
 
+export const domainVerificationSchema = z.object({
+  id: z.string().uuid(),
+  organization_id: z.string().uuid(),
+  domain: z
+    .string()
+    .regex(/^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/, "Invalid domain format"),
+  verification_token: z.string(),
+  verification_status: z.enum(["pending", "verified", "failed"]),
+  verification_date: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
 export const departmentSchema = z.object({
   id: z.string().uuid(),
   organization_id: z.string().uuid(),

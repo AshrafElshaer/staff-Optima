@@ -6,6 +6,16 @@ create policy "Public Can View Organization" on organizations for select using (
 create policy "Organization Admin Can Update Organization" on organizations for update using (auth.uid() = admin_id);
 create policy "Organization Admin Can Delete Organization" on organizations for delete using (auth.uid() = admin_id);
 
+-- Domain Verification
+alter table domain_verification enable row level security;
+
+create policy "Only Admin Can View Domain Verification" on domain_verification for select using (is_user_organization_admin(organization_id));
+create policy "Organization Admin Can Create Domain Verification" on domain_verification for insert with check (is_user_organization_admin(organization_id));
+create policy "Organization Admin Can Update Domain Verification" on domain_verification for update using (is_user_organization_admin(organization_id));
+create policy "Organization Admin Can Delete Domain Verification" on domain_verification for delete using (is_user_organization_admin(organization_id));
+
+
+
 -- Organization Members
 alter table organization_members enable row level security;
 
