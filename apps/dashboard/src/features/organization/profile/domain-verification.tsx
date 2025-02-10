@@ -39,7 +39,7 @@ export function DomainVerification({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["domain-verification", organizationId],
+    queryKey: ["domain-verification"],
     queryFn: async () => {
       const { data, error } = await getDomainVerificationByOrganizationId(
         supabase,

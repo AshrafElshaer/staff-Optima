@@ -17,7 +17,7 @@
     "@optima/jobs": "workspace:*",
     "@optima/supabase": "workspace:*",
     "@optima/ui": "workspace:*",
-    "@tanstack/react-query": "^5.62.2",
+    "@tanstack/react-query": "^5.66.0",
     "babel-plugin-react-compiler": "^19.0.0-beta-714736e-20250131",
     "geist": "^1.3.1",
     "hugeicons-react": "^0.3.0",
