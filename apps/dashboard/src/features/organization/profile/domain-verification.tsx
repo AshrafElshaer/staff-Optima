@@ -97,7 +97,7 @@ export function DomainVerification({
         </CardDescription>
       </CardHeader>
       <Separator />
-      <CardContent>
+      <CardContent className="overflow-x-auto">
         <table className="w-full border-collapse border">
           <thead>
             <tr className="divide-x *:text-left *:p-2 *:text-sm *:font-medium *:text-muted-foreground border-b">

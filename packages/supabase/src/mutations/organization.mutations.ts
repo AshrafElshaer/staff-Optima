@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import type { SupabaseInstance, TablesInsert, TablesUpdate } from "../types";
 
 type OrganizationInsert = TablesInsert<"organizations">;
@@ -57,6 +58,22 @@ export async function updateOrganization(
       data: null,
       error: new Error("Organization id is required"),
     };
+  }
+
+  if (data.domain) {
+    await supabase
+      .from("domain_verification")
+      .update({
+        domain: data.domain,
+        verification_token: crypto.randomBytes(16).toString("hex"),
+        verification_status: "pending",
+        verification_date: null,
+      })
+      .eq("organization_id", data.id)
+      .select()
+      .single();
+
+    data.is_domain_verified = false;
   }
 
   return await supabase

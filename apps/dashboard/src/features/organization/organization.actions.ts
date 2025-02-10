@@ -78,6 +78,10 @@ export const verifyDomainAction = authActionClient
         id: parsedInput.id,
         verification_status: "failed",
       });
+      await updateOrganization(supabase, {
+        id: parsedInput.organization_id,
+        is_domain_verified: false,
+      });
 
       throw new Error("Invalid verification token");
     }
