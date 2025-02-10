@@ -53,6 +53,9 @@ export function OrganizationProfileForm({
       queryClient.invalidateQueries({
         queryKey: ["domain-verification"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["organization"],
+      });
       setTimeout(() => {
         resetAction();
       }, 3000);
