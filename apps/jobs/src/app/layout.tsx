@@ -1,10 +1,9 @@
 import { Footer } from "@/components/footer";
 import "../styles.css";
 
-import { queryClient } from "@/lib/react-query";
+import { ReactQueryProvider } from "../components/react-query-provider";
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
-import { QueryClientProvider } from "@tanstack/react-query";
 
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
