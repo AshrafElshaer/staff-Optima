@@ -74,7 +74,7 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <QueryClientProvider client={queryClient}>
+        <ReactQueryProvider>
           <NuqsAdapter>
             <ThemeProvider
               attribute="class"
@@ -89,7 +89,7 @@ export default function RootLayout({
               </>
             </ThemeProvider>
           </NuqsAdapter>
-        </QueryClientProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
