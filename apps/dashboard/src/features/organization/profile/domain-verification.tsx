@@ -14,6 +14,7 @@ import {
 import { Separator } from "@optima/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { verifyDomainAction } from "../organization.actions";
 export function DomainVerification({
@@ -21,8 +22,15 @@ export function DomainVerification({
 }: {
   organizationId: string;
 }) {
-  const { executeAsync: verifyDomain, isExecuting } =
-    useAction(verifyDomainAction);
+  const router = useRouter();
+  const { executeAsync: verifyDomain, isExecuting } = useAction(
+    verifyDomainAction,
+    {
+      onSuccess: () => {
+        router.refresh();
+      },
+    },
+  );
   const supabase = useSupabase();
   const {
     data: domainVerification,
