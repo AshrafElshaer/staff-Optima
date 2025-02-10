@@ -1,9 +1,10 @@
 import { Footer } from "@/components/footer";
 import "../styles.css";
 
-import { ReactQueryProvider } from "@/components/react-query-provider";
+import { queryClient } from "@/lib/react-query";
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -73,20 +74,20 @@ export default function RootLayout({
           "antialiased",
         )}
       >
-        <ReactQueryProvider>
+        <QueryClientProvider client={queryClient}>
           <NuqsAdapter>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
-          >
-            {children}
-            <AnalyticsProvider />
+            >
+              {children}
+              <AnalyticsProvider />
               <Footer />
             </ThemeProvider>
           </NuqsAdapter>
-        </ReactQueryProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
