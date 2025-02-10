@@ -58,6 +58,12 @@ export function OrganizationProfileForm({
       });
     },
     onSuccess: ({ data, input }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["organization"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["domain-verification"],
+      });
       if (input.domain) {
         toast.warning(
           "Domain verification is required. Please re-verify your domain.",
@@ -86,12 +92,6 @@ export function OrganizationProfileForm({
           router.refresh();
         }
       }, 3000);
-      queryClient.invalidateQueries({
-        queryKey: ["organization"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["domain-verification"],
-      });
     },
   });
 
