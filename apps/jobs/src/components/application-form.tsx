@@ -13,16 +13,22 @@ import {
   AutoResizeTextArea,
   Input,
   PhoneInput,
+  TagsInput,
   UrlInput,
 } from "@optima/ui/inputs";
 
 import { Label } from "@optima/ui/label";
-import { CountrySelector, TimezoneSelector } from "@optima/ui/selectors";
+import {
+  CountrySelector,
+  GenderSelector,
+  TimezoneSelector,
+} from "@optima/ui/selectors";
 import { Separator } from "@optima/ui/separator";
 import { Textarea } from "@optima/ui/textarea";
 import { AiBeautifyIcon, SentIcon } from "hugeicons-react";
 import { TransitionRightIcon } from "hugeicons-react";
 import { X } from "lucide-react";
+import moment from "moment";
 import { useState } from "react";
 import { IoIosSend } from "react-icons/io";
 type ApplicationFormProps = {
@@ -63,6 +69,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         startDate: string;
         endDate: string;
         description: string;
+        skills: string[];
       }
     >
   >({
@@ -72,6 +79,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       startDate: "",
       endDate: "",
       description: "",
+      skills: [],
     },
   });
 
@@ -101,16 +109,6 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
           <Input placeholder="john.doe@example.com" />
         </div>
         <div className="space-y-2 w-full">
-          <Label>Country</Label>
-          <CountrySelector value={""} setValue={() => {}} />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row items-center gap-8 w-full">
-        <div className="space-y-2 w-full">
-          <Label>Timezone</Label>
-          <TimezoneSelector value={""} onValueChange={() => {}} />
-        </div>
-        <div className="space-y-2 w-full">
           <Label>Phone Number</Label>
           <PhoneInput
             onChange={(value) => {
@@ -118,6 +116,37 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             }}
           />
         </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+        <div className="space-y-2 w-full">
+          <Label>Country</Label>
+          <CountrySelector value={""} setValue={() => {}} />
+        </div>
+        <div className="space-y-2 w-full">
+          <Label>City , State</Label>
+          <Input placeholder="Los Angeles , CA" />
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+        <div className="space-y-2 w-full">
+          <Label>Gender</Label>
+          <GenderSelector value={""} setValue={() => {}} />
+        </div>
+        <div className="space-y-2 w-full">
+          <Label>Date of Birth</Label>
+          <DatePickerWithSelect
+            date={moment().subtract(16, "years").toDate()}
+            setDate={(date) => {
+              console.log(date);
+            }}
+            toDate={moment().subtract(16, "years").toDate()}
+          />
+        </div>
+      </div>
+      <div className="space-y-2 w-full">
+        <Label>Timezone</Label>
+        <TimezoneSelector value={""} onValueChange={() => {}} />
       </div>
 
       {/* Education  */}
@@ -338,6 +367,34 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               defaultRows={3}
             />
           </div>
+          <div className="space-y-2 w-full">
+            <Label>
+              Skills & Technologies
+              <span className="text-muted-foreground text-sm ml-2">
+                (Optional) Separated by enter key
+              </span>
+            </Label>
+            <TagsInput
+              onChange={(value) => {
+                setExperience((prev) => {
+                  const updated = { ...prev };
+                  if (updated[index]) {
+                    // @ts-ignore
+                    updated[index].skills = value.map((tag) => tag.text);
+                  }
+                  return updated;
+                });
+              }}
+              tags={
+                experience[index]?.skills?.map((skill: string) => ({
+                  id: skill,
+                  text: skill,
+                })) || []
+              }
+              placeholder="Add a skill"
+              containerClassName="w-full min-h-20 items-start justify-start"
+            />
+          </div>
           {Number(index) > 0 && (
             <div className="flex justify-end">
               <Button
@@ -370,6 +427,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               startDate: "",
               endDate: "",
               description: "",
+              skills: [],
             },
           }));
         }}
@@ -415,9 +473,28 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         {job.screening_questions?.map((question) => (
           <div className="space-y-2" key={question}>
             <Label>{question}</Label>
-            <Textarea rows={3} placeholder={question} />
+            <AutoResizeTextArea
+              defaultRows={3}
+              placeholder={question}
+            />
           </div>
         ))}
+      </div>
+
+      <div className="space-y-4">
+        <Label className="text-base ">
+          Attachments{" "}
+          <span className="text-sm text-muted-foreground ml-2">
+            (Optional) Upload additional documents ( cover letter, letter of
+            recommendation, etc.)
+          </span>
+        </Label>
+
+        <div className="flex flex-col items-center justify-center min-h-40 border rounded-md p-4 bg-accent">
+          <p className="text-sm ">
+            drop zone Upload additional documents 
+          </p>
+        </div>
       </div>
       <Button className="mt-4">
         <IoIosSend className="size-4" />
