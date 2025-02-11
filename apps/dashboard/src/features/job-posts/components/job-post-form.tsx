@@ -138,12 +138,10 @@ export function JobPostForm({ job }: { job?: JobPost }) {
               className="w-full sm:w-auto"
               type="button"
               disabled={isCreating || isUpdating}
-              onClick={() => {
-                if (form.formState.isValid) {
-                  form.trigger();
+              onClick={async () => {
+                const isValidForm = await form.trigger();
+                if (isValidForm) {
                   setOpenPublishDialog(true);
-                } else {
-                  form.trigger();
                 }
               }}
             >
@@ -380,8 +378,8 @@ export function JobPostForm({ job }: { job?: JobPost }) {
             control={form.control}
             name="benefits"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-medium">
+              <FormItem className="space-y-8">
+                <FormLabel className="font-medium text-base ">
                   Company Benefits
                   <span className="text-muted-foreground text-sm ml-2">
                     (Optional)
@@ -424,8 +422,10 @@ export function JobPostForm({ job }: { job?: JobPost }) {
           name="job_details"
           render={({ field }) => (
             <FormItem className="w-full flex-1 flex flex-col min-h-96">
-              <FormLabel>Job Description</FormLabel>
-              <p className="text-muted-foreground mb-4">
+              <FormLabel className="font-medium text-base">
+                Job Description
+              </FormLabel>
+              <p className="text-muted-foreground ">
                 Provide a detailed description of the job posting.
               </p>
               <FormControl>
