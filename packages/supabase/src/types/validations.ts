@@ -273,7 +273,7 @@ export const candidateSchema = z.object({
   educations: z.array(educationSchema).min(1, {
     message: "Must be at least 1 education",
   }),
-  email: z.string(),
+  email: z.string().email(),
   experiences: z.array(experienceSchema).min(1, {
     message: "Must be at least 1 experience",
   }),
