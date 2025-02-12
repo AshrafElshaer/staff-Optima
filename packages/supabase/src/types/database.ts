@@ -107,6 +107,7 @@ export type Database = {
           id: string;
           job_id: string | null;
           organization_id: string | null;
+          rejection_reason_id: string | null;
           screening_question_answers: Json | null;
           source: string | null;
           stage_id: string | null;
@@ -120,6 +121,7 @@ export type Database = {
           id?: string;
           job_id?: string | null;
           organization_id?: string | null;
+          rejection_reason_id?: string | null;
           screening_question_answers?: Json | null;
           source?: string | null;
           stage_id?: string | null;
@@ -133,6 +135,7 @@ export type Database = {
           id?: string;
           job_id?: string | null;
           organization_id?: string | null;
+          rejection_reason_id?: string | null;
           screening_question_answers?: Json | null;
           source?: string | null;
           stage_id?: string | null;
@@ -168,6 +171,13 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "applications_rejection_reason_id_fkey";
+            columns: ["rejection_reason_id"];
+            isOneToOne: false;
+            referencedRelation: "reject_reasons";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "applications_stage_id_fkey";
             columns: ["stage_id"];
             isOneToOne: false;
@@ -178,6 +188,7 @@ export type Database = {
       };
       attachments: {
         Row: {
+          application_id: string | null;
           attachment_type:
             | Database["public"]["Enums"]["attachment_type_enum"]
             | null;
@@ -191,6 +202,7 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
+          application_id?: string | null;
           attachment_type?:
             | Database["public"]["Enums"]["attachment_type_enum"]
             | null;
@@ -204,6 +216,7 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          application_id?: string | null;
           attachment_type?:
             | Database["public"]["Enums"]["attachment_type_enum"]
             | null;
@@ -217,6 +230,13 @@ export type Database = {
           updated_at?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "attachments_application_id_fkey";
+            columns: ["application_id"];
+            isOneToOne: false;
+            referencedRelation: "applications";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "attachments_candidate_id_fkey";
             columns: ["candidate_id"];
@@ -236,42 +256,60 @@ export type Database = {
       candidates: {
         Row: {
           avatar_url: string | null;
+          city: string;
+          country: string;
           created_at: string;
+          date_of_birth: string;
+          educations: Json;
           email: string;
+          experiences: Json;
           first_name: string;
+          gender: string;
           id: string;
           last_name: string;
           organization_id: string | null;
           phone_number: string | null;
-          time_zone: string;
+          social_links: Json;
+          timezone: string;
           updated_at: string;
-          urls: Json;
         };
         Insert: {
           avatar_url?: string | null;
+          city: string;
+          country: string;
           created_at?: string;
+          date_of_birth: string;
+          educations: Json;
           email: string;
+          experiences: Json;
           first_name: string;
+          gender: string;
           id?: string;
           last_name: string;
           organization_id?: string | null;
           phone_number?: string | null;
-          time_zone: string;
+          social_links: Json;
+          timezone: string;
           updated_at?: string;
-          urls: Json;
         };
         Update: {
           avatar_url?: string | null;
+          city?: string;
+          country?: string;
           created_at?: string;
+          date_of_birth?: string;
+          educations?: Json;
           email?: string;
+          experiences?: Json;
           first_name?: string;
+          gender?: string;
           id?: string;
           last_name?: string;
           organization_id?: string | null;
           phone_number?: string | null;
-          time_zone?: string;
+          social_links?: Json;
+          timezone?: string;
           updated_at?: string;
-          urls?: Json;
         };
         Relationships: [
           {
@@ -812,7 +850,10 @@ export type Database = {
         | "portfolio"
         | "certificate"
         | "reference_letter"
-        | "other";
+        | "other"
+        | "transcript"
+        | "work_sample"
+        | "professional_license";
       domain_verification_status_enum: "pending" | "verified" | "failed";
       employment_type_enum:
         | "full_time"

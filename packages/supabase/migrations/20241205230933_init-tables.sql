@@ -175,17 +175,23 @@ create index idx_campaigns_job on job_listing_campaigns(job_listing_id);
 
 
 create table candidates (
-    id uuid primary key default gen_random_uuid(),
-    organization_id uuid references organizations(id) not null on delete cascade,
-    avatar_url text,
-    first_name text not null,
-    last_name text not null,
-    email text not null unique,
-    phone_number text,
-    time_zone text not null,
-    urls jsonb not null,
-    created_at timestamp with time zone default now() not null,
-    updated_at timestamp with time zone default now() not null
+  id uuid not null default gen_random_uuid (),
+  organization_id uuid references organizations(id) not null on delete cascade,
+  avatar_url text null,
+  first_name text not null,
+  last_name text not null,
+  email text not null,
+  phone_number text null,
+  timezone text not null,
+  country text not null,
+  city text not null,
+  gender text not null,
+  date_of_birth timestamp with time zone not null,
+  social_links jsonb not null,
+  educations jsonb not null,
+  experiences jsonb not null,
+  created_at timestamp with time zone default now() not null,
+  updated_at timestamp with time zone default now() not null
 );
 
 create index idx_candidates_organization on candidates(organization_id);
@@ -196,8 +202,10 @@ create table applications(
     job_id uuid references job_listings(id) on delete cascade,
     organization_id uuid references organizations(id) not null on delete cascade,
     department_id uuid references departments(id) not null on delete set null,
-    candidate_id uuid references candidates(id) on delete cascade,
-    stage_id uuid references application_stages(id) on delete set null,
+    candidate_id uuid references candidates(id) not null on delete cascade,
+    stage_id uuid references application_stages(id) not null on delete set null,
+    rejection_reason_id uuid references reject_reasons(id) on delete set null,
+
     source text,
     screening_question_answers jsonb,
     candidate_match numeric not null,
@@ -228,12 +236,13 @@ create index idx_rejection_application_id on reject_reasons(application_id);
 
 
 
-create type attachment_type_enum as enum ('resume', 'cover_letter', 'portfolio', 'certificate', 'reference_letter', 'other');
+create type attachment_type_enum as enum ('resume', 'cover_letter', 'portfolio', 'certificate', 'reference_letter', 'other', 'transcript', 'work_sample', 'professional_license');
 
 create table attachments (
     id uuid primary key default gen_random_uuid(),
     candidate_id uuid references candidates(id) on delete cascade,
     organization_id uuid references organizations(id) not null on delete cascade,
+    application_id uuid references applications (id) on delete cascade;
 
     file_name text not null,
     file_url text not null,

@@ -100,7 +100,8 @@ export function DatePickerWithSelect({
           </Select>
         </div>
         <Calendar
-          selected={date ? { from: date, to: date } : undefined}
+          mode="single"
+          selected={date}
           onSelect={setDate}
           initialFocus
           month={new Date(Number(year), month)}

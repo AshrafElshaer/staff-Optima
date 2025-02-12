@@ -2,6 +2,7 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod";
 
 import {
+  attachmentTypeEnum,
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
@@ -214,5 +215,160 @@ export const jobPostInsertSchema = jobPostSchema.omit({
 });
 
 export const jobPostUpdateSchema = jobPostSchema.partial().required({
+  id: true,
+});
+
+const socialLinkSchema = z.record(
+  z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  z.string().url(),
+);
+
+const educationSchema = z.object({
+  school: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  degree: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  graduation_date: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  gpa: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+});
+
+const experienceSchema = z.object({
+  company: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  position: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  start_date: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  end_date: z.string().nullable(),
+  description: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  skills: z.array(z.string()),
+});
+
+export const candidateSchema = z.object({
+  id: z.string(),
+  organization_id: z.string().nullable(),
+  avatar_url: z.string().nullable(),
+  city: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  country: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  date_of_birth: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  educations: z.array(educationSchema).min(1, {
+    message: "Must be at least 1 education",
+  }),
+  email: z.string(),
+  experiences: z.array(experienceSchema).min(1, {
+    message: "Must be at least 1 experience",
+  }),
+  first_name: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  gender: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  last_name: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  phone_number: z.string().refine(isValidPhoneNumber, {
+    message: "Invalid phone number",
+  }),
+  social_links: socialLinkSchema,
+  timezone: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const candidateInsertSchema = candidateSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const candidateUpdateSchema = candidateSchema.partial().required({
+  id: true,
+});
+
+const screeningQuestionAnswerSchema = z.object({
+  question: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  answer: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+});
+export const applicationSchema = z.object({
+  id: z.string(),
+  candidate_id: z.string().nullable(),
+  candidate_match: z.number().min(0).max(100),
+  department_id: z.string().nullable(),
+  job_id: z.string().nullable(),
+  organization_id: z.string().nullable(),
+  rejection_reason_id: z.string().nullable(),
+  screening_question_answers: z.array(screeningQuestionAnswerSchema).nullable(),
+  source: z.string().nullable(),
+  stage_id: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const applicationInsertSchema = applicationSchema.omit({
+  id: true,
+  candidate_id: true,
+  stage_id: true,
+
+  organization_id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const applicationUpdateSchema = applicationSchema.partial().required({
+  id: true,
+});
+
+export const attachmentSchema = z.object({
+  id: z.string(),
+  application_id: z.string(),
+  organization_id: z.string(),
+  attachment_type: z.nativeEnum(attachmentTypeEnum),
+  candidate_id: z.string(),
+  file_name: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  file_path: z.string().min(2, {
+    message: "Must be minimum 2 characters",
+  }),
+  file_url: z.string().url(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const attachmentInsertSchema = attachmentSchema.omit({
+  id: true,
+  organization_id: true,
+  candidate_id: true,
+  created_at: true,
+  updated_at: true,
+});
+
+export const attachmentUpdateSchema = attachmentSchema.partial().required({
   id: true,
 });

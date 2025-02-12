@@ -57,6 +57,20 @@ export const employmentTypeEnum: {
   internship: "internship",
 };
 
+export const attachmentTypeEnum: {
+  [key in AttachmentType]: key;
+} = {
+  resume: "resume",
+  cover_letter: "cover_letter",
+  portfolio: "portfolio",
+  certificate: "certificate",
+  reference_letter: "reference_letter",
+  other: "other",
+  transcript: "transcript",
+  work_sample: "work_sample",
+  professional_license: "professional_license",
+};
+
 export type User = Tables<"users">;
 export type Organization = Tables<"organizations">;
 export type Department = Tables<"departments">;
