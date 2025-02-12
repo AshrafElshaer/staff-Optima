@@ -65,7 +65,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       country: "",
       city: "",
       gender: "",
-      date_of_birth: "",
+      date_of_birth: moment().subtract(16, "years").toDate(),
       timezone: "",
       screening_question_answers: job.screening_questions?.map((question) => ({
         question,
@@ -113,7 +113,6 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   const socialLinks = useMemo(() => {
     return form.watch("social_links");
   }, [form.watch("social_links")]);
-
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
@@ -269,7 +268,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                     <DatePickerWithSelect
                       date={
                         field.value
-                          ? new Date(field.value)
+                          ? moment(field.value).toDate()
                           : moment().subtract(16, "years").toDate()
                       }
                       setDate={(date) => field.onChange(date?.toISOString())}
@@ -337,11 +336,13 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                       <FormLabel>Graduation Date</FormLabel>
                       <FormControl>
                         <DatePickerWithSelect
-                          date={field.value ? new Date(field.value) : undefined}
+                          date={
+                            field.value ? moment(field.value).toDate() : undefined
+                          }
                           setDate={(date) =>
                             field.onChange(date?.toISOString() ?? "")
                           }
-                          toDate={new Date()}
+                          toDate={moment().toDate()}
                         />
                       </FormControl>
                       <FormMessage />
@@ -455,11 +456,13 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                       <FormLabel>Start Date</FormLabel>
                       <FormControl>
                         <DatePickerWithSelect
-                          date={field.value ? new Date(field.value) : undefined}
+                          date={
+                            field.value ? moment(field.value).toDate() : undefined
+                          }
                           setDate={(date) =>
                             field.onChange(date?.toISOString())
                           }
-                          toDate={new Date()}
+                          toDate={moment().toDate()}
                         />
                       </FormControl>
                       <FormMessage />
@@ -479,11 +482,13 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                       </FormLabel>
                       <FormControl>
                         <DatePickerWithSelect
-                          date={field.value ? new Date(field.value) : undefined}
+                          date={
+                            field.value ? moment(field.value).toDate() : undefined
+                          }
                           setDate={(date) =>
                             field.onChange(date?.toISOString())
                           }
-                          toDate={new Date()}
+                          toDate={moment().toDate()}
                         />
                       </FormControl>
                       <FormMessage />
