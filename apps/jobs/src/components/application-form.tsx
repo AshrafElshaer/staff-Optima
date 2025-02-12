@@ -65,7 +65,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       country: "",
       city: "",
       gender: "",
-      date_of_birth: moment().subtract(16, "years").toDate(),
+      date_of_birth: moment().subtract(16, "years").toISOString(),
       timezone: "",
       screening_question_answers: job.screening_questions?.map((question) => ({
         question,
