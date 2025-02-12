@@ -813,6 +813,38 @@ export type Database = {
         };
         Relationships: [];
       };
+      waitlist: {
+        Row: {
+          created_at: string;
+          email: string;
+          id: string;
+          is_access_granted: boolean;
+          organization_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          email: string;
+          id?: string;
+          is_access_granted?: boolean;
+          organization_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          email?: string;
+          id?: string;
+          is_access_granted?: boolean;
+          organization_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;

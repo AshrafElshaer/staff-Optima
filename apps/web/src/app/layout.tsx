@@ -8,6 +8,7 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 
 const baseUrl = "https://staffoptima.co";
 
@@ -69,6 +70,12 @@ export default function RootLayout({
           "antialiased dark",
         )}
       >
+        <Toaster
+          theme={"dark"}
+          duration={5000}
+          position="top-right"
+          richColors
+        />
         <Navbar />
         {children}
         <Footer />

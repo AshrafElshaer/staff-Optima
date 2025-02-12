@@ -1,4 +1,5 @@
 import { InvitationEmail } from "./invitation-email";
 import { NewEmployeeEmail } from "./new-employee";
 import { OtpEmail } from "./otp-email";
-export { InvitationEmail, NewEmployeeEmail, OtpEmail };
+import { WaitlistEmail } from "./waitlist-email";
+export { InvitationEmail, NewEmployeeEmail, OtpEmail, WaitlistEmail };

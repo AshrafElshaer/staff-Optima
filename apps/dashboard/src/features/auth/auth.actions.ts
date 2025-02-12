@@ -1,5 +1,6 @@
 "use server";
 
+import { redis } from "@/lib/redis";
 import { resend } from "@/lib/resend";
 import { actionClientWithMeta } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
@@ -7,6 +8,7 @@ import { OtpEmail } from "@optima/email";
 import { isAuthApiError } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+// import {Li} from "@upstash/redis"
 
 export const signInAction = actionClientWithMeta
   .metadata({
@@ -84,6 +86,14 @@ export const verifyOtpAction = actionClientWithMeta
 
     if (error) {
       throw new Error(error.message);
+    }
+
+    const allowedOrganization = await redis.sismember(
+      "allowed_organizations",
+      data.user?.user_metadata.organization_id ?? "",
+    );
+    if (!allowedOrganization && data.user?.user_metadata.organization_id) {
+      redirect("/waitlist");
     }
 
     if (!data.user?.user_metadata.organization_id) {

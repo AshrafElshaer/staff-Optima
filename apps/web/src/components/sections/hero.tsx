@@ -3,6 +3,7 @@ import { Input } from "@optima/ui/inputs";
 import Image from "next/image";
 import React from "react";
 import { BorderBeam } from "../border-beam";
+import { Waitlist } from "../waitlist";
 
 export function Hero() {
   return (
@@ -21,16 +22,7 @@ export function Hero() {
         Join our exclusive waitlist to get early access to our modern applicant
         tracking system.
       </p>
-      <div className="flex items-center justify-center gap-2 max-w-sm mx-auto">
-        <Input
-          type="email"
-          placeholder="Email for waitlist"
-          id="waitlist-email"
-        />
-        <Button variant="default" type="button" className="min-w-fit">
-          Join Waitlist
-        </Button>
-      </div>
+      <Waitlist />
 
       <div className="relative w-full overflow-hidden rounded-md border bg-background mt-12">
         <Image
