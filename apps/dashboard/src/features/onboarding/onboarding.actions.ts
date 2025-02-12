@@ -81,11 +81,14 @@ export const onboardOrganizationAction = authActionClient
       organization.id,
     );
     if (!allowedOrganization) {
-      const { data, error } = await supabase.from("waitlist").insert({
-        email: user.email ?? "",
-        organization_id: organization.id,
-      });
-     
+      const { data, error } = await supabase
+        .from("waitlist")
+        .upsert({
+          email: user.email ?? "",
+          organization_id: organization.id,
+        })
+        .eq("email", user.email ?? "");
+
       if (error) {
         throw new Error(error.message);
       }
