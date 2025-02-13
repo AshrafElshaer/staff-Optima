@@ -29,8 +29,8 @@ export const createJobPostAction = authActionClient
 
     if (error) throw new Error(error.message);
 
-    revalidatePath("/job-listings");
-    redirect("/job-listings");
+    revalidatePath("/job-posts");
+    redirect("/job-posts");
   });
 
 export const updateJobPostAction = authActionClient
@@ -52,7 +52,7 @@ export const updateJobPostAction = authActionClient
 
     if (error) throw new Error(error.message);
 
-    revalidatePath("/job-listings");
+    revalidatePath("/job-posts");
 
     return data;
   });
