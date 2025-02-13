@@ -17,7 +17,7 @@ export default async function WaitlistPage() {
         </CardHeader>
         <Separator />
         <CardContent >
-          <Icons.Logo className="size-24 mx-auto my-8" />
+          <Icons.Logo className="size-16 mx-auto my-8" />
 
           <p className="mb-4">
             Thank you for your interest in Staff Optima. We're currently

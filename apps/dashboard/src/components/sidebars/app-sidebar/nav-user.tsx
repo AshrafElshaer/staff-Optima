@@ -57,7 +57,7 @@ export function NavUser() {
   const { theme, setTheme } = useTheme();
   const supabase = useSupabase();
   const router = useRouter();
-  
+
   if (isLoading) {
     return (
       <div
@@ -175,10 +175,10 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onSelect={() => {
-                supabase.auth.signOut().then(() => {
-                  router.push(`/auth?redirect_url=${usePathname()}`);
-                });
+              asDialogTrigger
+              onSelect={async () => {
+                await supabase.auth.signOut();
+                router.push("/auth");
               }}
             >
               <Door01Icon strokeWidth={2} />
