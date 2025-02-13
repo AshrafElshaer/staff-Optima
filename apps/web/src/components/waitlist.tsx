@@ -30,7 +30,11 @@ export function Waitlist() {
       form.reset();
     },
     onError: ({ error }) => {
-      toast.error(error.serverError);
+      if (error?.serverError?.includes("You're already on the waitlist")) {
+        toast.info(error.serverError);
+      } else {
+        toast.error(error.serverError);
+      }
     },
   });
   const form = useForm<z.infer<typeof waitlistSchema>>({
