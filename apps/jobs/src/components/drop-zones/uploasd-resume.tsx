@@ -4,18 +4,23 @@ import {
   candidateInsertSchema,
 } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import { AiBeautifyIcon, Loading03Icon } from "hugeicons-react";
+import {
+  AiBeautifyIcon,
+  Loading03Icon,
+  Pdf02Icon,
+  PencilEdit02Icon,
+} from "hugeicons-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { extractResumeData } from "@/lib/ai/parse-resume";
 import { parseDateFromString } from "@/lib/date/parse-date-from-string";
-import { experimental_useObject as useObject } from "@ai-sdk/react";
+
 import { countriesMap } from "@optima/location";
 import { Alert, AlertDescription, AlertTitle } from "@optima/ui/alert";
 import { useMutation } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
-import { toast } from "sonner";
+
 import type { z } from "zod";
 
 import { AnimatePresence, motion } from "motion/react";
@@ -29,8 +34,8 @@ export function UploadResume({
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   form: UseFormReturn<z.infer<typeof formSchema>>;
 }) {
-  const [isSuccess, setIsSuccess] = useState(true);
-  const [isDragActive, setIsDragActive] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const { mutate: extractResume, isPending } = useMutation({
     mutationFn: extractResumeData,
     onSuccess: (data) => {
@@ -141,15 +146,14 @@ export function UploadResume({
       );
     },
   });
-  const { getRootProps, getInputProps, open } = useDropzone({
+  const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     disabled: isPending,
     noClick: true,
     noKeyboard: true,
     accept: {
       "application/pdf": [".pdf"],
     },
-    onDragEnter: () => setIsDragActive(true),
-    onDragLeave: () => setIsDragActive(false),
+
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024, // 10MB
     async onDrop(acceptedFiles) {
@@ -225,10 +229,10 @@ export function UploadResume({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-md flex items-center justify-center"
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-md flex items-center justify-center border border-primary/70"
           >
             <div className="text-center">
-              <AiBeautifyIcon className="size-8 mx-auto mb-2" />
+              <Pdf02Icon className="size-8 mx-auto mb-2" />
               <p className="text-lg font-medium">Drop your resume here</p>
             </div>
           </motion.div>

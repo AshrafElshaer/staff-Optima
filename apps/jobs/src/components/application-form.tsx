@@ -54,6 +54,7 @@ import { IoIosSend } from "react-icons/io";
 import { countriesMap } from "@optima/location";
 import type { z } from "zod";
 import { UploadResume } from "./drop-zones/uploasd-resume";
+import { ExtraFiles } from "./drop-zones/extra-files";
 
 type ApplicationFormProps = {
   job: JobPost;
@@ -701,14 +702,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 </span>
               </Label>
 
-              <div className="flex flex-col items-center justify-center min-h-40 border rounded-md p-4 bg-accent">
-                <p className="text-sm">drop zone Upload additional documents</p>
-                {files.map((file) => (
-                  <div key={file.name}>
-                    <p>{file.name}</p>
-                  </div>
-                ))}
-              </div>
+              <ExtraFiles setFiles={setFiles} files={files} />
             </div>
 
             <Button type="submit" className="mt-4">
