@@ -61,7 +61,7 @@ export const verifyDomainAction = authActionClient
         `staffoptima_verification.${parsedInput.domain}`,
       );
     } catch (error) {
-      console.log({ error });
+
       await updateDomainVerification(supabase, {
         id: parsedInput.id,
         verification_status: "failed",
