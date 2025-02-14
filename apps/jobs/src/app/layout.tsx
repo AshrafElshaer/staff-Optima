@@ -1,9 +1,9 @@
 import { Footer } from "@/components/footer";
 import "../styles.css";
 
-import { ReactQueryProvider } from "../components/react-query-provider";
 import { Provider as AnalyticsProvider } from "@optima/analytics/client";
 import { cn } from "@optima/ui/cn";
+import { ReactQueryProvider } from "../components/react-query-provider";
 
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -12,7 +12,7 @@ import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import localFont from "next/font/local";
-
+import { Toaster } from "sonner";
 const baseUrl = "https://staffoptima.co";
 
 const DepartureMono = localFont({
@@ -81,6 +81,12 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <Toaster
+                theme={"dark"}
+                duration={5000}
+                position="top-right"
+                richColors
+              />
               <>
                 {children}
                 <AnalyticsProvider />

@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.1.13",
     "@optima/analytics": "workspace:*",
     "@optima/editors": "workspace:*",
     "@optima/kv": "workspace:*",
