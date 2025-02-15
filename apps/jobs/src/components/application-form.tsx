@@ -55,6 +55,7 @@ import { countriesMap } from "@optima/location";
 import type { z } from "zod";
 import { UploadResume } from "./drop-zones/uploasd-resume";
 import { ExtraFiles } from "./drop-zones/extra-files";
+import { UploadTranscript } from "./drop-zones/upload-transcript";
 
 type ApplicationFormProps = {
   job: JobPost;
@@ -295,13 +296,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <Label className="text-lg font-bold">
               Educations & Certifications
             </Label>
-            <div className="flex items-center gap-2 p-4 border rounded-md">
-              <AiBeautifyIcon className="size-5" />
-              Autofill from education transcript
-              <Button className="ml-auto" type="button">
-                Upload
-              </Button>
-            </div>
+          <UploadTranscript setFiles={setFiles} form={form} />
 
             {educations.map((edu, index) => (
               <div key={index.toString()} className="space-y-4">
@@ -376,7 +371,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                 </div>
 
-                {index > 0 && (
+
                   <div className="flex justify-end">
                     <Button
                       type="button"
@@ -394,7 +389,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                       Remove
                     </Button>
                   </div>
-                )}
+
                 <Separator />
               </div>
             ))}
@@ -420,13 +415,6 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
             {/* Experience */}
             <Label className="text-lg font-bold">Experience</Label>
-            <div className="flex items-center gap-2 p-4 border rounded-md">
-              <AiBeautifyIcon className="size-5" />
-              Autofill from resume
-              <Button className="ml-auto" type="button">
-                Upload
-              </Button>
-            </div>
 
             {experiences.map((exp, index) => (
               <div key={index.toString()} className="space-y-4">
@@ -561,7 +549,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   )}
                 />
 
-                {index > 0 && (
+
                   <div className="flex justify-end">
                     <Button
                       type="button"
@@ -579,7 +567,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                       Remove
                     </Button>
                   </div>
-                )}
+
                 <Separator />
               </div>
             ))}

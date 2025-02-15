@@ -2,7 +2,7 @@
 
 import { formatBytes } from "@/lib/format-bytes";
 import { Button } from "@optima/ui/button";
-import { Pdf02Icon, Cancel01Icon } from "hugeicons-react";
+import { Pdf02Icon, Cancel01Icon, PlusMinus01Icon } from "hugeicons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -39,6 +39,9 @@ export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
           <p className="text-sm text-secondary-foreground">
             Drag and drop your files here
           </p>
+          <Button variant="outline" size="icon" type="button" onClick={open}> 
+            <PlusMinus01Icon className="size-4" />
+          </Button>
         </div>
 
         {files.length > 0 && (

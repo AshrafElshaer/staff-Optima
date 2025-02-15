@@ -222,21 +222,26 @@ const socialLinkSchema = z.record(
   z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
-  z.string().url(),
+  z
+    .string()
+    .regex(
+      /^(?:(?:www\.)?)?[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(?:\/[@\w-]+)*$/,
+      "Please enter a valid domain with optional path (e.g., twitter.com/@username)",
+    ),
 );
 
-const educationSchema = z.object({
+export const educationSchema = z.object({
   school: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
   degree: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
-  graduation_date: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+  graduation_date: z.string().min(1, {
+    message: "Date is required",
   }),
-  gpa: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+  gpa: z.string().min(1, {
+    message: "GPA is required",
   }),
 });
 
@@ -247,8 +252,8 @@ const experienceSchema = z.object({
   position: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
-  start_date: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+  start_date: z.string().min(1, {
+    message: "Start date is required",
   }),
   end_date: z.string().nullable(),
   description: z.string().min(2, {
@@ -267,16 +272,12 @@ export const candidateSchema = z.object({
   country: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
-  date_of_birth: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+  date_of_birth: z.string().min(1, {
+    message: "Date of birth is required",
   }),
-  educations: z.array(educationSchema).min(1, {
-    message: "Must be at least 1 education",
-  }),
+  educations: z.array(educationSchema),
   email: z.string().email(),
-  experiences: z.array(experienceSchema).min(1, {
-    message: "Must be at least 1 experience",
-  }),
+  experiences: z.array(experienceSchema),
   first_name: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),
@@ -290,8 +291,8 @@ export const candidateSchema = z.object({
     message: "Invalid phone number",
   }),
   social_links: socialLinkSchema,
-  timezone: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+  timezone: z.string().min(1, {
+    message: "Timezone is required",
   }),
   created_at: z.string(),
   updated_at: z.string(),
@@ -308,11 +309,9 @@ export const candidateUpdateSchema = candidateSchema.partial().required({
 });
 
 const screeningQuestionAnswerSchema = z.object({
-  question: z.string().min(2, {
-    message: "Must be minimum 2 characters",
-  }),
+  question: z.string(),
   answer: z.string().min(2, {
-    message: "Must be minimum 2 characters",
+    message: "Answer is required",
   }),
 });
 export const applicationSchema = z.object({
