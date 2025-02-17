@@ -4,11 +4,7 @@ export const createAttachment = async (
   supabase: SupabaseInstance,
   attachments: TablesInsert<"attachments">[],
 ) => {
-  return await supabase
-    .from("attachments")
-    .insert(attachments)
-    .select()
-    .single();
+  return await supabase.from("attachments").upsert(attachments).select();
 };
 
 export const updateAttachment = async (
