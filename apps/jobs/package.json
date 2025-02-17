@@ -27,6 +27,7 @@
     "moment": "^2.30.1",
     "motion": "12.0.0-alpha.2",
     "next": "^15.1.6",
+    "next-safe-action": "^7.10.4",
     "nuqs": "^2.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

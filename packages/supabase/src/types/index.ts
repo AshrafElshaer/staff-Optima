@@ -78,3 +78,4 @@ export type ApplicationStage = Tables<"application_stages">;
 export type EmailTemplate = Tables<"email_templates">;
 export type JobPost = Tables<"job_posts">;
 export type Candidate = Tables<"candidates">;
+export type Application = Tables<"applications">;

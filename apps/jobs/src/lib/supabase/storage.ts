@@ -1,4 +1,4 @@
-import type { SupabaseInstance } from "@optima/supabase/types";
+import type { AttachmentType, SupabaseInstance } from "@optima/supabase/types";
 type UploadFileProps = {
   supabase: SupabaseInstance;
   bucket: string;
@@ -58,4 +58,37 @@ export async function uploadUserAvatar({
   file,
 }: UploadUserAvatarProps) {
   return uploadFile({ supabase, bucket: "avatars", path: userId, file });
+}
+
+type UploadCandidateAttachmentProps = {
+  supabase: SupabaseInstance;
+  candidateId: string;
+  file: {
+    fileType: AttachmentType;
+    file: File;
+  };
+};
+export async function uploadCandidateAttachment({
+  supabase,
+  candidateId,
+  file,
+}: UploadCandidateAttachmentProps) {
+  const bucket = "attachments";
+  const path = `${candidateId}/${file.file.name}`;
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .upload(path, file.file, {
+    contentType: file.file.type,
+    upsert: true,
+  });
+
+if (error) {
+  throw error;
+}
+
+const {
+  data: { publicUrl },
+  } = supabase.storage.from(bucket).getPublicUrl(data.path);
+
+  return { publicUrl, path, fileName: file.file.name, fileType: file.fileType };
 }

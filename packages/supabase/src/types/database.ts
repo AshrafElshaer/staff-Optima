@@ -100,13 +100,13 @@ export type Database = {
       };
       applications: {
         Row: {
-          candidate_id: string | null;
+          candidate_id: string;
           candidate_match: number;
           created_at: string;
           department_id: string | null;
           id: string;
-          job_id: string | null;
-          organization_id: string | null;
+          job_id: string;
+          organization_id: string;
           rejection_reason_id: string | null;
           screening_question_answers: Json | null;
           source: string | null;
@@ -114,13 +114,13 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
-          candidate_id?: string | null;
+          candidate_id: string;
           candidate_match: number;
           created_at?: string;
           department_id?: string | null;
           id?: string;
-          job_id?: string | null;
-          organization_id?: string | null;
+          job_id: string;
+          organization_id: string;
           rejection_reason_id?: string | null;
           screening_question_answers?: Json | null;
           source?: string | null;
@@ -128,13 +128,13 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
-          candidate_id?: string | null;
+          candidate_id?: string;
           candidate_match?: number;
           created_at?: string;
           department_id?: string | null;
           id?: string;
-          job_id?: string | null;
-          organization_id?: string | null;
+          job_id?: string;
+          organization_id?: string;
           rejection_reason_id?: string | null;
           screening_question_answers?: Json | null;
           source?: string | null;

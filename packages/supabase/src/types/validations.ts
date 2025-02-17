@@ -316,11 +316,11 @@ const screeningQuestionAnswerSchema = z.object({
 });
 export const applicationSchema = z.object({
   id: z.string(),
-  candidate_id: z.string().nullable(),
+  candidate_id: z.string(),
   candidate_match: z.number().min(0).max(100),
-  department_id: z.string().nullable(),
-  job_id: z.string().nullable(),
-  organization_id: z.string().nullable(),
+  department_id: z.string(),
+  job_id: z.string(),
+  organization_id: z.string(),
   rejection_reason_id: z.string().nullable(),
   screening_question_answers: z.array(screeningQuestionAnswerSchema).nullable(),
   source: z.string().nullable(),

@@ -1,5 +1,10 @@
 "use client";
-import type { JobPost } from "@optima/supabase/types";
+import type {
+  Application,
+  AttachmentType,
+  Candidate,
+  JobPost,
+} from "@optima/supabase/types";
 import { Button } from "@optima/ui/button";
 import { DatePickerWithSelect } from "@optima/ui/date-picker-with-select";
 import {
@@ -17,9 +22,6 @@ import {
 } from "@optima/ui/inputs";
 import type { Country } from "react-phone-number-input";
 
-import { useChat } from "@ai-sdk/react";
-
-import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   applicationInsertSchema,
@@ -28,7 +30,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -41,21 +42,27 @@ import {
   TimezoneSelector,
 } from "@optima/ui/selectors";
 import { Separator } from "@optima/ui/separator";
-import { Textarea } from "@optima/ui/textarea";
-import { AiBeautifyIcon, SentIcon } from "hugeicons-react";
-import { TransitionRightIcon } from "hugeicons-react";
+import { Loading03Icon } from "hugeicons-react";
 import { X } from "lucide-react";
 import moment from "moment";
 import { useAction } from "next-safe-action/hooks";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosSend } from "react-icons/io";
 
+import {
+  createApplicationAction,
+  createAttachmentAction,
+} from "@/acttions/apply-for-job";
+import { calculateCandidateMatch } from "@/lib/ai/get-candidate-match";
+import { createBrowserClient } from "@/lib/supabase/browser";
+import { uploadCandidateAttachment } from "@/lib/supabase/storage";
 import { countriesMap } from "@optima/location";
+import { toast } from "sonner";
 import type { z } from "zod";
-import { UploadResume } from "./drop-zones/uploasd-resume";
 import { ExtraFiles } from "./drop-zones/extra-files";
 import { UploadTranscript } from "./drop-zones/upload-transcript";
+import { UploadResume } from "./drop-zones/uploasd-resume";
 
 type ApplicationFormProps = {
   job: JobPost;
@@ -64,7 +71,27 @@ type ApplicationFormProps = {
 const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
 
 export function ApplicationForm({ job }: ApplicationFormProps) {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<
+    {
+      fileType: AttachmentType;
+      file: File;
+    }[]
+  >([]);
+  const supabase = createBrowserClient();
+  const { executeAsync: createAttachments, execute: testUpload, isExecuting: isCreatingAttachment } =
+    useAction(createAttachmentAction, {
+      onSuccess: (data) => {
+        console.log("data", data);
+      },
+    });
+  const { execute: applyForJob, isExecuting: isApplying } = useAction(
+    createApplicationAction,
+    {
+      onSuccess: (data) => {
+        console.log("data", data);
+      },
+    },
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,11 +110,11 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         question,
         answer: "",
       })),
-      source: "",
+      source: "website",
       candidate_match: 0,
       job_id: job.id,
       organization_id: job.organization_id,
-      department_id: job.department_id,
+      department_id: job.department_id ?? "",
       rejection_reason_id: "",
 
       educations: [
@@ -126,12 +153,104 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     return form.watch("social_links");
   }, [form.watch("social_links")]);
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  async function handleUploadAttachments(application: Application) {
+    if (!files.length) return;
+    toast.promise(
+      async () => {
+        console.log("uploading attachments");
+        const promises = files.map((file) =>
+          uploadCandidateAttachment({
+            supabase,
+            candidateId: application.candidate_id ?? "",
+            file: {
+              fileType: file.fileType,
+              file: file.file,
+            },
+          }),
+        );
+        const uploadedAttachments = await Promise.all(promises);
+        const attachments = await createAttachments(
+          uploadedAttachments.map((result) => ({
+            application_id: application.id,
+            attachment_type: result.fileType,
+            file_name: result.fileName,
+            file_path: result.path,
+            file_url: result.publicUrl,
+            organization_id: job.organization_id ?? "",
+          })),
+        );
+
+        if (attachments?.serverError) {
+          throw new Error(attachments.serverError);
+        }
+      },
+      {
+        loading: "Uploading attachments...",
+        success: "Attachments uploaded successfully",
+        error: (error) => error.message,
+      },
+    );
+  }
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const candidate: Candidate = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      phone_number: data.phone_number,
+      country: data.country,
+      city: data.city,
+      gender: data.gender,
+      date_of_birth: data.date_of_birth,
+      timezone: data.timezone,
+      avatar_url: data.avatar_url,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      id: "",
+      organization_id: data.organization_id,
+      educations: data.educations,
+      experiences: data.experiences,
+      social_links: data.social_links,
+    };
+
+    const application: Omit<Application, "candidate_match"> = {
+      candidate_id: "",
+      job_id: data.job_id,
+      organization_id: data.organization_id ?? "",
+      department_id: data.department_id,
+      rejection_reason_id: data.rejection_reason_id,
+      screening_question_answers: data.screening_question_answers,
+      source: data.source,
+      stage_id: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      id: "",
+    };
+
+    const { candidate_match, ...rest } = data;
+    const candidateMatch = await calculateCandidateMatch(
+      job,
+      candidate,
+      application,
+    );
+
+    applyForJob({
+      ...rest,
+      candidate_match: candidateMatch,
+    });
   };
 
   return (
     <>
+      <Button onClick={() => testUpload([{
+        
+        organization_id: "123",
+        application_id: "123",
+        attachment_type: "resume",
+        file_name: "test.pdf",
+        file_path: "test.pdf",
+        file_url: "test.pdf",
+      }])}>test upload</Button>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <section className="flex flex-col gap-4">
@@ -296,7 +415,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <Label className="text-lg font-bold">
               Educations & Certifications
             </Label>
-          <UploadTranscript setFiles={setFiles} form={form} />
+            <UploadTranscript setFiles={setFiles} form={form} />
 
             {educations.map((edu, index) => (
               <div key={index.toString()} className="space-y-4">
@@ -371,30 +490,31 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                 </div>
 
-
-                  <div className="flex justify-end">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => {
-                        form.setValue(
-                          "educations",
-                          form
-                            .getValues("educations")
-                            .filter((_, i) => i !== index),
-                        );
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </div>
+                <div className="flex justify-end">
+                  <Button
+                    disabled={isApplying}
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      form.setValue(
+                        "educations",
+                        form
+                          .getValues("educations")
+                          .filter((_, i) => i !== index),
+                      );
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </div>
 
                 <Separator />
               </div>
             ))}
 
             <Button
+              disabled={isApplying}
               type="button"
               variant="outline"
               onClick={() => {
@@ -549,30 +669,31 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   )}
                 />
 
-
-                  <div className="flex justify-end">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => {
-                        form.setValue(
-                          "experiences",
-                          form
-                            .getValues("experiences")
-                            .filter((_, i) => i !== index),
-                        );
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  </div>
+                <div className="flex justify-end">
+                  <Button
+                    disabled={isApplying}
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      form.setValue(
+                        "experiences",
+                        form
+                          .getValues("experiences")
+                          .filter((_, i) => i !== index),
+                      );
+                    }}
+                  >
+                    Remove
+                  </Button>
+                </div>
 
                 <Separator />
               </div>
             ))}
 
             <Button
+              disabled={isApplying}
               type="button"
               variant="outline"
               onClick={() => {
@@ -597,6 +718,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               <div className="flex items-center justify-between">
                 <Label className="text-lg font-bold">Social Links</Label>
                 <AddLink
+                  isApplying={isApplying}
                   setLinks={(value) =>
                     form.setValue("social_links", {
                       ...form.getValues("social_links"),
@@ -622,6 +744,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                         </FormControl>
                         {key !== "linkedin" && (
                           <Button
+                            disabled={isApplying}
                             type="button"
                             variant="destructive"
                             size="icon"
@@ -693,8 +816,12 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               <ExtraFiles setFiles={setFiles} files={files} />
             </div>
 
-            <Button type="submit" className="mt-4">
-              <IoIosSend className="size-4" />
+            <Button type="submit" className="mt-4" disabled={isApplying}>
+              {isApplying ? (
+                <Loading03Icon className="size-4 animate-spin" />
+              ) : (
+                <IoIosSend className="size-4" />
+              )}
               Submit Application
             </Button>
           </section>
@@ -715,13 +842,15 @@ const linkOptions = [
 
 function AddLink({
   setLinks,
+  isApplying,
 }: {
   setLinks: (value: { [key: string]: string }) => void;
+  isApplying: boolean;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" disabled={isApplying}>
           Add Link
         </Button>
       </DropdownMenuTrigger>

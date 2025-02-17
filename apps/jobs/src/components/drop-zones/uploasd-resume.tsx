@@ -24,6 +24,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { z } from "zod";
 
 import { AnimatePresence, motion } from "motion/react";
+import type { AttachmentType } from "@optima/supabase/types";
 
 const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
 
@@ -31,7 +32,14 @@ export function UploadResume({
   setFiles,
   form,
 }: {
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  setFiles: React.Dispatch<
+    React.SetStateAction<
+      {
+        fileType: AttachmentType;
+        file: File;
+      }[]
+    >
+  >;
   form: UseFormReturn<z.infer<typeof formSchema>>;
 }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -43,22 +51,42 @@ export function UploadResume({
       form.setValue(
         "first_name",
         data.first_name !== "null" ? data.first_name ?? "" : "",
+        {
+          shouldValidate: true,
+        }
       );
       form.setValue(
         "last_name",
         data.last_name !== "null" ? data.last_name ?? "" : "",
+        {
+          shouldValidate: true,
+        }
       );
-      form.setValue("email", data.email !== "null" ? data.email ?? "" : "");
+      form.setValue(
+        "email",
+        data.email !== "null" ? data.email ?? "" : "",
+        {
+          shouldValidate: true,
+        },
+      );
       form.setValue(
         "phone_number",
         data.phone_number !== "null" ? data.phone_number ?? "" : "",
+        {
+          shouldValidate: true,
+        }
       );
-      form.setValue("city", data.city !== "null" ? data.city ?? "" : "");
+      form.setValue("city", data.city !== "null" ? data.city ?? "" : "", {
+        shouldValidate: true,
+      });
       form.setValue(
         "country",
         data.country !== "null" && data.country
           ? countriesMap.get(data.country)?.name ?? ""
           : "",
+        {
+          shouldValidate: true,
+        },
       );
 
       form.setValue(
@@ -82,6 +110,9 @@ export function UploadResume({
                 gpa: "",
               },
             ],
+        {
+          shouldValidate: true,
+        },
       );
 
       form.setValue(
@@ -115,6 +146,9 @@ export function UploadResume({
                 skills: [],
               },
             ],
+        {
+          shouldValidate: true,
+        },
       );
 
       form.setValue("social_links", {
@@ -131,18 +165,30 @@ export function UploadResume({
               String(value).replace(/^https?:\/\//, ""),
             ]),
         ),
-      });
+      },
+        {
+          shouldValidate: true,
+        },
+      );
 
       form.setValue(
         "timezone",
         data.timezone !== "null" ? data.timezone ?? "" : "",
+        {
+          shouldValidate: true,
+        },
       );
-      form.setValue("gender", data.gender !== "null" ? data.gender ?? "" : "");
+      form.setValue("gender", data.gender !== "null" ? data.gender ?? "" : "", {
+        shouldValidate: true,
+      });
       form.setValue(
         "date_of_birth",
         data.date_of_birth
           ? parseDateFromString(data.date_of_birth)?.toISOString() ?? ""
           : "",
+        {
+          shouldValidate: true,
+        },
       );
     },
   });
@@ -159,7 +205,7 @@ export function UploadResume({
     async onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
       const file = acceptedFiles[0] as File;
-      setFiles((prev) => [...prev, file]);
+      setFiles((prev) => [...prev, { fileType: "resume", file }]);
       extractResume(file);
     },
   });

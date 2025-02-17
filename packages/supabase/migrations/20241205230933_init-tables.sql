@@ -200,10 +200,10 @@ create index idx_candidates_email on candidates(email);
 create table applications(
     id uuid primary key default gen_random_uuid(),
     job_id uuid references job_listings(id) on delete cascade,
-    organization_id uuid references organizations(id) not null on delete cascade,
-    department_id uuid references departments(id) not null on delete set null,
-    candidate_id uuid references candidates(id) not null on delete cascade,
-    stage_id uuid references application_stages(id) not null on delete set null,
+    organization_id uuid references organizations(id)  on delete cascade not null,
+    department_id uuid references departments(id)  on delete set null,
+    candidate_id uuid references candidates(id)  on delete cascade not null,
+    stage_id uuid references application_stages(id)  on delete set null,
     rejection_reason_id uuid references reject_reasons(id) on delete set null,
 
     source text,

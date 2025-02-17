@@ -1,6 +1,7 @@
 "use client";
 
 import { formatBytes } from "@/lib/format-bytes";
+import type { AttachmentType } from "@optima/supabase/types";
 import { Button } from "@optima/ui/button";
 import { Pdf02Icon, Cancel01Icon, PlusMinus01Icon } from "hugeicons-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -8,10 +9,19 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface ExtraFilesProps {
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  files: File[];
+  setFiles: React.Dispatch<
+    React.SetStateAction<
+      {
+        fileType: AttachmentType;
+        file: File;
+      }[]
+    >
+  >;
+  files: {
+    fileType: AttachmentType;
+    file: File;
+  }[];
 }
-
 export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
@@ -20,12 +30,12 @@ export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
     maxSize: 10 * 1024 * 1024, // 10MB
     onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+      setFiles((prev) => [...prev, ...acceptedFiles.map((file) => ({ fileType: "other" as const, file }))]);
     },
   });
 
   function handleRemoveFile(file: File) {
-    setFiles((prev) => prev.filter((f) => f !== file));
+    setFiles((prev) => prev.filter((f) => f.file !== file));
   }
 
   return (
@@ -48,19 +58,19 @@ export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
           <div className="space-y-2">
             {files.map((file) => (
               <div
-                key={file.name}
+                key={file.file.name}
                 className="text-sm flex items-center gap-2 w-full border rounded-md p-2"
               >
-                <p>{file.name}</p>
+                <p>{file.file.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {formatBytes(file.size)}
+                  {formatBytes(file.file.size)}
                 </p>
                 <Button
                   variant="destructive"
                   className="ml-auto"
                   type="button"
                   size="iconSm"
-                  onClick={() => handleRemoveFile(file)}
+                  onClick={() => handleRemoveFile(file.file)}
                 >
                   <Cancel01Icon className="size-4" />
                 </Button>

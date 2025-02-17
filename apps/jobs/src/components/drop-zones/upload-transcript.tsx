@@ -22,6 +22,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { z } from "zod";
 
 import { AnimatePresence, motion } from "motion/react";
+import type { AttachmentType } from "@optima/supabase/types";
 
 const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
 
@@ -29,7 +30,14 @@ export function UploadTranscript({
   setFiles,
   form,
 }: {
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  setFiles: React.Dispatch<
+    React.SetStateAction<
+      {
+        fileType: AttachmentType;
+        file: File;
+      }[]
+    >
+  >;
   form: UseFormReturn<z.infer<typeof formSchema>>;
 }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -74,8 +82,11 @@ export function UploadTranscript({
     maxSize: 10 * 1024 * 1024, // 10MB
     async onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
-    
-      setFiles((prev) => [...prev, ...acceptedFiles]);
+
+      setFiles((prev) => [
+        ...prev,
+        ...acceptedFiles.map((file) => ({ fileType: "transcript" as const, file })),
+      ]);
       extractTranscript(acceptedFiles);
     },
   });
