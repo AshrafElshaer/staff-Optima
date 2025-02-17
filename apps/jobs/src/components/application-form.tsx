@@ -162,18 +162,19 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
   async function handleUploadAttachments(application: Application) {
     try {
-      const promises = files.map((file) =>
-        uploadCandidateAttachment({
-          supabase,
-          candidateId: application.candidate_id ?? "",
-          file: {
-            fileType: file.fileType,
-            file: file.file,
-          },
-        }),
+      const uploadedAttachments = await Promise.all(
+        files.map(
+          async (file) =>
+            await uploadCandidateAttachment({
+              supabase,
+              candidateId: application.candidate_id ?? "",
+              file: {
+                fileType: file.fileType,
+                file: file.file,
+              },
+            }),
+        ),
       );
-      
-      const uploadedAttachments = await Promise.all(promises);
 
       const attachments = await createAttachments(
         uploadedAttachments.map((result) => ({
@@ -192,7 +193,9 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
       toast.success("Attachments uploaded successfully");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to upload attachments");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to upload attachments",
+      );
     } finally {
       setIsSubmitting(false);
     }
