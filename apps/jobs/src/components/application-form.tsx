@@ -95,11 +95,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   );
   const { execute: applyForJob } = useAction(createApplicationAction, {
     onSuccess: async ({ data }) => {
-      if (!data) {
-        setIsSubmitting(false);
-        return;
-      }
-      await handleUploadAttachments(data);
+      toast.success("Application submitted successfully");
+      await handleUploadAttachments(data!);
     },
   });
 

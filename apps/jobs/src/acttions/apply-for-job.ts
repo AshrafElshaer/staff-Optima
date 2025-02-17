@@ -104,15 +104,21 @@ export const createAttachmentAction = actionClientWithMeta
     ),
   )
   .action(async ({ parsedInput, ctx }) => {
-    // const supabase = await createServerClient();
+    const supabase = await createServerClient({
+      isAdmin: true,
+    });
 
-    // const { data: attachment, error: attachmentError } = await createAttachment(
-    //   supabase,
-    //   parsedInput.map((input) => ({
-    //     ...input,
-    //     organization_id: input.organization_id,
-    //   })),
-    // );
+    const { data: attachment, error: attachmentError } = await createAttachment(
+      supabase,
+      parsedInput.map((input) => ({
+        ...input,
+        organization_id: input.organization_id,
+      })),
+    );
 
-    return parsedInput;
+    if (attachmentError) {
+      throw new Error(attachmentError.message);
+    }
+
+    return attachment;
   });
