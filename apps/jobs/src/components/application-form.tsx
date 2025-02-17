@@ -78,12 +78,21 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     }[]
   >([]);
   const supabase = createBrowserClient();
-  const { executeAsync: createAttachments, execute: testUpload, isExecuting: isCreatingAttachment } =
-    useAction(createAttachmentAction, {
-      onSuccess: (data) => {
-        console.log("data", data);
-      },
-    });
+  const {
+    executeAsync: createAttachments,
+    execute: testUpload,
+    isExecuting: isCreatingAttachment,
+  } = useAction(createAttachmentAction, {
+    onSuccess: (data) => {
+      console.log("data", data);
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
+    onSettled: ({ result }) => {
+      console.log("settled", result);
+    },
+  });
   const { execute: applyForJob, isExecuting: isApplying } = useAction(
     createApplicationAction,
     {
@@ -242,15 +251,22 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
   return (
     <>
-      <Button onClick={() => testUpload([{
-        
-        organization_id: "123",
-        application_id: "123",
-        attachment_type: "resume",
-        file_name: "test.pdf",
-        file_path: "test.pdf",
-        file_url: "test.pdf",
-      }])}>test upload</Button>
+      <Button
+        onClick={() =>
+          testUpload([
+            {
+              organization_id: "123",
+              application_id: "123",
+              attachment_type: "resume",
+              file_name: "test.pdf",
+              file_path: "test.pdf",
+              file_url: "test.pdf",
+            },
+          ])
+        }
+      >
+        test upload
+      </Button>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <section className="flex flex-col gap-4">

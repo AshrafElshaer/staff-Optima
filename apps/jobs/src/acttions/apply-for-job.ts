@@ -25,7 +25,9 @@ export const createApplicationAction = actionClientWithMeta
   })
   .schema(schema)
   .action(async ({ parsedInput, ctx }) => {
-    const supabase = await createServerClient();
+    const supabase = await createServerClient({
+      isAdmin: true,
+    });
 
     const { data: candidate, error: candidateError } = await createCandidate(
       supabase,
