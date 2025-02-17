@@ -79,33 +79,29 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     }[]
   >([]);
   const supabase = createBrowserClient();
-  const {
-    executeAsync: createAttachments,
-
-
-  } = useAction(createAttachmentAction, {
-    onSuccess: (data) => {
-      console.log("data", data);
-    },
-    onError: (error) => {
-      console.log("error", error);
-    },
-    onSettled: ({ result }) => {
-      console.log("settled", result);
-    },
-  });
-  const { executeAsync: applyForJob, } = useAction(
-    createApplicationAction,
+  const { executeAsync: createAttachments } = useAction(
+    createAttachmentAction,
     {
-      onSuccess: ({ data }) => {
-        if (!data) {
-          setIsSubmitting(false);
-          return;
-        }
-        handleUploadAttachments(data);
+      onSuccess: (data) => {
+        console.log("data", data);
+      },
+      onError: (error) => {
+        console.log("error", error);
+      },
+      onSettled: ({ result }) => {
+        console.log("settled", result);
       },
     },
   );
+  const { execute: applyForJob } = useAction(createApplicationAction, {
+    onSuccess: async ({ data }) => {
+      if (!data) {
+        setIsSubmitting(false);
+        return;
+      }
+      await handleUploadAttachments(data);
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -252,22 +248,10 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       application,
     );
 
-    toast.promise(
-      async () => {
-        const application = await applyForJob({
-          ...rest,
-          candidate_match: candidateMatch,
-        });
-        if (application?.serverError) {
-          throw new Error(application.serverError);
-        }
-      },
-      {
-        loading: "Applying for job...",
-        success: "Job applied successfully",
-        error: (error) => error.message,
-      },
-    );
+    applyForJob({
+      ...rest,
+      candidate_match: candidateMatch,
+    });
   };
 
   return (
