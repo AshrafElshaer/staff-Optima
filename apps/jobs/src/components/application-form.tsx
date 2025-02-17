@@ -161,45 +161,41 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   }, [form.watch("social_links")]);
 
   async function handleUploadAttachments(application: Application) {
-    if (!files.length) {
-      setIsSubmitting(false);
-      return;
-    }
-    toast.promise(
-      async () => {
-        const promises = files.map((file) =>
-          uploadCandidateAttachment({
-            supabase,
-            candidateId: application.candidate_id ?? "",
-            file: {
-              fileType: file.fileType,
-              file: file.file,
-            },
-          }),
-        );
-        const uploadedAttachments = await Promise.all(promises);
-        const attachments = await createAttachments(
-          uploadedAttachments.map((result) => ({
-            application_id: application.id,
-            attachment_type: result.fileType,
-            file_name: result.fileName,
-            file_path: result.path,
-            file_url: result.publicUrl,
-            organization_id: job.organization_id ?? "",
-          })),
-        );
+    try {
+      const promises = files.map((file) =>
+        uploadCandidateAttachment({
+          supabase,
+          candidateId: application.candidate_id ?? "",
+          file: {
+            fileType: file.fileType,
+            file: file.file,
+          },
+        }),
+      );
+      
+      const uploadedAttachments = await Promise.all(promises);
 
-        if (attachments?.serverError) {
-          throw new Error(attachments.serverError);
-        }
-      },
-      {
-        loading: "Uploading attachments...",
-        success: "Attachments uploaded successfully",
-        error: (error) => error.message,
-      },
-    );
-    setIsSubmitting(false);
+      const attachments = await createAttachments(
+        uploadedAttachments.map((result) => ({
+          application_id: application.id,
+          attachment_type: result.fileType,
+          file_name: result.fileName,
+          file_path: result.path,
+          file_url: result.publicUrl,
+          organization_id: job.organization_id ?? "",
+        })),
+      );
+
+      if (attachments?.serverError) {
+        throw new Error(attachments.serverError);
+      }
+
+      toast.success("Attachments uploaded successfully");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to upload attachments");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
