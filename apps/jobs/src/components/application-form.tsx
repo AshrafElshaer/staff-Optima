@@ -71,6 +71,7 @@ type ApplicationFormProps = {
 const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
 
 export function ApplicationForm({ job }: ApplicationFormProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [files, setFiles] = useState<
     {
       fileType: AttachmentType;
@@ -80,8 +81,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   const supabase = createBrowserClient();
   const {
     executeAsync: createAttachments,
-    execute: testUpload,
-    isExecuting: isCreatingAttachment,
+
+
   } = useAction(createAttachmentAction, {
     onSuccess: (data) => {
       console.log("data", data);
@@ -93,11 +94,15 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       console.log("settled", result);
     },
   });
-  const { execute: applyForJob, isExecuting: isApplying } = useAction(
+  const { executeAsync: applyForJob, } = useAction(
     createApplicationAction,
     {
-      onSuccess: (data) => {
-        console.log("data", data);
+      onSuccess: ({ data }) => {
+        if (!data) {
+          setIsSubmitting(false);
+          return;
+        }
+        handleUploadAttachments(data);
       },
     },
   );
@@ -163,10 +168,12 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   }, [form.watch("social_links")]);
 
   async function handleUploadAttachments(application: Application) {
-    if (!files.length) return;
+    if (!files.length) {
+      setIsSubmitting(false);
+      return;
+    }
     toast.promise(
       async () => {
-        console.log("uploading attachments");
         const promises = files.map((file) =>
           uploadCandidateAttachment({
             supabase,
@@ -199,9 +206,11 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         error: (error) => error.message,
       },
     );
+    setIsSubmitting(false);
   }
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsSubmitting(true);
     const candidate: Candidate = {
       first_name: data.first_name,
       last_name: data.last_name,
@@ -243,30 +252,26 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       application,
     );
 
-    applyForJob({
-      ...rest,
-      candidate_match: candidateMatch,
-    });
+    toast.promise(
+      async () => {
+        const application = await applyForJob({
+          ...rest,
+          candidate_match: candidateMatch,
+        });
+        if (application?.serverError) {
+          throw new Error(application.serverError);
+        }
+      },
+      {
+        loading: "Applying for job...",
+        success: "Job applied successfully",
+        error: (error) => error.message,
+      },
+    );
   };
 
   return (
     <>
-      <Button
-        onClick={() =>
-          testUpload([
-            {
-              organization_id: "123",
-              application_id: "123",
-              attachment_type: "resume",
-              file_name: "test.pdf",
-              file_path: "test.pdf",
-              file_url: "test.pdf",
-            },
-          ])
-        }
-      >
-        test upload
-      </Button>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <section className="flex flex-col gap-4">
@@ -508,7 +513,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
                 <div className="flex justify-end">
                   <Button
-                    disabled={isApplying}
+                    disabled={isSubmitting}
                     type="button"
                     variant="destructive"
                     size="sm"
@@ -530,7 +535,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             ))}
 
             <Button
-              disabled={isApplying}
+              disabled={isSubmitting}
               type="button"
               variant="outline"
               onClick={() => {
@@ -687,7 +692,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
                 <div className="flex justify-end">
                   <Button
-                    disabled={isApplying}
+                    disabled={isSubmitting}
                     type="button"
                     variant="destructive"
                     size="sm"
@@ -709,7 +714,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             ))}
 
             <Button
-              disabled={isApplying}
+              disabled={isSubmitting}
               type="button"
               variant="outline"
               onClick={() => {
@@ -734,7 +739,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               <div className="flex items-center justify-between">
                 <Label className="text-lg font-bold">Social Links</Label>
                 <AddLink
-                  isApplying={isApplying}
+                  isSubmitting={isSubmitting}
                   setLinks={(value) =>
                     form.setValue("social_links", {
                       ...form.getValues("social_links"),
@@ -760,7 +765,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                         </FormControl>
                         {key !== "linkedin" && (
                           <Button
-                            disabled={isApplying}
+                            disabled={isSubmitting}
                             type="button"
                             variant="destructive"
                             size="icon"
@@ -832,8 +837,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               <ExtraFiles setFiles={setFiles} files={files} />
             </div>
 
-            <Button type="submit" className="mt-4" disabled={isApplying}>
-              {isApplying ? (
+            <Button type="submit" className="mt-4" disabled={isSubmitting}>
+              {isSubmitting ? (
                 <Loading03Icon className="size-4 animate-spin" />
               ) : (
                 <IoIosSend className="size-4" />
@@ -858,15 +863,15 @@ const linkOptions = [
 
 function AddLink({
   setLinks,
-  isApplying,
+  isSubmitting,
 }: {
   setLinks: (value: { [key: string]: string }) => void;
-  isApplying: boolean;
+  isSubmitting: boolean;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" type="button" disabled={isApplying}>
+        <Button variant="outline" type="button" disabled={isSubmitting}>
           Add Link
         </Button>
       </DropdownMenuTrigger>

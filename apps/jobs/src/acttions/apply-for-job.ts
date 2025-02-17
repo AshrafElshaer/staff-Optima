@@ -85,7 +85,7 @@ export const createApplicationAction = actionClientWithMeta
       throw new Error("Failed to create application");
     }
 
-    return { application };
+    return application ;
   });
 
 export const createAttachmentAction = actionClientWithMeta
