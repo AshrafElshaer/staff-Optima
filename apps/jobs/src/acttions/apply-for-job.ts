@@ -40,7 +40,10 @@ export const createApplicationAction = actionClientWithMeta
       isAdmin: true,
     });
     const { candidate, application, attachments } = parsedInput;
-    
+
+    if (!candidate.organization_id) {
+      throw new Error("Organization ID is required");
+    }
 
     const { data: newCandidate, error: candidateError } = await createCandidate(
       supabase,
@@ -50,19 +53,30 @@ export const createApplicationAction = actionClientWithMeta
     if (candidateError) {
       throw new Error(candidateError.message);
     }
-    const { data: firstStage } = await supabase
+
+    if (!newCandidate?.id) {
+      throw new Error("Failed to create candidate");
+    }
+
+    const { data: firstStage, error: stageError } = await supabase
       .from("application_stages")
       .select("*")
-      .eq("organization_id", candidate.organization_id ?? "")
+      .eq("organization_id", candidate.organization_id)
       .eq("stage_order", 1)
       .single();
+
+    if (stageError || !firstStage?.id) {
+      throw new Error("Failed to find first application stage");
+    }
+
 
     const { data: newApplication, error: applicationError } =
       await createApplication(supabase, {
         ...application,
-        candidate_id: newCandidate?.id ?? "",
-        stage_id: firstStage?.id ?? "",
+        candidate_id: newCandidate.id,
+        stage_id: firstStage.id,
       });
+
 
     if (applicationError) {
       throw new Error(applicationError.message);
@@ -72,7 +86,7 @@ export const createApplicationAction = actionClientWithMeta
       const uploadPromises = attachments.map((attachment) =>
         uploadCandidateAttachment({
           supabase,
-          candidateId: newCandidate?.id ?? "",
+          candidateId: newCandidate.id,
           file: attachment,
         }),
       );
@@ -81,6 +95,7 @@ export const createApplicationAction = actionClientWithMeta
       const { error: insertError } = await createAttachment(
         supabase,
         uploadedAttachments.map((attachment) => ({
+          application_id: newApplication?.id,
           organization_id: candidate.organization_id ?? "",
           file_name: attachment.fileName,
           file_path: attachment.path,

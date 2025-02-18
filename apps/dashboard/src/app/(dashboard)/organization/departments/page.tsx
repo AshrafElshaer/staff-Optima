@@ -53,9 +53,6 @@ export default async function OrganizationDepartmentsPage({
       name,
     });
 
-  console.dir(departments, {
-    depth: Number.POSITIVE_INFINITY,
-  });
 
   return (
     <main className="flex flex-col gap-6">

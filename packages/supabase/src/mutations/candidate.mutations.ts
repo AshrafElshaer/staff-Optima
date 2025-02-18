@@ -19,6 +19,7 @@ export const createCandidate = async (
       .eq("organization_id", candidate.organization_id ?? "")
       .select()
       .single();
+
     return {
       data,
       error,

@@ -21,6 +21,7 @@ import { zfd } from "zod-form-data";
 
 import { attachmentTypeEnum } from "@optima/supabase/types";
 import { AnimatePresence, motion } from "motion/react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   candidate: candidateInsertSchema,
@@ -208,7 +209,7 @@ export function UploadResume({
 
     maxFiles: 1,
     maxSize: 10 * 1024 * 1024, // 10MB
-    async onDrop(acceptedFiles) {
+    async onDropAccepted(acceptedFiles) {
       if (!acceptedFiles.length) return;
       const file = acceptedFiles[0] as File;
       form.setValue("attachments", [
@@ -216,6 +217,9 @@ export function UploadResume({
         { fileType: "resume", file },
       ]);
       extractResume(file);
+    },
+    onDropRejected(fileRejections, event) {
+      toast.error(fileRejections[0]?.errors[0]?.message ?? "Invalid file type");
     },
   });
 

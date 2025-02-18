@@ -76,12 +76,6 @@ const formSchema = z.object({
 
 export function ApplicationForm({ job }: ApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [files, setFiles] = useState<
-    {
-      fileType: AttachmentType;
-      file: File;
-    }[]
-  >([]);
 
   const { executeAsync: applyForJob } = useAction(createApplicationAction);
 
@@ -100,6 +94,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         gender: "",
         date_of_birth: moment().subtract(16, "years").toISOString(),
         timezone: "",
+
         educations: [
           {
             school: "",
@@ -134,7 +129,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         candidate_match: 0,
         job_id: job.id,
         department_id: job.department_id ?? "",
-        rejection_reason_id: "",
+        rejection_reason_id: null,
       },
       attachments: [],
     },
@@ -152,9 +147,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
     return form.watch("candidate.social_links");
   }, [form.watch("candidate.social_links")]);
 
-  console.log(form.formState.errors);
-
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+
     setIsSubmitting(true);
     const { candidate, application, attachments } = data;
 
@@ -186,6 +180,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
           },
           attachments,
         });
+
 
         if (result?.serverError) {
           throw new Error(result.serverError);
