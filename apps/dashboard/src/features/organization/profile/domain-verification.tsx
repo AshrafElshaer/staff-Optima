@@ -19,6 +19,7 @@ import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { verifyDomainAction } from "../organization.actions";
+import { queryClient } from "@/lib/react-query";
 export function DomainVerification({
   organizationId,
 }: {
@@ -36,8 +37,6 @@ export function DomainVerification({
   const supabase = useSupabase();
   const {
     data: domainVerification,
-    isLoading,
-    isError,
   } = useQuery({
     queryKey: ["domain-verification"],
     queryFn: async () => {
@@ -63,6 +62,12 @@ export function DomainVerification({
         if (result?.serverError) {
           throw new Error(result.serverError);
         }
+        queryClient.invalidateQueries({
+          queryKey: ["organization"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["domain-verification"],
+        });
       },
       {
         loading: "Verifying your domain...",
