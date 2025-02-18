@@ -74,7 +74,7 @@ export function OrganizationSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
-  const { state } = useSidebar();
+  const { state, isMobile } = useSidebar();
   const { data: organization } = useOrganization();
   const settings = [
     {
@@ -93,13 +93,14 @@ export function OrganizationSidebar({
           className={cn(
             "flex items-center gap-2 p-2",
             state === "collapsed" && " justify-center",
+            isMobile && state === "collapsed" && "justify-start ",
           )}
         >
           <button type="button" onClick={() => router.push("/")}>
             <HiArrowUturnLeft strokeWidth={2} size={14} />
             <span className="sr-only">Back</span>
           </button>
-          {state === "expanded" && (
+          {(state === "expanded" || (isMobile && state === "collapsed")) && (
             <span className="text-compact-large font-bold">Settings</span>
           )}
         </SidebarMenuItem>

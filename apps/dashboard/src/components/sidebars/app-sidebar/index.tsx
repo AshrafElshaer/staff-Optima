@@ -40,11 +40,7 @@ const links = [
     url: "/job-posts",
     icon: <JobLinkIcon strokeWidth={2} size={20} />,
   },
-  // {
-  //   title: "Interviews",
-  //   url: "/interviews",
-  //   icon: <Calendar03Icon strokeWidth={2} size={20} />,
-  // },
+ 
   {
     title: "Candidates",
     url: "/candidates",
@@ -60,16 +56,7 @@ const communication = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession();
-  const { data: organization } = useOrganization();
-  const settings = [
-    {
-      title: "Organization",
-      url: "/organization",
-      icon: <Icons.Building strokeWidth={2} className="size-[20px]" />,
-      isError: !organization?.is_domain_verified,
-    },
-  ];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -79,9 +66,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={links} label="Workspace" />
         <NavMain items={communication} label="Team" />
-        {session?.user.user_metadata.access_role === userRoleEnum.admin ? (
-          <NavMain items={settings} label="Settings" />
-        ) : null}
+
       </SidebarContent>
       <Separator />
       <SidebarFooter>

@@ -17,6 +17,7 @@ import {
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useOrganization } from "@/hooks/use-organization";
 import { useSupabase } from "@/hooks/use-supabase";
 import { Avatar } from "@optima/ui/avatar";
 import { cn } from "@optima/ui/cn";
@@ -41,6 +42,7 @@ import {
 } from "@optima/ui/sidebar";
 import { Skeleton } from "@optima/ui/skeleton";
 import {
+  Building01Icon,
   ChartBubble01Icon,
   CommentAdd01Icon,
   Door01Icon,
@@ -57,6 +59,16 @@ export function NavUser() {
   const { theme, setTheme } = useTheme();
   const supabase = useSupabase();
   const router = useRouter();
+
+  const { data: organization } = useOrganization();
+  const settings = [
+    {
+      title: "Organization",
+      url: "/organization",
+      icon: <Building01Icon strokeWidth={2} className="size-[20px]" />,
+      isError: !organization?.is_domain_verified,
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -164,6 +176,23 @@ export function NavUser() {
                   Account Settings
                 </Link>
               </DropdownMenuItem>
+              {user?.access_role === "admin" &&
+                settings.map((setting) => (
+                  <DropdownMenuItem
+                    key={setting.title}
+                    asChild
+                    onSelect={() => {
+                      if (isMobile) {
+                        toggleSidebar();
+                      }
+                    }}
+                  >
+                    <Link href={setting.url}>
+                      {setting.icon}
+                      {setting.title}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
               <DropdownMenuItem>
                 <Headset strokeWidth={2} />
                 Support
