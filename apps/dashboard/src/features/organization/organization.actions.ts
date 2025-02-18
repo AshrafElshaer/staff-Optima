@@ -3,10 +3,15 @@ import { authActionClient } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
 
 import { resolveTxt } from "node:dns/promises";
+import { DnsVerificationEmail } from "@optima/email";
 import {
   updateDomainVerification,
   updateOrganization,
 } from "@optima/supabase/mutations";
+import {
+  getDomainVerificationByOrganizationId,
+  getOrganizationById,
+} from "@optima/supabase/queries";
 import {
   domainVerificationSchema,
   organizationUpdateSchema,
@@ -61,7 +66,6 @@ export const verifyDomainAction = authActionClient
         `staffoptima_verification.${parsedInput.domain}`,
       );
     } catch (error) {
-
       await updateDomainVerification(supabase, {
         id: parsedInput.id,
         verification_status: "failed",
@@ -105,6 +109,57 @@ export const verifyDomainAction = authActionClient
     }
 
     revalidatePath("/organization");
+
+    return data;
+  });
+
+export const sendDomainVerificationEmailAction = authActionClient
+  .metadata({
+    name: "sendDomainVerificationEmail",
+    track: {
+      event: "send-domain-verification-email",
+      channel: "organization",
+    },
+  })
+  .schema(
+    z.object({
+      organizationId: z.string(),
+      sendTo: z.string().email(),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const { user, supabase, resend } = ctx;
+
+    const { data: organization, error: organizationError } =
+      await getOrganizationById(supabase, parsedInput.organizationId);
+
+    if (organizationError) {
+      throw new Error(organizationError.message);
+    }
+    const { data: domainVerification, error: domainVerificationError } =
+      await getDomainVerificationByOrganizationId(
+        supabase,
+        parsedInput.organizationId,
+      );
+
+    if (domainVerificationError) {
+      throw new Error(domainVerificationError.message);
+    }
+
+    const { data, error } = await resend.emails.send({
+      from: "StaffOptima <verification@staffoptima.co>",
+      to: parsedInput.sendTo,
+      subject: "Domain Verification",
+      react: DnsVerificationEmail({
+        records: [domainVerification],
+        organizationDomain: organization.domain,
+        sentBy: user.email || "",
+      }),
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
     return data;
   });
