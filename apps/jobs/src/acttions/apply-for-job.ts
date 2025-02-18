@@ -2,18 +2,29 @@
 
 import { actionClientWithMeta } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
+import { uploadCandidateAttachment } from "@/lib/supabase/storage";
 import {
   createApplication,
   createAttachment,
   createCandidate,
 } from "@optima/supabase/mutations";
+import { attachmentTypeEnum } from "@optima/supabase/types";
 import {
   applicationInsertSchema,
-  attachmentInsertSchema,
   candidateInsertSchema,
 } from "@optima/supabase/validations";
 import { z } from "zod";
-const schema = candidateInsertSchema.merge(applicationInsertSchema);
+import { zfd } from "zod-form-data";
+const schema = z.object({
+  candidate: candidateInsertSchema,
+  application: applicationInsertSchema,
+  attachments: z.array(
+    z.object({
+      fileType: z.nativeEnum(attachmentTypeEnum),
+      file: zfd.file(),
+    }),
+  ),
+});
 
 export const createApplicationAction = actionClientWithMeta
   .metadata({
@@ -28,25 +39,12 @@ export const createApplicationAction = actionClientWithMeta
     const supabase = await createServerClient({
       isAdmin: true,
     });
+    const { candidate, application, attachments } = parsedInput;
+    
 
-    const { data: candidate, error: candidateError } = await createCandidate(
+    const { data: newCandidate, error: candidateError } = await createCandidate(
       supabase,
-      {
-        email: parsedInput.email,
-        first_name: parsedInput.first_name,
-        last_name: parsedInput.last_name,
-        phone_number: parsedInput.phone_number,
-        avatar_url: parsedInput.avatar_url,
-        organization_id: parsedInput.organization_id,
-        city: parsedInput.city,
-        country: parsedInput.country,
-        date_of_birth: parsedInput.date_of_birth,
-        gender: parsedInput.gender,
-        educations: parsedInput.educations,
-        experiences: parsedInput.experiences,
-        social_links: parsedInput.social_links,
-        timezone: parsedInput.timezone,
-      },
+      candidate,
     );
 
     if (candidateError) {
@@ -55,70 +53,45 @@ export const createApplicationAction = actionClientWithMeta
     const { data: firstStage } = await supabase
       .from("application_stages")
       .select("*")
-      .eq("organization_id", parsedInput.organization_id ?? "")
+      .eq("organization_id", candidate.organization_id ?? "")
       .eq("stage_order", 1)
       .single();
 
-    const { data: application, error: applicationError } =
+    const { data: newApplication, error: applicationError } =
       await createApplication(supabase, {
-        candidate_id: candidate?.id ?? "",
-        organization_id: parsedInput.organization_id ?? "",
-        job_id: parsedInput.job_id,
-        source: parsedInput.source,
-        candidate_match: parsedInput.candidate_match,
-        department_id: parsedInput.department_id,
-        screening_question_answers:
-          parsedInput.screening_question_answers ?? [],
-        stage_id: firstStage?.id,
+        ...application,
+        candidate_id: newCandidate?.id ?? "",
+        stage_id: firstStage?.id ?? "",
       });
 
-    console.log(
-      "application",
-      application,
-      "applicationError",
-      applicationError,
-    );
     if (applicationError) {
       throw new Error(applicationError.message);
     }
-    if (!application) {
-      throw new Error("Failed to create application");
+
+    if (attachments.length > 0) {
+      const uploadPromises = attachments.map((attachment) =>
+        uploadCandidateAttachment({
+          supabase,
+          candidateId: newCandidate?.id ?? "",
+          file: attachment,
+        }),
+      );
+      const uploadedAttachments = await Promise.all(uploadPromises);
+
+      const { error: insertError } = await createAttachment(
+        supabase,
+        uploadedAttachments.map((attachment) => ({
+          organization_id: candidate.organization_id ?? "",
+          file_name: attachment.fileName,
+          file_path: attachment.path,
+          file_url: attachment.publicUrl,
+          attachment_type: attachment.fileType,
+        })),
+      );
+
+      if (insertError) {
+        throw new Error(insertError.message);
+      }
     }
-
-    return application ;
-  });
-
-export const createAttachmentAction = actionClientWithMeta
-  .metadata({
-    name: "create-Attachment",
-    track: {
-      event: "create-Attachment",
-      channel: "attachments",
-    },
-  })
-  .schema(
-    z.array(
-      attachmentInsertSchema.extend({
-        organization_id: z.string(),
-      }),
-    ),
-  )
-  .action(async ({ parsedInput, ctx }) => {
-    const supabase = await createServerClient({
-      isAdmin: true,
-    });
-
-    const { data: attachment, error: attachmentError } = await createAttachment(
-      supabase,
-      parsedInput.map((input) => ({
-        ...input,
-        organization_id: input.organization_id,
-      })),
-    );
-
-    if (attachmentError) {
-      throw new Error(attachmentError.message);
-    }
-
-    return attachment;
+    return newApplication;
   });

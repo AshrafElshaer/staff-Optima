@@ -333,8 +333,6 @@ export const applicationInsertSchema = applicationSchema.omit({
   id: true,
   candidate_id: true,
   stage_id: true,
-
-  organization_id: true,
   created_at: true,
   updated_at: true,
 });

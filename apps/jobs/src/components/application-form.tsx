@@ -1,9 +1,8 @@
 "use client";
-import type {
-  Application,
-  AttachmentType,
-  Candidate,
-  JobPost,
+import {
+  type AttachmentType,
+  type JobPost,
+  attachmentTypeEnum,
 } from "@optima/supabase/types";
 import { Button } from "@optima/ui/button";
 import { DatePickerWithSelect } from "@optima/ui/date-picker-with-select";
@@ -50,16 +49,12 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosSend } from "react-icons/io";
 
-import {
-  createApplicationAction,
-  createAttachmentAction,
-} from "@/acttions/apply-for-job";
+import { createApplicationAction } from "@/acttions/apply-for-job";
 import { calculateCandidateMatch } from "@/lib/ai/get-candidate-match";
-import { createBrowserClient } from "@/lib/supabase/browser";
-import { uploadCandidateAttachment } from "@/lib/supabase/storage";
 import { countriesMap } from "@optima/location";
 import { toast } from "sonner";
-import type { z } from "zod";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 import { ExtraFiles } from "./drop-zones/extra-files";
 import { UploadTranscript } from "./drop-zones/upload-transcript";
 import { UploadResume } from "./drop-zones/uploasd-resume";
@@ -68,7 +63,16 @@ type ApplicationFormProps = {
   job: JobPost;
 };
 
-const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
+const formSchema = z.object({
+  candidate: candidateInsertSchema,
+  application: applicationInsertSchema,
+  attachments: z.array(
+    z.object({
+      fileType: z.nativeEnum(attachmentTypeEnum),
+      file: zfd.file(),
+    }),
+  ),
+});
 
 export function ApplicationForm({ job }: ApplicationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,176 +82,124 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       file: File;
     }[]
   >([]);
-  const supabase = createBrowserClient();
-  const { executeAsync: createAttachments } = useAction(
-    createAttachmentAction,
-    {
-      onSuccess: (data) => {
-        console.log("data", data);
-      },
-      onError: (error) => {
-        console.log("error", error);
-      },
-      onSettled: ({ result }) => {
-        console.log("settled", result);
-      },
-    },
-  );
-  const { execute: applyForJob } = useAction(createApplicationAction, {
-    onSuccess: async ({ data }) => {
-      toast.success("Application submitted successfully");
-      await handleUploadAttachments(data!);
-    },
-  });
+
+  const { executeAsync: applyForJob } = useAction(createApplicationAction);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      avatar_url: "",
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone_number: "",
-      country: "",
-      city: "",
-      gender: "",
-      date_of_birth: moment().subtract(16, "years").toISOString(),
-      timezone: "",
-      screening_question_answers: job.screening_questions?.map((question) => ({
-        question,
-        answer: "",
-      })),
-      source: "website",
-      candidate_match: 0,
-      job_id: job.id,
-      organization_id: job.organization_id,
-      department_id: job.department_id ?? "",
-      rejection_reason_id: "",
-
-      educations: [
-        {
-          school: "",
-          degree: "",
-          graduation_date: "",
-          gpa: "",
+      candidate: {
+        organization_id: job.organization_id ?? "",
+        avatar_url: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone_number: "",
+        country: "",
+        city: "",
+        gender: "",
+        date_of_birth: moment().subtract(16, "years").toISOString(),
+        timezone: "",
+        educations: [
+          {
+            school: "",
+            degree: "",
+            graduation_date: "",
+            gpa: "",
+          },
+        ],
+        experiences: [
+          {
+            company: "",
+            position: "",
+            start_date: "",
+            end_date: null,
+            description: "",
+            skills: [],
+          },
+        ],
+        social_links: {
+          linkedin: "",
         },
-      ],
-      experiences: [
-        {
-          company: "",
-          position: "",
-          start_date: "",
-          end_date: null,
-          description: "",
-          skills: [],
-        },
-      ],
-      social_links: {
-        linkedin: "",
       },
+      application: {
+        organization_id: job.organization_id ?? "",
+        screening_question_answers: job.screening_questions?.map(
+          (question) => ({
+            question,
+            answer: "",
+          }),
+        ),
+        source: "website",
+        candidate_match: 0,
+        job_id: job.id,
+        department_id: job.department_id ?? "",
+        rejection_reason_id: "",
+      },
+      attachments: [],
     },
   });
 
   const experiences = useMemo(() => {
-    return form.watch("experiences");
-  }, [form.watch("experiences")]);
+    return form.watch("candidate.experiences");
+  }, [form.watch("candidate.experiences")]);
 
   const educations = useMemo(() => {
-    return form.watch("educations");
-  }, [form.watch("educations")]);
+    return form.watch("candidate.educations");
+  }, [form.watch("candidate.educations")]);
 
   const socialLinks = useMemo(() => {
-    return form.watch("social_links");
-  }, [form.watch("social_links")]);
+    return form.watch("candidate.social_links");
+  }, [form.watch("candidate.social_links")]);
 
-  async function handleUploadAttachments(application: Application) {
-    try {
-      const uploadedAttachments = await Promise.all(
-        files.map(
-          async (file) =>
-            await uploadCandidateAttachment({
-              supabase,
-              candidateId: application.candidate_id ?? "",
-              file: {
-                fileType: file.fileType,
-                file: file.file,
-              },
-            }),
-        ),
-      );
-
-      const attachments = await createAttachments(
-        uploadedAttachments.map((result) => ({
-          application_id: application.id,
-          attachment_type: result.fileType,
-          file_name: result.fileName,
-          file_path: result.path,
-          file_url: result.publicUrl,
-          organization_id: job.organization_id ?? "",
-        })),
-      );
-
-      if (attachments?.serverError) {
-        throw new Error(attachments.serverError);
-      }
-
-      toast.success("Attachments uploaded successfully");
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to upload attachments",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  console.log(form.formState.errors);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    const candidate: Candidate = {
-      first_name: data.first_name,
-      last_name: data.last_name,
-      email: data.email,
-      phone_number: data.phone_number,
-      country: data.country,
-      city: data.city,
-      gender: data.gender,
-      date_of_birth: data.date_of_birth,
-      timezone: data.timezone,
-      avatar_url: data.avatar_url,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      id: "",
-      organization_id: data.organization_id,
-      educations: data.educations,
-      experiences: data.experiences,
-      social_links: data.social_links,
-    };
+    const { candidate, application, attachments } = data;
 
-    const application: Omit<Application, "candidate_match"> = {
-      candidate_id: "",
-      job_id: data.job_id,
-      organization_id: data.organization_id ?? "",
-      department_id: data.department_id,
-      rejection_reason_id: data.rejection_reason_id,
-      screening_question_answers: data.screening_question_answers,
-      source: data.source,
-      stage_id: "",
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      id: "",
-    };
-
-    const { candidate_match, ...rest } = data;
     const candidateMatch = await calculateCandidateMatch(
       job,
-      candidate,
-      application,
+      {
+        ...candidate,
+        id: "",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      {
+        ...application,
+        id: "",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        candidate_id: "",
+        stage_id: "",
+      },
     );
 
-    applyForJob({
-      ...rest,
-      candidate_match: candidateMatch,
-    });
+    toast.promise(
+      async () => {
+        const result = await applyForJob({
+          candidate,
+          application: {
+            ...data.application,
+            candidate_match: candidateMatch,
+          },
+          attachments,
+        });
+
+        if (result?.serverError) {
+          throw new Error(result.serverError);
+        }
+      },
+      {
+        loading: "Submitting application...",
+        success: "Application submitted successfully",
+        error: (error) => error.message,
+        finally: () => {
+          setIsSubmitting(false);
+        },
+      },
+    );
   };
 
   return (
@@ -255,13 +207,13 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <section className="flex flex-col gap-4">
-            <UploadResume setFiles={setFiles} form={form} />
+            <UploadResume form={form} />
 
             {/* Personal Information */}
             <div className="flex flex-col md:flex-row items-center gap-8 w-full">
               <FormField
                 control={form.control}
-                name="first_name"
+                name="candidate.first_name"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>First Name</FormLabel>
@@ -274,7 +226,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               />
               <FormField
                 control={form.control}
-                name="last_name"
+                name="candidate.last_name"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Last Name</FormLabel>
@@ -290,7 +242,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <div className="flex flex-col md:flex-row items-center gap-8 w-full">
               <FormField
                 control={form.control}
-                name="email"
+                name="candidate.email"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Email</FormLabel>
@@ -303,7 +255,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               />
               <FormField
                 control={form.control}
-                name="phone_number"
+                name="candidate.phone_number"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Phone Number</FormLabel>
@@ -312,7 +264,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                         onChange={(value) => field.onChange(value)}
                         value={field.value}
                         defaultCountry={
-                          (countriesMap.get(form.watch("country"))
+                          (countriesMap.get(form.watch("candidate.country"))
                             ?.cca2 as Country) ?? undefined
                         }
                       />
@@ -326,7 +278,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <div className="flex flex-col md:flex-row items-center gap-8 w-full">
               <FormField
                 control={form.control}
-                name="country"
+                name="candidate.country"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Country</FormLabel>
@@ -342,7 +294,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               />
               <FormField
                 control={form.control}
-                name="city"
+                name="candidate.city"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>City, State</FormLabel>
@@ -357,7 +309,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
             <FormField
               control={form.control}
-              name="timezone"
+              name="candidate.timezone"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Timezone</FormLabel>
@@ -375,7 +327,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <div className="flex flex-col md:flex-row items-center gap-8 w-full">
               <FormField
                 control={form.control}
-                name="gender"
+                name="candidate.gender"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Gender</FormLabel>
@@ -391,7 +343,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               />
               <FormField
                 control={form.control}
-                name="date_of_birth"
+                name="candidate.date_of_birth"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>Date of Birth</FormLabel>
@@ -416,14 +368,14 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
             <Label className="text-lg font-bold">
               Educations & Certifications
             </Label>
-            <UploadTranscript setFiles={setFiles} form={form} />
+            <UploadTranscript form={form} />
 
             {educations.map((edu, index) => (
               <div key={index.toString()} className="space-y-4">
                 <div className="flex flex-col md:flex-row items-center gap-8 w-full">
                   <FormField
                     control={form.control}
-                    name={`educations.${index}.school`}
+                    name={`candidate.educations.${index}.school`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>School</FormLabel>
@@ -439,7 +391,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                   <FormField
                     control={form.control}
-                    name={`educations.${index}.degree`}
+                    name={`candidate.educations.${index}.degree`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>Degree</FormLabel>
@@ -455,7 +407,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <div className="flex flex-col md:flex-row items-center gap-8 w-full mt-4">
                   <FormField
                     control={form.control}
-                    name={`educations.${index}.graduation_date`}
+                    name={`candidate.educations.${index}.graduation_date`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>Graduation Date</FormLabel>
@@ -478,7 +430,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                   <FormField
                     control={form.control}
-                    name={`educations.${index}.gpa`}
+                    name={`candidate.educations.${index}.gpa`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>GPA</FormLabel>
@@ -499,9 +451,9 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                     size="sm"
                     onClick={() => {
                       form.setValue(
-                        "educations",
+                        "candidate.educations",
                         form
-                          .getValues("educations")
+                          .getValues("candidate.educations")
                           .filter((_, i) => i !== index),
                       );
                     }}
@@ -519,8 +471,9 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               type="button"
               variant="outline"
               onClick={() => {
-                const currentEducations = form.getValues("educations") || [];
-                form.setValue("educations", [
+                const currentEducations =
+                  form.getValues("candidate.educations") || [];
+                form.setValue("candidate.educations", [
                   ...currentEducations,
                   {
                     school: "",
@@ -542,7 +495,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <div className="flex flex-col md:flex-row items-center gap-8 w-full">
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.company`}
+                    name={`candidate.experiences.${index}.company`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>Company</FormLabel>
@@ -555,7 +508,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.position`}
+                    name={`candidate.experiences.${index}.position`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>Position</FormLabel>
@@ -571,7 +524,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <div className="flex flex-col md:flex-row items-center gap-8 w-full">
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.start_date`}
+                    name={`candidate.experiences.${index}.start_date`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>Start Date</FormLabel>
@@ -594,7 +547,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                   />
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.end_date`}
+                    name={`candidate.experiences.${index}.end_date`}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel>
@@ -624,7 +577,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
                 <FormField
                   control={form.control}
-                  name={`experiences.${index}.description`}
+                  name={`candidate.experiences.${index}.description`}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>Key Responsibilities & Achievements</FormLabel>
@@ -642,7 +595,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
                 <FormField
                   control={form.control}
-                  name={`experiences.${index}.skills`}
+                  name={`candidate.experiences.${index}.skills`}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>
@@ -678,9 +631,9 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                     size="sm"
                     onClick={() => {
                       form.setValue(
-                        "experiences",
+                        "candidate.experiences",
                         form
-                          .getValues("experiences")
+                          .getValues("candidate.experiences")
                           .filter((_, i) => i !== index),
                       );
                     }}
@@ -698,8 +651,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
               type="button"
               variant="outline"
               onClick={() => {
-                form.setValue("experiences", [
-                  ...form.getValues("experiences"),
+                form.setValue("candidate.experiences", [
+                  ...form.getValues("candidate.experiences"),
                   {
                     company: "",
                     position: "",
@@ -721,8 +674,8 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <AddLink
                   isSubmitting={isSubmitting}
                   setLinks={(value) =>
-                    form.setValue("social_links", {
-                      ...form.getValues("social_links"),
+                    form.setValue("candidate.social_links", {
+                      ...form.getValues("candidate.social_links"),
                       ...value,
                     })
                   }
@@ -732,7 +685,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <FormField
                   key={key}
                   control={form.control}
-                  name={`social_links.${key}`}
+                  name={`candidate.social_links.${key}`}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel className="capitalize">{key}</FormLabel>
@@ -750,11 +703,15 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                             variant="destructive"
                             size="icon"
                             onClick={() => {
-                              const currentLinks =
-                                form.getValues("social_links");
+                              const currentLinks = form.getValues(
+                                "candidate.social_links",
+                              );
                               const updatedLinks = { ...currentLinks };
                               delete updatedLinks[key];
-                              form.setValue("social_links", updatedLinks);
+                              form.setValue(
+                                "candidate.social_links",
+                                updatedLinks,
+                              );
                             }}
                           >
                             <X />
@@ -780,7 +737,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 <FormField
                   key={question}
                   control={form.control}
-                  name={`screening_question_answers.${index}`}
+                  name={`application.screening_question_answers.${index}`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{question}</FormLabel>
@@ -814,7 +771,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
                 </span>
               </Label>
 
-              <ExtraFiles setFiles={setFiles} files={files} />
+              <ExtraFiles form={form} />
             </div>
 
             <Button type="submit" className="mt-4" disabled={isSubmitting}>

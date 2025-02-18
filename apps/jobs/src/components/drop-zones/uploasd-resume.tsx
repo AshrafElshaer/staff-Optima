@@ -4,12 +4,7 @@ import {
   candidateInsertSchema,
 } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import {
-  AiBeautifyIcon,
-  Loading03Icon,
-  Pdf02Icon,
-  PencilEdit02Icon,
-} from "hugeicons-react";
+import { AiBeautifyIcon, Loading03Icon, Pdf02Icon } from "hugeicons-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -21,25 +16,26 @@ import { Alert, AlertDescription, AlertTitle } from "@optima/ui/alert";
 import { useMutation } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 
-import type { z } from "zod";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 
+import { attachmentTypeEnum } from "@optima/supabase/types";
 import { AnimatePresence, motion } from "motion/react";
-import type { AttachmentType } from "@optima/supabase/types";
 
-const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
+const formSchema = z.object({
+  candidate: candidateInsertSchema,
+  application: applicationInsertSchema,
+  attachments: z.array(
+    z.object({
+      fileType: z.nativeEnum(attachmentTypeEnum),
+      file: zfd.file(),
+    }),
+  ),
+});
 
 export function UploadResume({
-  setFiles,
   form,
 }: {
-  setFiles: React.Dispatch<
-    React.SetStateAction<
-      {
-        fileType: AttachmentType;
-        file: File;
-      }[]
-    >
-  >;
   form: UseFormReturn<z.infer<typeof formSchema>>;
 }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,38 +45,42 @@ export function UploadResume({
     onSuccess: (data) => {
       setIsSuccess(true);
       form.setValue(
-        "first_name",
+        "candidate.first_name",
         data.first_name !== "null" ? data.first_name ?? "" : "",
         {
           shouldValidate: true,
-        }
+        },
       );
       form.setValue(
-        "last_name",
+        "candidate.last_name",
         data.last_name !== "null" ? data.last_name ?? "" : "",
         {
           shouldValidate: true,
-        }
+        },
       );
       form.setValue(
-        "email",
+        "candidate.email",
         data.email !== "null" ? data.email ?? "" : "",
         {
           shouldValidate: true,
         },
       );
       form.setValue(
-        "phone_number",
+        "candidate.phone_number",
         data.phone_number !== "null" ? data.phone_number ?? "" : "",
         {
           shouldValidate: true,
-        }
+        },
       );
-      form.setValue("city", data.city !== "null" ? data.city ?? "" : "", {
-        shouldValidate: true,
-      });
       form.setValue(
-        "country",
+        "candidate.city",
+        data.city !== "null" ? data.city ?? "" : "",
+        {
+          shouldValidate: true,
+        },
+      );
+      form.setValue(
+        "candidate.country",
         data.country !== "null" && data.country
           ? countriesMap.get(data.country)?.name ?? ""
           : "",
@@ -90,7 +90,7 @@ export function UploadResume({
       );
 
       form.setValue(
-        "educations",
+        "candidate.educations",
         data.educations?.length
           ? data.educations.map((education) => ({
               school: education.school !== "null" ? education.school ?? "" : "",
@@ -116,7 +116,7 @@ export function UploadResume({
       );
 
       form.setValue(
-        "experiences",
+        "candidate.experiences",
         data.experiences?.length
           ? data.experiences.map((experience) => ({
               company:
@@ -151,38 +151,44 @@ export function UploadResume({
         },
       );
 
-      form.setValue("social_links", {
-        linkedin: (data.social_links?.linkedin === "null"
-          ? ""
-          : data.social_links?.linkedin ?? ""
-        ).replace(/^https?:\/\//, ""),
-        ...Object.fromEntries(
-          Object.entries(data.social_links ?? {})
-            .filter(([key]) => key !== "linkedin")
-            .filter(([_, value]) => value !== "null")
-            .map(([key, value]) => [
-              key,
-              String(value).replace(/^https?:\/\//, ""),
-            ]),
-        ),
-      },
+      form.setValue(
+        "candidate.social_links",
+        {
+          linkedin: (data.social_links?.linkedin === "null"
+            ? ""
+            : data.social_links?.linkedin ?? ""
+          ).replace(/^https?:\/\//, ""),
+          ...Object.fromEntries(
+            Object.entries(data.social_links ?? {})
+              .filter(([key]) => key !== "linkedin")
+              .filter(([_, value]) => value !== "null")
+              .map(([key, value]) => [
+                key,
+                String(value).replace(/^https?:\/\//, ""),
+              ]),
+          ),
+        },
         {
           shouldValidate: true,
         },
       );
 
       form.setValue(
-        "timezone",
+        "candidate.timezone",
         data.timezone !== "null" ? data.timezone ?? "" : "",
         {
           shouldValidate: true,
         },
       );
-      form.setValue("gender", data.gender !== "null" ? data.gender ?? "" : "", {
-        shouldValidate: true,
-      });
       form.setValue(
-        "date_of_birth",
+        "candidate.gender",
+        data.gender !== "null" ? data.gender ?? "" : "",
+        {
+          shouldValidate: true,
+        },
+      );
+      form.setValue(
+        "candidate.date_of_birth",
         data.date_of_birth
           ? parseDateFromString(data.date_of_birth)?.toISOString() ?? ""
           : "",
@@ -205,7 +211,10 @@ export function UploadResume({
     async onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
       const file = acceptedFiles[0] as File;
-      setFiles((prev) => [...prev, { fileType: "resume", file }]);
+      form.setValue("attachments", [
+        ...form.getValues("attachments"),
+        { fileType: "resume", file },
+      ]);
       extractResume(file);
     },
   });

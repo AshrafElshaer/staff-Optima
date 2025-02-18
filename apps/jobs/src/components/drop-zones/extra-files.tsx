@@ -1,28 +1,36 @@
 "use client";
 
 import { formatBytes } from "@/lib/format-bytes";
-import type { AttachmentType } from "@optima/supabase/types";
+
+import { attachmentTypeEnum } from "@optima/supabase/types";
+import {
+  applicationInsertSchema,
+  candidateInsertSchema,
+} from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import { Pdf02Icon, Cancel01Icon, PlusMinus01Icon } from "hugeicons-react";
+import { Cancel01Icon, Pdf02Icon, PlusMinus01Icon } from "hugeicons-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useMemo, } from "react";
 import { useDropzone } from "react-dropzone";
+import type { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
+
+const formSchema = z.object({
+  candidate: candidateInsertSchema,
+  application: applicationInsertSchema,
+  attachments: z.array(
+    z.object({
+      fileType: z.nativeEnum(attachmentTypeEnum),
+      file: zfd.file(),
+    }),
+  ),
+});
 
 interface ExtraFilesProps {
-  setFiles: React.Dispatch<
-    React.SetStateAction<
-      {
-        fileType: AttachmentType;
-        file: File;
-      }[]
-    >
-  >;
-  files: {
-    fileType: AttachmentType;
-    file: File;
-  }[];
+  form: UseFormReturn<z.infer<typeof formSchema>>;
 }
-export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
+export function ExtraFiles({ form }: ExtraFilesProps) {
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
     noClick: true,
     noKeyboard: true,
@@ -30,12 +38,23 @@ export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
     maxSize: 10 * 1024 * 1024, // 10MB
     onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
-      setFiles((prev) => [...prev, ...acceptedFiles.map((file) => ({ fileType: "other" as const, file }))]);
+      form.setValue("attachments", [
+        ...form.getValues("attachments"),
+        ...acceptedFiles.map((file) => ({ fileType: "other" as const, file })),
+      ]);
     },
   });
 
+  const attachments = useMemo(
+    () => form.watch("attachments"),
+    [form.watch("attachments")],
+  );
+
   function handleRemoveFile(file: File) {
-    setFiles((prev) => prev.filter((f) => f.file !== file));
+    form.setValue(
+      "attachments",
+      form.getValues("attachments").filter((f) => f.file !== file),
+    );
   }
 
   return (
@@ -49,14 +68,14 @@ export function ExtraFiles({ setFiles, files }: ExtraFilesProps) {
           <p className="text-sm text-secondary-foreground">
             Drag and drop your files here
           </p>
-          <Button variant="outline" size="icon" type="button" onClick={open}> 
+          <Button variant="outline" size="icon" type="button" onClick={open}>
             <PlusMinus01Icon className="size-4" />
           </Button>
         </div>
 
-        {files.length > 0 && (
+        {attachments.length > 0 && (
           <div className="space-y-2">
-            {files.map((file) => (
+            {attachments.map((file) => (
               <div
                 key={file.file.name}
                 className="text-sm flex items-center gap-2 w-full border rounded-md p-2"

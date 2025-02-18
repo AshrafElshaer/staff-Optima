@@ -4,11 +4,7 @@ import {
   candidateInsertSchema,
 } from "@optima/supabase/validations";
 import { Button } from "@optima/ui/button";
-import {
-  AiBeautifyIcon,
-  Loading03Icon,
-  Pdf02Icon,
-} from "hugeicons-react";
+import { AiBeautifyIcon, Loading03Icon, Pdf02Icon } from "hugeicons-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -19,25 +15,24 @@ import { Alert, AlertDescription, AlertTitle } from "@optima/ui/alert";
 import { useMutation } from "@tanstack/react-query";
 import type { UseFormReturn } from "react-hook-form";
 
-import type { z } from "zod";
-
+import { attachmentTypeEnum } from "@optima/supabase/types";
 import { AnimatePresence, motion } from "motion/react";
-import type { AttachmentType } from "@optima/supabase/types";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 
-const formSchema = candidateInsertSchema.merge(applicationInsertSchema);
-
+const formSchema = z.object({
+  candidate: candidateInsertSchema,
+  application: applicationInsertSchema,
+  attachments: z.array(
+    z.object({
+      fileType: z.nativeEnum(attachmentTypeEnum),
+      file: zfd.file(),
+    }),
+  ),
+});
 export function UploadTranscript({
-  setFiles,
   form,
 }: {
-  setFiles: React.Dispatch<
-    React.SetStateAction<
-      {
-        fileType: AttachmentType;
-        file: File;
-      }[]
-    >
-  >;
   form: UseFormReturn<z.infer<typeof formSchema>>;
 }) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -47,18 +42,27 @@ export function UploadTranscript({
     onSuccess: (data) => {
       setIsSuccess(true);
       form.setValue(
-        "educations",
+        "candidate.educations",
         data?.length
-          ? data.map((education: { school: string; degree: string; graduation_date: string; gpa: string }) => ({
-              school: education.school !== "null" ? education.school ?? "" : "",
-              degree: education.degree !== "null" ? education.degree ?? "" : "", 
-              graduation_date: education.graduation_date
-                ? parseDateFromString(
-                    education.graduation_date,
-                  )?.toISOString() ?? ""
-                : "",
-              gpa: education.gpa !== "null" ? education.gpa ?? "" : "",
-            }))
+          ? data.map(
+              (education: {
+                school: string;
+                degree: string;
+                graduation_date: string;
+                gpa: string;
+              }) => ({
+                school:
+                  education.school !== "null" ? education.school ?? "" : "",
+                degree:
+                  education.degree !== "null" ? education.degree ?? "" : "",
+                graduation_date: education.graduation_date
+                  ? parseDateFromString(
+                      education.graduation_date,
+                    )?.toISOString() ?? ""
+                  : "",
+                gpa: education.gpa !== "null" ? education.gpa ?? "" : "",
+              }),
+            )
           : [
               {
                 school: "",
@@ -83,9 +87,9 @@ export function UploadTranscript({
     async onDrop(acceptedFiles) {
       if (!acceptedFiles.length) return;
 
-      setFiles((prev) => [
-        ...prev,
-        ...acceptedFiles.map((file) => ({ fileType: "transcript" as const, file })),
+      form.setValue("attachments", [
+        ...form.getValues("attachments"),
+        { fileType: "transcript", file: acceptedFiles[0] as File },
       ]);
       extractTranscript(acceptedFiles);
     },
@@ -134,7 +138,8 @@ export function UploadTranscript({
           </Button>
         </div>
         <p className="text-sm text-muted-foreground">
-          Please upload your academic transcript to autofill your education details.
+          Please upload your academic transcript to autofill your education
+          details.
           <br />
           Only PDF files are supported.
         </p>
@@ -144,7 +149,8 @@ export function UploadTranscript({
               The education information has been extracted from the transcript.
             </AlertTitle>
             <AlertDescription>
-              Please verify the education details before submitting the application.
+              Please verify the education details before submitting the
+              application.
             </AlertDescription>
           </Alert>
         )}
