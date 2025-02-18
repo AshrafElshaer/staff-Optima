@@ -122,7 +122,7 @@ export function Footer() {
         </div>
       </div> */}
 
-      <section className=" px-4 sm:px-6 lg:px-8 py-10  sm:pt-16 lg:pt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+      {/* <section className=" px-4 sm:px-6 lg:px-8 py-10  sm:pt-16 lg:pt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
         {links.map((link) => (
           <div key={link.title} className="flex flex-col ">
             <p className="font-bold mb-4">{link.title}</p>
@@ -158,21 +158,21 @@ export function Footer() {
           <div className="flex flex-col gap-4 w-full md:w-2/3 ">
             {/* <div className="w-1/2">
             </div> */}
-            <Input placeholder="Enter your email to get updates" />
+            {/* <Input placeholder="Enter your email to get updates" /> */}
 
-            <Button>Subscribe</Button>
-          </div>
-        </div>
-      </section>
+            {/* <Button>Subscribe</Button> */}
+          {/* </div> */}
+        {/* </div> */}
+      {/* </section> */} 
 
-      <section className=" w-full text-center mt-4 items-center justify-center py-12 space-y-8">
+      {/* <section className=" w-full text-center mt-4 items-center justify-center py-12 space-y-8">
         <h1 className="text-center text-6xl md:text-8xl lg:text-[10rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 to-neutral-900 select-none ">
           Staff Optima
         </h1>
         <p className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-700 to-neutral-900 select-none">
           Hire Smarter, Hire Faster
         </p>
-      </section>
+      </section> */}
 
       <div className=" text-sm text-center border-t p-4">
         <p>

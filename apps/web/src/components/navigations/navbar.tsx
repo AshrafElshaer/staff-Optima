@@ -4,13 +4,15 @@ import Link from "next/link";
 import type * as React from "react";
 
 import { scrollToSection } from "@/lib/scroll-to-section";
-import { Button } from "@optima/ui/button";
+import { Button, buttonVariants } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
 
 import { Icons } from "@optima/ui/icons";
 import { Separator } from "@optima/ui/separator";
 import { usePathname, useRouter } from "next/navigation";
 
+import { FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { MobileNavbar } from "./mobile-navbar";
 
 export function Navbar() {
@@ -23,14 +25,30 @@ export function Navbar() {
       )}
     >
       <div className="flex items-center justify-between w-full sm:w-fit gap-4">
-        <Link href="/" className="cursor-pointer">
+        <Link href="/" className="cursor-pointer flex items-center gap-2">
           <Icons.Logo />
+          <span className=" font-bold min-w-fit">Staff Optima</span>
         </Link>
-        <Separator orientation="vertical" className=" h-8 hidden sm:block" />
+
+        {/* <Separator orientation="vertical" className=" h-8 hidden sm:block" /> */}
         <MobileNavbar />
       </div>
-      <div className="items-center w-full hidden sm:flex">
-        <Button
+      <div className="items-center ml-auto hidden sm:flex">
+        <Link
+          href="https://github.com/AshrafElshaer/staff-Optima"
+          target="_blank"
+          className={buttonVariants({ variant: "ghost" })}
+        >
+          <FaGithub className="size-4 " /> Github
+        </Link>
+        <Link
+          href="https://x.com/AshrafElshaer98"
+          className={buttonVariants({ variant: "ghost" })}
+          target="_blank"
+        >
+          <FaXTwitter className="size-4 " /> Twitter
+        </Link>
+        {/* <Button
           variant="ghost"
           onClick={() => {
             if (pathname === "/") {
@@ -44,9 +62,9 @@ export function Navbar() {
           }}
         >
           Features
-        </Button>
+        </Button> */}
 
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => {
             if (pathname === "/") {
@@ -60,25 +78,25 @@ export function Navbar() {
           }}
         >
           Pricing
-        </Button>
+        </Button> */}
 
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => {
             router.push("/updates");
           }}
         >
           Updates
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           variant="ghost"
           onClick={() => {
             router.push("/story");
           }}
         >
           Story
-        </Button>
-        <Separator orientation="vertical" className="ml-auto h-8" />
+        </Button> */}
+        {/* <Separator orientation="vertical" className="ml-auto h-8" />
         <Button
           variant="ghost"
           onClick={() => {
@@ -93,7 +111,7 @@ export function Navbar() {
           }}
         >
           Join Waitlist
-        </Button>
+        </Button> */}
       </div>
     </nav>
   );

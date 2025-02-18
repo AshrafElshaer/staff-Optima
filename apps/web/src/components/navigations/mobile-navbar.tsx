@@ -1,5 +1,5 @@
 import { scrollToSection } from "@/lib/scroll-to-section";
-import { Button } from "@optima/ui/button";
+import { Button, buttonVariants } from "@optima/ui/button";
 import { cn } from "@optima/ui/cn";
 import { Icons } from "@optima/ui/icons";
 import {
@@ -11,8 +11,11 @@ import {
 } from "@optima/ui/sheet";
 
 import { Menu03Icon } from "hugeicons-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 export const MobileNavbar = () => {
   const pathname = usePathname();
@@ -30,7 +33,21 @@ export const MobileNavbar = () => {
           </SheetTitle>
         </SheetHeader>
         <div className={cn("  flex flex-col flex-1 divide-y")}>
-          <Button
+        <Link
+          href="https://github.com/AshrafElshaer/staff-Optima"
+          target="_blank"
+          className={buttonVariants({ variant: "ghost" , size: "lg" , className: "w-full !justify-start text-lg py-6 rounded-none"})}
+        >
+          <FaGithub className="size-4 " /> Github
+        </Link>
+        <Link
+          href="https://x.com/AshrafElshaer98"
+          className={buttonVariants({ variant: "ghost" , size: "lg" , className: "w-full !justify-start text-lg py-6 rounded-none"})}
+          target="_blank"
+        >
+          <FaXTwitter className="size-4 " /> Twitter
+        </Link>
+          {/* <Button
             variant="ghost"
             className="w-full justify-start text-lg py-6 rounded-none"
             size="lg"
@@ -88,7 +105,7 @@ export const MobileNavbar = () => {
             }}
           >
             Story
-          </Button>
+          </Button> */}
           <div className="p-4 mt-auto">
             <Button
               className="w-full justify-start mt-auto"

@@ -6,8 +6,8 @@ export default function Page() {
   return (
     <div className="min-h-screen min-w-screen flex flex-col   p-4">
       <Hero />
-      <Features />
-      <Pricing />
+      {/* <Features /> */}
+      {/* <Pricing /> */}
     </div>
   );
 }
