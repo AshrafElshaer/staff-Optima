@@ -23,10 +23,20 @@ export function CandidateCard({
   candidate,
 }: { candidate: CandidateWithApplication; setOpen: (open: boolean) => void }) {
   const { data: organization } = useOrganization();
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't open sheet if clicking on a link
+    if ((e.target as HTMLElement).closest('a')) {
+      e.stopPropagation();
+      return;
+    }
+    setOpen(true);
+  };
+
   return (
     <div
       className="bg-accent border rounded-md text-sm py-4 space-y-4"
-      onClick={() => setOpen(true)}
+      onClick={handleClick}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           setOpen(true);
