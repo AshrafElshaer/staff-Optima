@@ -14,12 +14,12 @@ export function Hero() {
       id="hero"
     >
       <Badge variant="info" size="md" className="w-fit mx-auto">
-        Building in Progress,
+        Building in Progress,{" "}
         <span className="hidden sm:inline">
           
-          Hang tight 
+          Hang tight &
         </span>
-          & join the waitlist to stay tuned
+           join the waitlist to stay tuned
       </Badge>
       <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold text-left md:text-center">
         Elevate Your Recruitment Process
