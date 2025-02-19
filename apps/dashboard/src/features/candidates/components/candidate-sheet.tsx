@@ -26,6 +26,7 @@ import { EducationsCard } from "./educations-card";
 import { ExperiencesCard } from "./experiences-card";
 import { HiringStages } from "./hiring-stages";
 import { ScreeningQuestionsCard } from "./screening-questions-card";
+import { Attachments } from "./attachments";
 
 export function CandidateSheet({
   candidate,
@@ -56,7 +57,7 @@ export function CandidateSheet({
                 {candidate.first_name} {candidate.last_name}
               </h3>
             </div>
-            <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center justify-between gap-4 flex-wrap text-sm">
               <Link href={`mailto:${candidate.email}`} className=" space-y-1">
                 {/* <Mail02Icon className="size-5" strokeWidth={2} /> */}
                 <p className="text-muted-foreground">Email</p>
@@ -78,7 +79,7 @@ export function CandidateSheet({
               </div>
             </div>
           </section>
-          <section className="flex items-center justify-between flex-wrap gap-4 p-4">
+          <section className="flex items-center justify-between flex-wrap gap-4 p-4 text-sm">
             <div className="space-y-1">
               <p className="text-muted-foreground">Job Applied</p>
               <div className="flex items-center gap-2">
@@ -135,7 +136,7 @@ export function CandidateSheet({
                 value="attachment"
                 className="py-2 data-[state=active]:bg-accent data-[state=active]:border data-[state=active]:shadow-none"
               >
-                Attachment
+                Attachments
               </TabsTrigger>
               <TabsTrigger
                 value="interviews"
@@ -151,10 +152,10 @@ export function CandidateSheet({
               <ExperiencesCard candidate={candidate} />
               <ScreeningQuestionsCard candidate={candidate} />
             </TabsContent>
-            <TabsContent value="attachment">
-              <p className="p-4 text-center text-xs text-muted-foreground">
-                Content for Tab 2
-              </p>
+            <TabsContent value="attachment" className="flex-1 p-4 ">
+              <Attachments
+                applicationId={candidate.applications?.[0]?.id as string}
+              />
             </TabsContent>
             <TabsContent value="interviews">
               <p className="p-4 text-center text-xs text-muted-foreground">

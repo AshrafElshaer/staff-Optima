@@ -13,7 +13,7 @@ export function EducationsCard({
       </CardHeader>
       <CardContent className="space-y-6">
         {(candidate.educations as Education[])?.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="space-y-1">
               <p className="text-secondary-foreground">School</p>
               <p className="">-</p>
@@ -34,7 +34,7 @@ export function EducationsCard({
         ) : (
           (candidate.educations as Education[])?.map((education, index) => (
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 text-sm"
               key={index.toString()}
             >
               <div className="space-y-1 w-full md:col-span-2">

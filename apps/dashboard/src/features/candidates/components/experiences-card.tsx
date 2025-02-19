@@ -13,9 +13,9 @@ export function ExperiencesCard({
       </CardHeader>
       <CardContent className="space-y-6">
         {(candidate.experiences as Experience[])?.length === 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3  gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3  gap-4 text-sm">
             <div className="space-y-1">
-              <p className="text-secondary-foreground">Company</p>
+              <p className="text-secondary-foreground ">Company</p>
               <p className="">-</p>
             </div>
             <div className="space-y-1">
@@ -30,12 +30,12 @@ export function ExperiencesCard({
         ) : (
           (candidate.experiences as Experience[])?.map((experience, index) => (
             <div
-              className="grid grid-cols-1 sm:grid-cols-3  gap-4"
+              className="grid grid-cols-1 sm:grid-cols-3  gap-4 text-sm"
               key={index.toString()}
             >
               <div className="space-y-1">
-                <p className="text-secondary-foreground">Company</p>
-                <p>{experience.company}</p>
+                <p className="text-secondary-foreground ">Company</p>
+                <p className="">{experience.company}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-secondary-foreground">Position</p>
