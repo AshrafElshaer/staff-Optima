@@ -32,10 +32,10 @@ export function EducationsCard({
             </div>
           </div>
         ) : (
-          (candidate.educations as Education[])?.map((education) => (
+          (candidate.educations as Education[])?.map((education, index) => (
             <div
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4"
-              key={education.school}
+              key={index.toString()}
             >
               <div className="space-y-1 w-full md:col-span-2">
                 <p className="text-secondary-foreground ">School</p>

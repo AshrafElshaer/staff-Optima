@@ -2,20 +2,17 @@
 import { countriesMap } from "@optima/location";
 import type { CandidateWithApplication } from "@optima/supabase/types";
 import { Avatar } from "@optima/ui/avatar";
-import { Badge } from "@optima/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@optima/ui/card";
+
 import { cn } from "@optima/ui/cn";
-import { Separator } from "@optima/ui/separator";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@optima/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@optima/ui/tabs";
-import { Call02Icon, Location09Icon, Mail02Icon } from "hugeicons-react";
+
 import moment from "moment";
 import Link from "next/link";
 import { useState } from "react";
@@ -27,6 +24,8 @@ import {
 import { CandidateCard } from "./candidate-card";
 import { EducationsCard } from "./educations-card";
 import { ExperiencesCard } from "./experiences-card";
+import { HiringStages } from "./hiring-stages";
+import { ScreeningQuestionsCard } from "./screening-questions-card";
 
 export function CandidateSheet({
   candidate,
@@ -42,7 +41,7 @@ export function CandidateSheet({
           <SheetTitle>Candidate Profile</SheetTitle>
         </SheetHeader>
         <div className="overflow-y-scroll flex flex-col gap-4">
-          <section className="p-4 space-y-8">
+          <section className="p-4 pb-0 space-y-8">
             <div className="flex items-center gap-4 ">
               <Avatar
                 src={candidate.avatar_url}
@@ -60,23 +59,23 @@ export function CandidateSheet({
             <div className="flex items-center gap-4 flex-wrap">
               <Link href={`mailto:${candidate.email}`} className=" space-y-1">
                 {/* <Mail02Icon className="size-5" strokeWidth={2} /> */}
-                <p className="text-secondary-foreground">Email</p>
+                <p className="text-muted-foreground">Email</p>
                 <p>{candidate.email}</p>
               </Link>
               <Link
                 href={`tel:${candidate.phone_number}`}
                 className=" space-y-1"
               >
-                <p className="text-secondary-foreground">Phone Number</p>
+                <p className="text-muted-foreground">Phone Number</p>
                 <p>{candidate.phone_number}</p>
               </Link>
-              <p className=" space-y-1">
-                <p className="text-secondary-foreground">Location</p>
+              <div className="space-y-1">
+                <p className="text-muted-foreground">Location</p>
                 <p className="flex items-center gap-2">
                   {countriesMap.get(candidate.country)?.flag}
                   {candidate.country} , {candidate.city}
                 </p>
-              </p>
+              </div>
             </div>
           </section>
           <section className="flex items-center justify-between flex-wrap gap-4 p-4">
@@ -147,8 +146,10 @@ export function CandidateSheet({
             </TabsList>
 
             <TabsContent value="application" className="flex-1 p-4 space-y-4">
+              <HiringStages candidate={candidate} />
               <EducationsCard candidate={candidate} />
               <ExperiencesCard candidate={candidate} />
+              <ScreeningQuestionsCard candidate={candidate} />
             </TabsContent>
             <TabsContent value="attachment">
               <p className="p-4 text-center text-xs text-muted-foreground">

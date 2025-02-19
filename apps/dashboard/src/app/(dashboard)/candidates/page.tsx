@@ -1,33 +1,17 @@
 import { PageTitle } from "@/components/page-title";
-import { CandidateCard } from "@/features/candidates/components/candidate-card";
+
 import { CandidateSheet } from "@/features/candidates/components/candidate-sheet";
-import { getLinkIcon } from "@/lib/get-link-icon";
+
 import { createServerClient } from "@/lib/supabase/server";
 import { getApplicationStages, getCandidates } from "@optima/supabase/queries";
-import type {
-  Application,
-  Candidate,
-  CandidateWithApplication,
-  JobPost,
-} from "@optima/supabase/types";
-import { Avatar } from "@optima/ui/avatar";
+import type { CandidateWithApplication } from "@optima/supabase/types";
+
 import { Badge } from "@optima/ui/badge";
-import { buttonVariants } from "@optima/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@optima/ui/dropdown-menu";
+
 import { ScrollArea, ScrollBar } from "@optima/ui/scroll-area";
 import { Separator } from "@optima/ui/separator";
-import { JobLinkIcon, Linkedin01Icon, MoreVerticalIcon } from "hugeicons-react";
-import { LinkIcon, MoreHorizontalIcon } from "lucide-react";
+
 import { headers } from "next/headers";
-import Link from "next/link";
-import { BiSolidCircleThreeQuarter } from "react-icons/bi";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 
 export default async function CandidatesPage() {
   const supabase = await createServerClient();
@@ -38,7 +22,6 @@ export default async function CandidatesPage() {
     supabase,
     organizationId as string,
   );
-  // console.dir(candidates, { depth: Number.POSITIVE_INFINITY });
 
   const { data: applicationStages } = await getApplicationStages(
     supabase,
@@ -54,17 +37,28 @@ export default async function CandidatesPage() {
   >(
     (acc, candidate) => {
       const stageId = candidate.applications[0]?.stage_id;
-      // @ts-ignore
+      if (!stageId) {
+        return acc;
+      }
       if (!acc[stageId]) {
-        // @ts-ignore
         acc[stageId] = [];
       }
-      // @ts-ignore
-      acc[stageId].push(candidate);
+      acc[stageId].push(candidate as CandidateWithApplication);
       return acc;
     },
     {} as Record<string, CandidateWithApplication[]>,
   );
+
+  // Sort candidates in each stage by match percentage
+  for (const [stageId, candidates] of Object.entries(groupedCandidates ?? {})) {
+    if (candidates) {
+      candidates.sort((a, b) => {
+        const matchA = a.applications[0]?.candidate_match ?? 0;
+        const matchB = b.applications[0]?.candidate_match ?? 0;
+        return matchB - matchA; // Sort descending
+      });
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4 h-full">

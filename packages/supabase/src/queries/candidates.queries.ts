@@ -7,6 +7,5 @@ export async function getCandidates(
   return await supabase
     .from("candidates")
     .select("*, applications(*, job_posts(id, title))")
-    .eq("organization_id", organizationId)
-    .order("created_at", { ascending: false });
+    .eq("organization_id", organizationId);
 }
