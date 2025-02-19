@@ -60,15 +60,15 @@ export function NotificationSettings() {
         <Separator />
 
         <h3 className="font-medium my-4">Email Notifications</h3>
- 
-
-        
 
         <div className="flex items-center justify-between gap-2">
           <div className="space-y-1">
-            <Label htmlFor="app-development-updates">App Development Updates</Label>
+            <Label htmlFor="app-development-updates">
+              App Development Updates
+            </Label>
             <p className="text-sm text-muted-foreground">
-              Get notified about new features, updates and improvements to the platform.
+              Get notified about new features, updates and improvements to the
+              platform.
             </p>
           </div>
           <Switch id="app-development-updates" />
@@ -88,7 +88,8 @@ export function NotificationSettings() {
           <div className="space-y-1">
             <Label htmlFor="security-updates">Security Updates</Label>
             <p className="text-sm text-muted-foreground">
-              Get notified about important security updates and account activity.
+              Get notified about important security updates and account
+              activity.
             </p>
           </div>
           <Switch id="security-updates" />
@@ -99,7 +100,8 @@ export function NotificationSettings() {
           <div className="space-y-1">
             <Label htmlFor="newsletter">Newsletter</Label>
             <p className="text-sm text-muted-foreground">
-              Receive our monthly newsletter with industry insights and best practices.
+              Receive our monthly newsletter with industry insights and best
+              practices.
             </p>
           </div>
           <Switch id="newsletter" />

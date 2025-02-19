@@ -112,8 +112,8 @@ export function UpdateEmailPlayground({
                       </HoverCardTrigger>
                       <HoverCardContent className="w-64 text-sm">
                         <p>
-                          The subject is the title of the email that will be displayed
-                          in the inbox.
+                          The subject is the title of the email that will be
+                          displayed in the inbox.
                         </p>
                       </HoverCardContent>
                     </HoverCard>
@@ -150,9 +150,7 @@ export function UpdateEmailPlayground({
                       field.value || emailTemplate.body,
                       defaultExtensions,
                     )}
-                    onChange={(content) =>
-                      field.onChange(content)
-                    }
+                    onChange={(content) => field.onChange(content)}
                     className="border rounded-md p-4"
                   />
                 </FormControl>

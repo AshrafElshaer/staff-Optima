@@ -166,7 +166,9 @@ export function InviteMember() {
                 </Button>
               </DialogClose>
               <Button type="submit" disabled={isExecuting}>
-                {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
+                {isExecuting ? (
+                  <Loader className="size-4 animate-spin" />
+                ) : null}
                 Invite
               </Button>
             </DialogFooter>

@@ -5,7 +5,8 @@ export function Pricing() {
         Flexible Pricing for your needs
       </h2>
       <p className="text-lg text-secondary-foreground text-center mt-8">
-        Currently free during our beta period. Sign up now to lock in early access pricing.
+        Currently free during our beta period. Sign up now to lock in early
+        access pricing.
       </p>
     </section>
   );

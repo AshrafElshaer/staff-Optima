@@ -157,11 +157,7 @@ function UserForm() {
             <FormItem className="space-y-2">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="john.doe@example.com"
-                  {...field}
-                  disabled
-                />
+                <Input placeholder="john.doe@example.com" {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>

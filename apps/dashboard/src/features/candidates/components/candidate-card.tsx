@@ -15,7 +15,11 @@ import {
 import { Separator } from "@optima/ui/separator";
 import { JobLinkIcon, MoreHorizontalIcon } from "hugeicons-react";
 import Link from "next/link";
-import { BiSolidCircleHalf, BiSolidCircleQuarter, BiSolidCircleThreeQuarter } from "react-icons/bi";
+import {
+  BiSolidCircleHalf,
+  BiSolidCircleQuarter,
+  BiSolidCircleThreeQuarter,
+} from "react-icons/bi";
 import { FaLinkedinIn } from "react-icons/fa";
 
 export function CandidateCard({
@@ -26,7 +30,7 @@ export function CandidateCard({
 
   const handleClick = (e: React.MouseEvent) => {
     // Don't open sheet if clicking on a link
-    if ((e.target as HTMLElement).closest('a')) {
+    if ((e.target as HTMLElement).closest("a")) {
       e.stopPropagation();
       return;
     }
@@ -79,19 +83,18 @@ export function CandidateCard({
               (candidate.applications[0]?.candidate_match >= 75
                 ? "text-tag-success-text"
                 : candidate.applications[0]?.candidate_match >= 50
-                ? "text-tag-warning-text" 
-                : "text-tag-red-text"),
+                  ? "text-tag-warning-text"
+                  : "text-tag-red-text"),
           )}
         >
-          {
-            candidate.applications[0]?.candidate_match &&
-              (candidate.applications[0]?.candidate_match >= 75
-                ? <BiSolidCircleThreeQuarter className="border rounded-full border-current" />
-                : candidate.applications[0]?.candidate_match >= 50
-                ? <BiSolidCircleHalf className="border rounded-full border-current" />
-                : <BiSolidCircleQuarter className="border rounded-full border-current" />
-              )
-          }
+          {candidate.applications[0]?.candidate_match &&
+            (candidate.applications[0]?.candidate_match >= 75 ? (
+              <BiSolidCircleThreeQuarter className="border rounded-full border-current" />
+            ) : candidate.applications[0]?.candidate_match >= 50 ? (
+              <BiSolidCircleHalf className="border rounded-full border-current" />
+            ) : (
+              <BiSolidCircleQuarter className="border rounded-full border-current" />
+            ))}
           <span>{candidate.applications[0]?.candidate_match}%</span>
         </div>
       </div>

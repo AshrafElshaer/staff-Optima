@@ -82,7 +82,7 @@ export const ResizableImage = Node.create<ImageOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const { height, width, alt,  } = HTMLAttributes;
+    const { height, width, alt } = HTMLAttributes;
     const marginValue = alt.split("-")[1];
 
     const attributes = {
@@ -115,8 +115,8 @@ export const ResizableImage = Node.create<ImageOptions>({
         find: inputRegex,
         type: this.type,
         getAttributes: (match) => {
-          const [, , alt, src, title, height, width, ] = match;
-          return { src, alt, title, height, width,  };
+          const [, , alt, src, title, height, width] = match;
+          return { src, alt, title, height, width };
         },
       }),
     ];

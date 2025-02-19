@@ -8,12 +8,10 @@ export const useStagesStore = create<{
 
   setSelectedStage: (stage: Node) => void;
   setSelectedEdges: (edges: Edge) => void;
-
 }>((set) => ({
   selectedStage: null,
   selectedEdges: null,
 
   setSelectedStage: (stage: Node) => set({ selectedStage: stage }),
   setSelectedEdges: (edges: Edge) => set({ selectedEdges: edges }),
-
 }));

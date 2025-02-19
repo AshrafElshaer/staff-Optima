@@ -158,12 +158,12 @@ export function Footer() {
           <div className="flex flex-col gap-4 w-full md:w-2/3 ">
             {/* <div className="w-1/2">
             </div> */}
-            {/* <Input placeholder="Enter your email to get updates" /> */}
+      {/* <Input placeholder="Enter your email to get updates" /> */}
 
-            {/* <Button>Subscribe</Button> */}
-          {/* </div> */}
-        {/* </div> */}
-      {/* </section> */} 
+      {/* <Button>Subscribe</Button> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* </section> */}
 
       {/* <section className=" w-full text-center mt-4 items-center justify-center py-12 space-y-8">
         <h1 className="text-center text-6xl md:text-8xl lg:text-[10rem] font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 to-neutral-900 select-none ">

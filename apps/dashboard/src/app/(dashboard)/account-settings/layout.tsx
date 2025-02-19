@@ -1,15 +1,12 @@
 "use client";
 
 import { PageTitle } from "@/components/page-title";
-import { Button, buttonVariants } from "@optima/ui/button";
+import { Button } from "@optima/ui/button";
 import {
   AccountSetting01Icon,
   Notification01Icon,
-  PaintBrush04Icon,
   PreferenceHorizontalIcon,
-  UserEdit01Icon,
 } from "hugeicons-react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const tabs = [
@@ -32,7 +29,6 @@ const tabs = [
     isDisabled: true,
   },
 ];
-
 
 export default function AccountSettingsLayout({
   children,

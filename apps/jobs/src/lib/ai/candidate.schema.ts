@@ -4,10 +4,7 @@ const socialLinkSchema = z
     linkedin: z.string().optional().describe("LinkedIn profile URL"),
     github: z.string().optional().describe("GitHub profile URL"),
     portfolio: z.string().optional().describe("Portfolio URL"),
-    "x (twitter)": z
-      .string()
-      .optional()
-      .describe("X (Twitter) profile URL"), 
+    "x (twitter)": z.string().optional().describe("X (Twitter) profile URL"),
     instagram: z.string().optional().describe("Instagram profile URL"),
     facebook: z.string().optional().describe("Facebook profile URL"),
     other: z.string().optional().describe("Other social media URL"),

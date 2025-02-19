@@ -13,7 +13,7 @@ export function BackButton({
   const router = useRouter();
   return (
     <Button
-      onClick={() => href ? router.push(href) : router.back()}
+      onClick={() => (href ? router.push(href) : router.back())}
       variant="outline"
       className={className}
       type="button"

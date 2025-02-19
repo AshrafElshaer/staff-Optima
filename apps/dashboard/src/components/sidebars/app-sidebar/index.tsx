@@ -40,7 +40,7 @@ const links = [
     url: "/job-posts",
     icon: <JobLinkIcon strokeWidth={2} size={20} />,
   },
- 
+
   {
     title: "Candidates",
     url: "/candidates",
@@ -56,7 +56,6 @@ const communication = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -66,7 +65,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={links} label="Workspace" />
         <NavMain items={communication} label="Team" />
-
       </SidebarContent>
       <Separator />
       <SidebarFooter>

@@ -1,7 +1,7 @@
 "use client";
 import { Label } from "@optima/ui/label";
 import { Switch } from "@optima/ui/switch";
-import { useId, useState,  } from "react";
+import { useId, useState } from "react";
 
 type IntegrationSwitchProps = {
   name: string;

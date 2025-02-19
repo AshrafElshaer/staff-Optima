@@ -74,9 +74,15 @@ export function UpdateMember({
                   name="first_name"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel htmlFor="edit-first-name">First Name</FormLabel>
+                      <FormLabel htmlFor="edit-first-name">
+                        First Name
+                      </FormLabel>
                       <FormControl>
-                        <Input id="edit-first-name" placeholder="Matt" {...field} />
+                        <Input
+                          id="edit-first-name"
+                          placeholder="Matt"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -89,7 +95,11 @@ export function UpdateMember({
                     <FormItem className="flex-1">
                       <FormLabel htmlFor="edit-last-name">Last Name</FormLabel>
                       <FormControl>
-                        <Input id="edit-last-name" placeholder="Welsh" {...field} />
+                        <Input
+                          id="edit-last-name"
+                          placeholder="Welsh"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -123,7 +133,9 @@ export function UpdateMember({
                 name="access_role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="edit-access-role">Access Role</FormLabel>
+                    <FormLabel htmlFor="edit-access-role">
+                      Access Role
+                    </FormLabel>
                     <FormControl>
                       <AccessRoleSelector
                         value={field.value as UserAccessRole}
@@ -144,7 +156,9 @@ export function UpdateMember({
                 </Button>
               </DialogClose>
               <Button type="submit" disabled={isExecuting}>
-                {isExecuting ? <Loader className="size-4 animate-spin" /> : null}
+                {isExecuting ? (
+                  <Loader className="size-4 animate-spin" />
+                ) : null}
                 Save
               </Button>
             </DialogFooter>

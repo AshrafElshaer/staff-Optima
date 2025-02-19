@@ -13,7 +13,6 @@ import {
   UserCheck01Icon,
   UserSearch01Icon,
 } from "hugeicons-react";
-import Link from "next/link";
 
 export const metadata = {
   title: "Home",
@@ -125,7 +124,3 @@ export default async function Page() {
     </div>
   );
 }
-
-
-
-

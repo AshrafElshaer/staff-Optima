@@ -5,7 +5,6 @@ import {
   jobStatusEnum,
 } from "@optima/supabase/types";
 import {
-
   createSearchParamsCache,
   parseAsArrayOf,
   parseAsString,

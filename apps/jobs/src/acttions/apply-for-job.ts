@@ -69,14 +69,12 @@ export const createApplicationAction = actionClientWithMeta
       throw new Error("Failed to find first application stage");
     }
 
-
     const { data: newApplication, error: applicationError } =
       await createApplication(supabase, {
         ...application,
         candidate_id: newCandidate.id,
         stage_id: firstStage.id,
       });
-
 
     if (applicationError) {
       throw new Error(applicationError.message);

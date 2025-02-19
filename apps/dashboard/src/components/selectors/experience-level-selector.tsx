@@ -22,7 +22,7 @@ export function ExperienceLevelSelector({
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="capitalize">
-        <SelectValue placeholder="Select an experience level"  />
+        <SelectValue placeholder="Select an experience level" />
       </SelectTrigger>
       <SelectContent>
         {Object.values(experienceLevelEnum).map((level) => (

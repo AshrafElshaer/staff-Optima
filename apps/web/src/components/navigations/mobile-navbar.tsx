@@ -33,20 +33,28 @@ export const MobileNavbar = () => {
           </SheetTitle>
         </SheetHeader>
         <div className={cn("  flex flex-col flex-1 divide-y")}>
-        <Link
-          href="https://github.com/AshrafElshaer/staff-Optima"
-          target="_blank"
-          className={buttonVariants({ variant: "ghost" , size: "lg" , className: "w-full !justify-start text-lg py-6 rounded-none"})}
-        >
-          <FaGithub className="size-4 " /> Github
-        </Link>
-        <Link
-          href="https://x.com/AshrafElshaer98"
-          className={buttonVariants({ variant: "ghost" , size: "lg" , className: "w-full !justify-start text-lg py-6 rounded-none"})}
-          target="_blank"
-        >
-          <FaXTwitter className="size-4 " /> Twitter
-        </Link>
+          <Link
+            href="https://github.com/AshrafElshaer/staff-Optima"
+            target="_blank"
+            className={buttonVariants({
+              variant: "ghost",
+              size: "lg",
+              className: "w-full !justify-start text-lg py-6 rounded-none",
+            })}
+          >
+            <FaGithub className="size-4 " /> Github
+          </Link>
+          <Link
+            href="https://x.com/AshrafElshaer98"
+            className={buttonVariants({
+              variant: "ghost",
+              size: "lg",
+              className: "w-full !justify-start text-lg py-6 rounded-none",
+            })}
+            target="_blank"
+          >
+            <FaXTwitter className="size-4 " /> Twitter
+          </Link>
           {/* <Button
             variant="ghost"
             className="w-full justify-start text-lg py-6 rounded-none"

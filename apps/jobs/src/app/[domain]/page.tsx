@@ -35,7 +35,6 @@ export default async function OrganizationPage({
 
   return (
     <main className="flex flex-col  gap-4">
-    
       <section className="p-4 max-w-3xl flex items-start justify-between gap-4 w-full mx-auto">
         <div className="flex flex-col gap-1">
           <h2 className=" text-secondary-foreground">Industry</h2>

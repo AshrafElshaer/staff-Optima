@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI} from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import { generateObject } from "ai";
 import { educationSchema } from "./education.schema";
@@ -25,22 +25,23 @@ export async function extractTranscriptData(transcripts: File[]) {
     messages: [
       {
         role: "user",
-        content: "Please analyze this academic transcript and extract the education information."
+        content:
+          "Please analyze this academic transcript and extract the education information.",
       },
       {
         role: "user",
-        //@ts-ignore 
+        //@ts-ignore
         content: [
-          ...await Promise.all(
+          ...(await Promise.all(
             transcripts.map(async (transcript) => ({
               type: "file",
               data: await transcript.arrayBuffer(),
-              mimeType: "application/pdf"
-            }))
-          )
-        ]
-      }
-    ]
+              mimeType: "application/pdf",
+            })),
+          )),
+        ],
+      },
+    ],
   });
 
   return result.object;

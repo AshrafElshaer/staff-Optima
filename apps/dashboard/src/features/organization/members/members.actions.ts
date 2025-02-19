@@ -1,7 +1,10 @@
 "use server";
 
 import { authActionClient } from "@/lib/safe-action";
-import { userInsertSchema, userUpdateSchema } from "@optima/supabase/validations";
+import {
+  userInsertSchema,
+  userUpdateSchema,
+} from "@optima/supabase/validations";
 import { createUser, deleteUser, updateUser } from "@optima/supabase/mutations";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";

@@ -11,8 +11,6 @@ import { calendarModeIconMap } from "../../calendar-mode-icon-map";
 export default function CalendarHeaderActionsMode() {
   const { mode, setMode } = useCalendarContext();
 
-
-
   return (
     <LayoutGroup>
       <ToggleGroup
@@ -46,7 +44,6 @@ export default function CalendarHeaderActionsMode() {
                   "w-full rounded-none shadow-none focus-visible:z-10 text-base flex items-center justify-center gap-2 relative border-none ",
                   isSelected && "z-10",
                 )}
-
               >
                 <motion.div
                   layout

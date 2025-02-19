@@ -9,7 +9,11 @@ const openai = createOpenAI({
 });
 
 const schema = z.object({
-  match: z.number().min(0).max(100).describe("The percentage of how well the candidate matches the job"),
+  match: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe("The percentage of how well the candidate matches the job"),
 });
 
 export async function calculateCandidateMatch(

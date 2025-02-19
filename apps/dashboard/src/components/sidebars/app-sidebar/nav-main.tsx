@@ -27,7 +27,6 @@ import { usePathname } from "next/navigation";
 export function NavMain({
   items,
   label,
-  
 }: {
   items: {
     title: string;
@@ -68,9 +67,7 @@ export function NavMain({
                 {item.icon}
                 {item.title}
                 {item.isError && (
-                  <div className="ml-auto bg-destructive size-2  rounded-full"/>
-                    
-
+                  <div className="ml-auto bg-destructive size-2  rounded-full" />
                 )}
                 {isActive && (
                   <div

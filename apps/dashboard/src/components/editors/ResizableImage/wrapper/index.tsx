@@ -21,9 +21,6 @@ export default function ResizableImageWrapper(props: NodeViewProps) {
         : align === "right"
           ? "0 0 0 auto"
           : "0 auto";
-
-
-   
   }
 
   return (

@@ -1,5 +1,3 @@
-
-
 import { createBrowserClient as createClient } from "@supabase/ssr";
 import type { Database } from "@optima/supabase/types";
 

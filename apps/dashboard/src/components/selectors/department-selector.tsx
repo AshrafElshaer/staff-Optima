@@ -42,28 +42,27 @@ export function DepartmentSelector({
     },
   });
 
-
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="capitalize">
         <SelectValue placeholder="Select a department" />
       </SelectTrigger>
       <SelectContent>
-        {isLoading
-          ? ["1", "2", "3"].map((id) => (
-              <Skeleton key={id} className="h-8 w-full mb-2 last:mb-0" />
-            ))
-          : departments?.length === 0 ? (
-              <div className="text-muted-foreground h-20  flex items-center justify-center">
-                No departments found
-              </div>
-            ) : (
-              departments?.map((department) => (
-                <SelectItem key={department.id} value={department.id}>
-                  {department.name}
-                </SelectItem>
-              ))
-            )}
+        {isLoading ? (
+          ["1", "2", "3"].map((id) => (
+            <Skeleton key={id} className="h-8 w-full mb-2 last:mb-0" />
+          ))
+        ) : departments?.length === 0 ? (
+          <div className="text-muted-foreground h-20  flex items-center justify-center">
+            No departments found
+          </div>
+        ) : (
+          departments?.map((department) => (
+            <SelectItem key={department.id} value={department.id}>
+              {department.name}
+            </SelectItem>
+          ))
+        )}
       </SelectContent>
     </Select>
   );

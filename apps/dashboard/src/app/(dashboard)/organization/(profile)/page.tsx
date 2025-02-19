@@ -22,7 +22,7 @@ export default async function OrganizationProfilePage() {
         title="Customize your organization's information, including logo,
         legal name, domain , industry and address."
       />
-     
+
       <OrganizationProfileForm organization={organization} />
     </main>
   );

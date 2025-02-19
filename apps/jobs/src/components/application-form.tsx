@@ -148,7 +148,6 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
   }, [form.watch("candidate.social_links")]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-
     setIsSubmitting(true);
     const { candidate, application, attachments } = data;
 
@@ -181,14 +180,16 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
           attachments,
         });
 
-
         if (result?.serverError) {
           throw new Error(result.serverError);
         }
       },
       {
         loading: "Submitting application...",
-        success: "Application submitted successfully",
+        success: () => {
+          form.reset();
+          return "Application submitted successfully";
+        },
         error: (error) => error.message,
         finally: () => {
           setIsSubmitting(false);

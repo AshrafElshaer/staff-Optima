@@ -1,11 +1,11 @@
-import CalendarBodyDayCalendar from './calendar-body-day-calendar'
-import CalendarBodyDayEvents from './calendar-body-day-events'
-import { useCalendarContext } from '../../calendar-context'
-import CalendarBodyDayContent from './calendar-body-day-content'
-import CalendarBodyMarginDayMargin from './calendar-body-margin-day-margin'
+import CalendarBodyDayCalendar from "./calendar-body-day-calendar";
+import CalendarBodyDayEvents from "./calendar-body-day-events";
+import { useCalendarContext } from "../../calendar-context";
+import CalendarBodyDayContent from "./calendar-body-day-content";
+import CalendarBodyMarginDayMargin from "./calendar-body-margin-day-margin";
 
 export default function CalendarBodyDay() {
-  const { date } = useCalendarContext()
+  const { date } = useCalendarContext();
   return (
     <div className="flex divide-x flex-grow overflow-hidden border">
       <div className="flex flex-col flex-grow divide-y overflow-hidden">
@@ -21,5 +21,5 @@ export default function CalendarBodyDay() {
         <CalendarBodyDayEvents />
       </div>
     </div>
-  )
+  );
 }

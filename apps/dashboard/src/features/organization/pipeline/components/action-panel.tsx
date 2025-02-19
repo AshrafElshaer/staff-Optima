@@ -8,7 +8,6 @@ import { StageForm } from "./stage-form";
 export function ActionPanel() {
   const [isOpen, setIsOpen] = useState(true);
 
-
   return (
     <Panel
       position={"top-right"}

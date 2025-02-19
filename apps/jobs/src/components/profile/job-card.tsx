@@ -35,13 +35,13 @@ export async function JobCard({
         <Separator />
         <CardContent className="flex flex-col gap-2 text-secondary-foreground">
           <div className="flex items-center gap-2">
-          <TaskDaily01Icon className="size-4 min-w-fit" strokeWidth={2} />
+            <TaskDaily01Icon className="size-4 min-w-fit" strokeWidth={2} />
             <div className="flex flex-wrap gap-2">
-            {jobPost.skills?.map((skill) => (
-              <Badge key={skill} size="md">
-                {skill}
-              </Badge>
-            ))}
+              {jobPost.skills?.map((skill) => (
+                <Badge key={skill} size="md">
+                  {skill}
+                </Badge>
+              ))}
             </div>
           </div>
           {jobPost.salary_range && (

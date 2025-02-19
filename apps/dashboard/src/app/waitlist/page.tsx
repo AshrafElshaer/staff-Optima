@@ -16,7 +16,7 @@ export default async function WaitlistPage() {
           <CardTitle>Congratulations , You're on the waitlist!</CardTitle>
         </CardHeader>
         <Separator />
-        <CardContent >
+        <CardContent>
           <Icons.Logo className="size-16 mx-auto my-8" />
 
           <p className="mb-4">

@@ -109,8 +109,6 @@ export function JobPostFilters() {
     ];
   }, [departments]);
 
-
-
   const handleAddFilter = (label: string, value: string) => {
     const target = label.toLowerCase() as keyof typeof selectedFilters;
     setSelectedFilters((prev) => ({
@@ -205,7 +203,8 @@ export function JobPostFilters() {
             <div className="flex items-center gap-2 ">
               {Object.entries(selectedFilters).map(
                 ([key, values]) =>
-                  key !== 'title' && values.length > 0 && (
+                  key !== "title" &&
+                  values.length > 0 && (
                     <div
                       key={key}
                       className="flex items-stretch gap-2 text-sm bg-accent px-3 py-2 rounded-md font-medium border min-w-fit"
@@ -238,7 +237,7 @@ export function JobPostFilters() {
               )}
             </div>
             {Object.entries(selectedFilters).some(
-              ([key, values]) => key !== 'title' && values.length > 0
+              ([key, values]) => key !== "title" && values.length > 0,
             ) && (
               <Button
                 variant="outline"

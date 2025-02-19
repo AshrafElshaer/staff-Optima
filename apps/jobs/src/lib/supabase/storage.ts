@@ -78,16 +78,16 @@ export async function uploadCandidateAttachment({
   const { data, error } = await supabase.storage
     .from(bucket)
     .upload(path, file.file, {
-    contentType: file.file.type,
-    upsert: true,
-  });
+      contentType: file.file.type,
+      upsert: true,
+    });
 
-if (error) {
-  throw error;
-}
+  if (error) {
+    throw error;
+  }
 
-const {
-  data: { publicUrl },
+  const {
+    data: { publicUrl },
   } = supabase.storage.from(bucket).getPublicUrl(data.path);
 
   return { publicUrl, path, fileName: file.file.name, fileType: file.fileType };

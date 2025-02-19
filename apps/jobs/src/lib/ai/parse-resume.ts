@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI} from "@ai-sdk/google";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import { generateObject } from "ai";
 import { candidateSchema } from "./candidate.schema";

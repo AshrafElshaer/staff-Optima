@@ -38,9 +38,7 @@ export function OrganizationLogo() {
         )}
       >
         <Skeleton className="size-6 rounded-sm" />
-        {state === "expanded" && (
-          <Skeleton className="w-full h-6 rounded-sm" />
-        )}
+        {state === "expanded" && <Skeleton className="w-full h-6 rounded-sm" />}
       </div>
     );
   }

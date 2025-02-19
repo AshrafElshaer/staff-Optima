@@ -84,5 +84,3 @@ export function StagesFlow({ applicationStages }: StagesFlowProps) {
     </>
   );
 }
-
-

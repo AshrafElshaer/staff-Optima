@@ -1,5 +1,3 @@
-
-
 import { createServerClient as createClient } from "@supabase/ssr";
 import type { Database } from "@optima/supabase/types";
 import { cookies } from "next/headers";

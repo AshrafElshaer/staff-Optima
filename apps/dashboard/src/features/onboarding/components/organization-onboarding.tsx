@@ -92,8 +92,6 @@ function OrganizationForm() {
       domain: "",
       name: "",
       profile: "",
-
-      
     },
   });
 
@@ -173,10 +171,15 @@ function OrganizationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  Address 1 <span className="text-muted-foreground">( Optional )</span>
+                  Address 1{" "}
+                  <span className="text-muted-foreground">( Optional )</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="123 Main st" {...field} value={field.value || ''} />
+                  <Input
+                    placeholder="123 Main st"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -189,10 +192,15 @@ function OrganizationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  Address 2 <span className="text-muted-foreground">( Optional )</span>
+                  Address 2{" "}
+                  <span className="text-muted-foreground">( Optional )</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="suite #512" {...field} value={field.value || ''} />
+                  <Input
+                    placeholder="suite #512"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -207,10 +215,15 @@ function OrganizationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  City <span className="text-muted-foreground">( Optional )</span>
+                  City{" "}
+                  <span className="text-muted-foreground">( Optional )</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="New York" {...field} value={field.value || ''} />
+                  <Input
+                    placeholder="New York"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -223,10 +236,15 @@ function OrganizationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  State <span className="text-muted-foreground">( Optional )</span>
+                  State{" "}
+                  <span className="text-muted-foreground">( Optional )</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Texas" {...field} value={field.value || ''} />
+                  <Input
+                    placeholder="Texas"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -239,10 +257,15 @@ function OrganizationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>
-                  Zip Code <span className="text-muted-foreground">( Optional )</span>
+                  Zip Code{" "}
+                  <span className="text-muted-foreground">( Optional )</span>
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="12345" {...field} value={field.value || ''} />
+                  <Input
+                    placeholder="12345"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -19,5 +19,3 @@ function Flow(props: ReactFlowProps) {
 export function FlowWithProvider({ children }: { children: React.ReactNode }) {
   return <ReactFlowProvider>{children}</ReactFlowProvider>;
 }
-
-

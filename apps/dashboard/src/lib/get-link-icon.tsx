@@ -1,5 +1,10 @@
 import { LinkIcon, UserIcon } from "lucide-react";
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaGithub,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const linkOptions = [

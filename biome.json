@@ -20,6 +20,7 @@
     }
   },
   "formatter": {
-    "indentStyle": "space"
+    "indentStyle": "space",
+    "ignore": ["node_modules", ".next", "packages/tsconfig"]
   }
 }
