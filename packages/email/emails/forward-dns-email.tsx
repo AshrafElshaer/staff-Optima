@@ -15,8 +15,8 @@ import {
 } from "@react-email/components";
 
 import type { DomainVerification } from "@optima/supabase/types";
-import Logo from "../components/logo";
 import { colors } from "../components/colors";
+import Logo from "../components/logo";
 
 export function DnsVerificationEmail({
   records,
@@ -87,16 +87,16 @@ export function DnsVerificationEmail({
             {records.map((record, index) => (
               <Section key={record.id} className="mb-4 border-b pb-4">
                 <Row>
-                  <Column className="w-1/4">
+                  <Column className="w-1/4 ">
                     <Text
-                      className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
+                      className={`text-left text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
                     >
                       Type
                     </Text>
                   </Column>
                   <Column className="w-3/4">
                     <Text
-                      className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
+                      className={`text-left text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
                     >
                       TXT
                     </Text>
@@ -105,14 +105,14 @@ export function DnsVerificationEmail({
                 <Row>
                   <Column className="w-1/4">
                     <Text
-                      className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
+                      className={`text-left text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
                     >
                       Name
                     </Text>
                   </Column>
                   <Column className="w-3/4">
                     <Text
-                      className={`text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
+                      className={`text-left text-[14px] text-[${colors.lightTheme.foreground}] dark:text-[${colors.darkTheme.foreground}]`}
                     >
                       staffoptima_verification
                     </Text>
