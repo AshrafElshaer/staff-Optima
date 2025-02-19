@@ -85,7 +85,7 @@ export default async function CandidatesPage() {
                 <p className=" font-medium text-sm md:text-base">
                   {stage.title}
                 </p>
-                <Badge variant="info" className="ml-auto" size="md">
+                <Badge variant="info" className="ml-auto" >
                   {groupedCandidates?.[stage.id]?.length || 0}
                 </Badge>
               </div>

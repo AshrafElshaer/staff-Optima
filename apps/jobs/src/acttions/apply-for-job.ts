@@ -101,6 +101,7 @@ export const createApplicationAction = actionClientWithMeta
           file_path: attachment.path,
           file_url: attachment.publicUrl,
           attachment_type: attachment.fileType,
+          candidate_id: newCandidate.id,
         })),
       );
 

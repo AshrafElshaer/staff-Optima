@@ -95,7 +95,7 @@ export function DomainVerification({
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          Domain Verification
+          <span className="min-w-fit">Domain Verification</span>
           <Badge
             variant={
               status === "pending"

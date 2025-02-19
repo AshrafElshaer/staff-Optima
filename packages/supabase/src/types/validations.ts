@@ -245,6 +245,9 @@ export const educationSchema = z.object({
   }),
 });
 
+export type Education = z.infer<typeof educationSchema>;
+
+
 const experienceSchema = z.object({
   company: z.string().min(2, {
     message: "Must be minimum 2 characters",
@@ -261,6 +264,8 @@ const experienceSchema = z.object({
   }),
   skills: z.array(z.string()),
 });
+
+export type Experience = z.infer<typeof experienceSchema>;
 
 export const candidateSchema = z.object({
   id: z.string(),
