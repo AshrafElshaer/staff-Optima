@@ -247,7 +247,6 @@ export const educationSchema = z.object({
 
 export type Education = z.infer<typeof educationSchema>;
 
-
 const experienceSchema = z.object({
   company: z.string().min(2, {
     message: "Must be minimum 2 characters",
