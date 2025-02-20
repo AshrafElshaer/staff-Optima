@@ -11,11 +11,13 @@ import {
   EditorCommandList,
 } from "novel";
 import { handleCommandNavigation } from "novel/extensions";
+import { handleImageDrop, handleImagePaste } from "novel/plugins";
 import { useState } from "react";
 import { ColorSelector } from "../selectors/color-selector";
 import { LinkSelector } from "../selectors/link-selector";
 import { NodeSelector } from "../selectors/node-selector";
 import { TextButtons } from "../selectors/text-buttons";
+import { uploadFn } from "../utils/image-upload";
 import { defaultExtensions } from "./extensions";
 import { slashCommand, suggestionItems } from "./slash-commands";
 type AdvancedEditorProps = {
@@ -50,10 +52,9 @@ export default function AdvancedEditor({
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
           },
-          // handlePaste: (view, event) =>
-          //   handleImagePaste(view, event, uploadFn),
-          // handleDrop: (view, event, _slice, moved) =>
-          //   handleImageDrop(view, event, moved, uploadFn),
+          handlePaste: (view, event) => handleImagePaste(view, event, uploadFn),
+          handleDrop: (view, event, _slice, moved) =>
+            handleImageDrop(view, event, moved, uploadFn),
           attributes: {
             class:
               "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",

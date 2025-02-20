@@ -21,6 +21,9 @@ import { ColorSelector } from "../selectors/color-selector";
 import { LinkSelector } from "../selectors/link-selector";
 import { NodeSelector } from "../selectors/node-selector";
 import { TextButtons } from "../selectors/text-buttons";
+import { handleImageDrop } from "novel/plugins";
+import { uploadFn } from "../utils/image-upload";
+import { handleImagePaste } from "novel/plugins";
 type AdvancedEditorProps = {
   content: JSONContent | undefined;
   onChange?: (content: string) => void;
@@ -55,10 +58,9 @@ export default function EmailEditor({
           handleDOMEvents: {
             keydown: (_view, event) => handleCommandNavigation(event),
           },
-          // handlePaste: (view, event) =>
-          //   handleImagePaste(view, event, uploadFn),
-          // handleDrop: (view, event, _slice, moved) =>
-          //   handleImageDrop(view, event, moved, uploadFn),
+          handlePaste: (view, event) => handleImagePaste(view, event, uploadFn),
+          handleDrop: (view, event, _slice, moved) =>
+            handleImageDrop(view, event, moved, uploadFn),
           attributes: {
             class:
               "prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full",
