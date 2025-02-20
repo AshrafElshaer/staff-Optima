@@ -1,7 +1,7 @@
 import { cn } from "@optima/ui/cn";
 import { type NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon } from "lucide-react";
-import Image from "next/image";
+
 import type { Node as ProsemirrorNode } from "prosemirror-model";
 import { Resizable } from "re-resizable";
 import type { Direction } from "re-resizable/lib/resizer";
@@ -150,13 +150,14 @@ export default function ResizableImageWrapper(props: NodeViewProps) {
           },
         }}
       >
-        <Image
+        <img
           src={props.node.attrs.src}
           alt={props.node.attrs.alt}
-          layout="fill"
-          objectFit="contain"
           style={{
             margin: margin,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
           }}
         />
       </Resizable>
