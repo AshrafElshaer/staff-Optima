@@ -1,5 +1,5 @@
 import { PageTitle } from "@/components/page-title";
-import { JobListingCard } from "@/features/job-posts/components/job-card";
+import { JobPostCard } from "@/features/job-posts/components/job-card";
 import { JobPostFilters } from "@/features/job-posts/components/job-post-filters";
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPostsWithApplicationsCount } from "@optima/supabase/queries";
@@ -28,7 +28,7 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
   );
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 flex-1">
       <section className="flex items-center justify-between">
         <PageTitle title="Job Listings" className="text-lg" />
         <Link
@@ -43,9 +43,28 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
         </Link>
       </section>
       <JobPostFilters />
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
+        {!jobPosts?.length && (
+          <div className="col-span-full flex min-h-[200px] flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-8 text-center">
+            <p className=" text-muted-foreground">No job posts found</p>
+            <p className=" text-muted-foreground">
+              Create your first job post to start receiving applications
+            </p>
+            <Link
+              href="/job-posts/new"
+              className={buttonVariants({
+                variant: "outline",
+                className: "mt-2",
+                size: "lg",
+              })}
+            >
+              <PlusIcon className="mr-2 size-4" />
+              Create Job Post
+            </Link>
+          </div>
+        )}
         {jobPosts?.map((job) => (
-          <JobListingCard
+          <JobPostCard
             key={job.id}
             job={
               job as unknown as JobPost & {

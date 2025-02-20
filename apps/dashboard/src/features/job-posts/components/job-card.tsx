@@ -44,9 +44,9 @@ interface JobCardProps {
   };
 }
 
-export function JobListingCard({ job }: JobCardProps) {
+export function JobPostCard({ job }: JobCardProps) {
   return (
-    <Card key={job.id} className=" bg-accent space-y-2">
+    <Card key={job.id} className=" bg-accent space-y-2 h-fit">
       <CardHeader className="p-4 pb-0 ">
         <CardTitle className="flex items-center">
           {job.title}

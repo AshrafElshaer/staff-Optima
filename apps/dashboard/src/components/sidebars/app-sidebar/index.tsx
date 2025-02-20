@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <Separator />
       <SidebarContent>
         <NavMain items={links} label="Workspace" />
-        <NavMain items={communication} label="Team" />
+        <NavMain items={communication} label="Communication" />
       </SidebarContent>
       <Separator />
       <SidebarFooter>

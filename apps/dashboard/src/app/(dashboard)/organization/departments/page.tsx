@@ -28,6 +28,7 @@ import {
   parseAsInteger,
   parseAsString,
 } from "nuqs/server";
+import { PiArrowBendDoubleUpLeftFill } from "react-icons/pi";
 
 const departmentCache = createSearchParamsCache({
   name: parseAsString.withDefault(""),
@@ -54,7 +55,7 @@ export default async function OrganizationDepartmentsPage({
     });
 
   return (
-    <main className="flex flex-col gap-6">
+    <main className="flex flex-col gap-6 flex-1">
       <PageTitle title="Manage and view all departments within your organization. Use departments to organize job listings and streamline operations." />
       <section className="flex justify-between gap-2 w-full">
         <div className="w-full max-w-xs">
@@ -66,11 +67,23 @@ export default async function OrganizationDepartmentsPage({
           </Button>
         </DepartmentDialog>
       </section>
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
+        {!departments?.length && (
+          <div className="col-span-full flex min-h-[200px] flex-col items-center justify-center gap-4 relative p-8 text-center">
+            <PiArrowBendDoubleUpLeftFill
+              className="absolute top-0 right-8 text-muted-foreground rotate-90"
+              size={70}
+            />
+            <p className=" text-muted-foreground">No departments found</p>
+            <p className=" text-muted-foreground">
+              Create your first department to start receiving applications
+            </p>
+          </div>
+        )}
         {departments?.map((department) => (
           <Card
             key={department.id}
-            className="p-4 space-y-4 bg-secondary group"
+            className="p-4 space-y-4 bg-secondary group h-fit"
           >
             <div className="flex items-center  gap-4">
               <p className="text-lg font-semibold mr-auto">{department.name}</p>
