@@ -23,6 +23,7 @@ import {
 } from "hugeicons-react";
 
 import { headers } from "next/headers";
+import Link from "next/link";
 import {
   createSearchParamsCache,
   parseAsInteger,
@@ -111,9 +112,14 @@ export default async function OrganizationDepartmentsPage({
                 </Tooltip>
 
                 <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-2">
-                    <UserIcon size={18} strokeWidth={2} />
-                    <p className=" ">{department.applications.length}</p>
+                  <TooltipTrigger className="flex items-center gap-2" asChild>
+                    <Link
+                      href={`/candidates?department=${department.id}`}
+                      className="flex items-center gap-2"
+                    >
+                      <UserIcon size={18} strokeWidth={2} />
+                      <p className=" ">{department.applications.length}</p>
+                    </Link>
                   </TooltipTrigger>
                   <TooltipContent className="bg-background">
                     <p>Applicants</p>

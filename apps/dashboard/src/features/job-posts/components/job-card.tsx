@@ -79,7 +79,7 @@ export function JobPostCard({ job }: JobCardProps) {
         </HoverCard>
         <HoverCard openDelay={0} closeDelay={0}>
           <HoverCardTrigger className="flex items-center gap-2 ml-auto" asChild>
-            <Link href={`/candidates?jobId=${job.id}`}>
+            <Link href={`/candidates?job=${job.id}`}>
               <UserAdd01Icon className="size-4" />
               <p className=" font-medium">{job.applications[0].count}</p>
             </Link>
