@@ -1,6 +1,7 @@
 import { PageTitle } from "@/components/page-title";
 
 import { CandidateSheet } from "@/features/candidates/components/candidate-sheet";
+import { CandidatesFilters } from "@/features/candidates/components/candidates-filters";
 
 import { createServerClient } from "@/lib/supabase/server";
 import { getApplicationStages, getCandidates } from "@optima/supabase/queries";
@@ -12,15 +13,24 @@ import { ScrollArea, ScrollBar } from "@optima/ui/scroll-area";
 import { Separator } from "@optima/ui/separator";
 
 import { headers } from "next/headers";
+import type { SearchParams } from "nuqs";
 
-export default async function CandidatesPage() {
+import { loadCandidatesSearchParams } from "@/features/candidates/candidates.search-params";
+
+export default async function CandidatesPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const filters = await loadCandidatesSearchParams(searchParams);
   const supabase = await createServerClient();
   const headersList = await headers();
   const organizationId = headersList.get("x-organization-id");
 
-  const { data: candidates } = await getCandidates(
+  const { data: candidates, error } = await getCandidates(
     supabase,
     organizationId as string,
+    filters,
   );
 
   const { data: applicationStages } = await getApplicationStages(
@@ -63,9 +73,9 @@ export default async function CandidatesPage() {
   return (
     <div className="flex flex-col gap-4 h-full">
       <PageTitle title="Candidates" />
-
+      <CandidatesFilters />
       <ScrollArea className="w-full flex-1 flex whitespace-nowrap ">
-        <div className="flex w-max space-x-4 flex-1 h-[calc(100vh-8rem)] md:h-[calc(100vh-5rem)] ">
+        <div className="flex w-max space-x-4 flex-1 h-[calc(100vh-15rem)] md:h-[calc(100vh-9rem)] ">
           {applicationStages?.map((stage) => (
             <div
               key={stage.id}

@@ -149,28 +149,28 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    const { candidate, application, attachments } = data;
-
-    const candidateMatch = await calculateCandidateMatch(
-      job,
-      {
-        ...candidate,
-        id: "",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      {
-        ...application,
-        id: "",
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        candidate_id: "",
-        stage_id: "",
-      },
-    );
 
     toast.promise(
       async () => {
+        const { candidate, application, attachments } = data;
+
+        const candidateMatch = await calculateCandidateMatch(
+          job,
+          {
+            ...candidate,
+            id: "",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          {
+            ...application,
+            id: "",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            candidate_id: "",
+            stage_id: "",
+          },
+        );
         const result = await applyForJob({
           candidate,
           application: {
@@ -185,7 +185,7 @@ export function ApplicationForm({ job }: ApplicationFormProps) {
         }
       },
       {
-        loading: "Submitting application...",
+        loading: "Submitting your application... please dont close the page",
         success: () => {
           form.reset();
           return "Application submitted successfully";
