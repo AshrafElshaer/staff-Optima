@@ -1,3 +1,5 @@
+"use client";
+
 import { PageTitle } from "@/components/page-title";
 import { PaymentInUse } from "@/features/organization/billing/payment-in-use";
 import { PlanCard } from "@/features/organization/billing/plan-card";
