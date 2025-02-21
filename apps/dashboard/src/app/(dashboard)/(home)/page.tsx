@@ -2,6 +2,14 @@ import { PageTitle } from "@/components/page-title";
 import { ApplicationsCharts } from "@/features/analytics/components/applications-charts";
 import { ApplicationsSources } from "@/features/analytics/components/applications-sources";
 import { ApplicationsStagesChart } from "@/features/analytics/components/applications-stages";
+import {
+  ApplicationsWidget,
+  ApplicationsWidgetSkeleton,
+} from "@/features/analytics/components/applications-widget";
+import {
+  OpenJobsWidget,
+  OpenJobsWidgetSkeleton,
+} from "@/features/analytics/components/open-jobs-widget";
 import { CalendarCard } from "@/features/calendar/components/calendar-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@optima/ui/card";
 import { ScrollArea, ScrollBar } from "@optima/ui/scroll-area";
@@ -13,6 +21,7 @@ import {
   UserCheck01Icon,
   UserSearch01Icon,
 } from "hugeicons-react";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Home",
@@ -76,26 +85,18 @@ export default async function Page() {
     <div className=" flex flex-col gap-6">
       <section>
         <PageTitle title="Welcome Back !" className="text-lg" />
-        <p className=" text-secondary-foreground">
+        {/* <p className=" text-secondary-foreground">
           You have 2 meetings and 1 event tody
-        </p>
+        </p> */}
       </section>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="flex items-center  p-4 gap-2 bg-accent">
-          <JobLinkIcon strokeWidth={2} size={20} />
-          <span className="font-semibold">Open Jobs</span>
-          <span className="text-lg font-semibold font-mono ml-auto">10</span>
-        </Card>
-        <Card className="flex items-center  p-4 gap-2 bg-accent">
-          <UserSearch01Icon strokeWidth={2} size={20} />
-          <span className="font-semibold">Applications</span>
-          <span className="text-lg font-semibold font-mono ml-auto">100</span>
-        </Card>
-        <Card className="flex items-center  p-4 gap-2 bg-accent">
-          <UserCheck01Icon strokeWidth={2} size={20} />
-          <span className="font-semibold">Hired Candidates</span>
-          <span className="text-lg font-semibold font-mono ml-auto">5</span>
-        </Card>
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Suspense fallback={<OpenJobsWidgetSkeleton />}>
+          <OpenJobsWidget />
+        </Suspense>
+
+        <Suspense fallback={<ApplicationsWidgetSkeleton />}>
+          <ApplicationsWidget />
+        </Suspense>
         <Card className="flex items-center  p-4 gap-2 bg-accent">
           <Calendar03Icon strokeWidth={2} size={20} />
           <span className="font-semibold">Interviews</span>

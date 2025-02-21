@@ -1,0 +1,41 @@
+import { createServerClient } from "@/lib/supabase/server";
+import { getJobPosts } from "@optima/supabase/queries";
+import { jobStatusEnum } from "@optima/supabase/types";
+import { Card } from "@optima/ui/card";
+import { Skeleton } from "@optima/ui/skeleton";
+import { JobLinkIcon } from "hugeicons-react";
+import { headers } from "next/headers";
+
+export async function OpenJobsWidget() {
+  const headersList = await headers();
+  const organizationId = headersList.get("x-organization-id");
+  const supabase = await createServerClient({
+    isAdmin: true,
+  });
+  const { data: jobPosts } = await getJobPosts(
+    supabase,
+    organizationId as string,
+    {
+      status: [jobStatusEnum.published],
+    },
+  );
+  return (
+    <Card className="flex items-center  p-4 gap-2 bg-accent">
+      <JobLinkIcon strokeWidth={2} size={20} />
+      <span className="font-semibold">Open Jobs</span>
+      <span className="text-lg font-semibold font-mono ml-auto">
+        {jobPosts?.length ?? 0}
+      </span>
+    </Card>
+  );
+}
+
+export function OpenJobsWidgetSkeleton() {
+  return (
+    <Card className="flex items-center  p-4 gap-2 bg-accent">
+      <JobLinkIcon strokeWidth={2} size={20} />
+      <span className="font-semibold">Open Jobs</span>
+      <Skeleton className="size-7 ml-auto rounded-sm" />
+    </Card>
+  );
+}
