@@ -202,11 +202,11 @@ export function PublishJobDialog({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="outline" disabled={isLoading}>
+                <Button type="button" variant="outline"  disabled={isLoading}>
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="button" onClick={() => onSubmit(form.getValues())} disabled={isLoading}>
                 {isLoading ? "Publishing..." : "Publish"}
               </Button>
             </DialogFooter>

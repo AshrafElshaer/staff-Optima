@@ -6,10 +6,12 @@ export function CampaignStatus({
 }: { campaign: JobPostCampaign | undefined }) {
   if (!campaign)
     return (
-      <p className="text-sm ">
-        <span className="text-secondary-foreground">No campaign found</span>
+      <>
+        <p className="text-sm ">
+          <span className="text-secondary-foreground">Draft not published</span>
+        </p>
         <Progress value={100} indicatorBg="destructive" />
-      </p>
+      </>
     );
   const status = campaign.status;
 
