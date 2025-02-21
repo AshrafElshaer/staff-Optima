@@ -1,13 +1,16 @@
 "use server";
 
+import { resend } from "@/lib/resend";
 import { actionClientWithMeta } from "@/lib/safe-action";
 import { createServerClient } from "@/lib/supabase/server";
 import { uploadCandidateAttachment } from "@/lib/supabase/storage";
+import { ApplicationSubmitEmail } from "@optima/email";
 import {
   createApplication,
   createAttachment,
   createCandidate,
 } from "@optima/supabase/mutations";
+import { getJobPostById, getOrganizationById } from "@optima/supabase/queries";
 import { attachmentTypeEnum } from "@optima/supabase/types";
 import {
   applicationInsertSchema,
@@ -35,7 +38,7 @@ export const createApplicationAction = actionClientWithMeta
     },
   })
   .schema(schema)
-  .action(async ({ parsedInput, ctx }) => {
+  .action(async ({ parsedInput }) => {
     const supabase = await createServerClient({
       isAdmin: true,
     });
@@ -107,5 +110,25 @@ export const createApplicationAction = actionClientWithMeta
         throw new Error(insertError.message);
       }
     }
+
+    const { data: job } = await getJobPostById(supabase, newApplication.job_id);
+
+    const { data: organization } = await getOrganizationById(
+      supabase,
+      newApplication.organization_id,
+    );
+
+    await resend.emails.send({
+      from: "Staff Optima <noreply@staffoptima.co>",
+      to: newCandidate.email,
+      subject: "Application Submitted",
+      react: ApplicationSubmitEmail({
+        candidateName:
+          `${newCandidate.first_name} ${newCandidate.last_name}` || "",
+        jobTitle: job?.title || "",
+        companyName: organization?.name || "",
+        companyLogo: organization?.logo_url || "",
+      }),
+    });
     return newApplication;
   });

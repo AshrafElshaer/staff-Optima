@@ -1,3 +1,4 @@
+import { ApplicationSubmitEmail } from "./application-submit-email";
 import { DnsVerificationEmail } from "./forward-dns-email";
 import { InvitationEmail } from "./invitation-email";
 import { NewEmployeeEmail } from "./new-employee";
@@ -9,4 +10,5 @@ export {
   OtpEmail,
   WaitlistEmail,
   DnsVerificationEmail,
+  ApplicationSubmitEmail,
 };
