@@ -6,6 +6,7 @@ import {
   createJobPost,
   updateJobPost,
 } from "@optima/supabase/mutations";
+import { jobPostCampaignStatusEnum } from "@optima/supabase/types";
 import {
   jobPostCampaignInsertSchema,
   jobPostInsertSchema,
@@ -73,6 +74,19 @@ export const createJobCampaignAction = authActionClient
   .schema(jobPostCampaignInsertSchema)
   .action(async ({ parsedInput, ctx }) => {
     const { supabase } = ctx;
+
+    const { data: runningCampaign } = await supabase
+      .from("job_posts_campaigns")
+      .select("*")
+      .eq("organization_id", ctx.user.user_metadata.organization_id)
+      .eq("job_id", parsedInput.job_id)
+      .or(
+        `status.eq.${jobPostCampaignStatusEnum.active},status.eq.${jobPostCampaignStatusEnum.pending}`,
+      );
+    if (runningCampaign?.length) {
+      throw new Error("Job post has already a running campaign");
+    }
+
     const payload = {
       ...parsedInput,
       organization_id: ctx.user.user_metadata.organization_id,
