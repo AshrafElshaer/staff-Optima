@@ -95,7 +95,6 @@ export function PublishJobDialog({
 
         const jobPostResult = await createJobPost({
           ...job,
-          department_id: job.department_id || "", // Ensure department_id is not null
           status: "published",
         });
 

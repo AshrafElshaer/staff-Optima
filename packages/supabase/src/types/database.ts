@@ -560,7 +560,7 @@ export type Database = {
           benefits: string[] | null;
           created_at: string;
           created_by: string | null;
-          department_id: string | null;
+          department_id: string;
           employment_type: Database["public"]["Enums"]["employment_type_enum"];
           experience_level: Database["public"]["Enums"]["experience_level_enum"];
           id: string;
@@ -578,7 +578,7 @@ export type Database = {
           benefits?: string[] | null;
           created_at?: string;
           created_by?: string | null;
-          department_id?: string | null;
+          department_id: string;
           employment_type: Database["public"]["Enums"]["employment_type_enum"];
           experience_level: Database["public"]["Enums"]["experience_level_enum"];
           id?: string;
@@ -596,7 +596,7 @@ export type Database = {
           benefits?: string[] | null;
           created_at?: string;
           created_by?: string | null;
-          department_id?: string | null;
+          department_id?: string;
           employment_type?: Database["public"]["Enums"]["employment_type_enum"];
           experience_level?: Database["public"]["Enums"]["experience_level_enum"];
           id?: string;
