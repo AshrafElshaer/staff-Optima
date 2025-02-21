@@ -115,6 +115,7 @@ export function PublishJobDialog({
         if (jobCampaignResult?.serverError) {
           throw new Error(jobCampaignResult.serverError);
         }
+        setOpen(false);
       },
 
       {
@@ -202,11 +203,15 @@ export function PublishJobDialog({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="outline"  disabled={isLoading}>
+                <Button type="button" variant="outline" disabled={isLoading}>
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="button" onClick={() => onSubmit(form.getValues())} disabled={isLoading}>
+              <Button
+                type="button"
+                onClick={() => onSubmit(form.getValues())}
+                disabled={isLoading}
+              >
                 {isLoading ? "Publishing..." : "Publish"}
               </Button>
             </DialogFooter>
