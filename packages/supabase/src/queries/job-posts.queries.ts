@@ -22,7 +22,9 @@ export async function getJobPosts(
     .from("job_posts")
     .select(`
       *,
-      department:department_id (*)`)
+      department:department_id (*),
+      campaigns:job_posts_campaigns(*)
+      `)
     .eq("organization_id", organization_id);
 
   if (filters?.status?.length) {
@@ -66,7 +68,9 @@ export async function getJobPostsWithApplicationsCount(
 ) {
   const query = supabase
     .from("job_posts")
-    .select("*, department:department_id (*), applications(count)")
+    .select(
+      "*, department:department_id (*), applications(count), campaigns:job_posts_campaigns (*)",
+    )
     .eq("organization_id", organization_id);
 
   if (filters?.status?.length) {
@@ -102,7 +106,7 @@ export async function getJobPostById(
 ) {
   return await supabase
     .from("job_posts")
-    .select("*, department:department_id(*)")
+    .select("*, department:department_id(*), campaigns:job_posts_campaigns(*)")
     .eq("id", job_id)
     .single();
 }

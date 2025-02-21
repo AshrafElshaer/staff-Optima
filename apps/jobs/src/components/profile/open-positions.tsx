@@ -1,7 +1,11 @@
 import { filterSearchParamsCache } from "@/lib/filters.search-params";
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPosts } from "@optima/supabase/queries";
-import type { Department, JobPost } from "@optima/supabase/types";
+import {
+  jobStatusEnum,
+  type Department,
+  type JobPost,
+} from "@optima/supabase/types";
 import { Badge } from "@optima/ui/badge";
 import { JobCard } from "./job-card";
 import { PositionsFilters } from "./positions-filters";
@@ -16,7 +20,7 @@ export async function OpenPositions({
   const { data: jobPosts, error } = await getJobPosts(
     supabase,
     organizationId,
-    filters,
+    { ...filters, status: [jobStatusEnum.published] },
   );
 
   const groupedJobPosts = jobPosts?.reduce<

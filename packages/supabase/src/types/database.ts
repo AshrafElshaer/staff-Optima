@@ -634,6 +634,57 @@ export type Database = {
           },
         ];
       };
+      job_posts_campaigns: {
+        Row: {
+          created_at: string;
+          end_date: string | null;
+          id: string;
+          is_integration_enabled: boolean;
+          job_id: string;
+          organization_id: string;
+          start_date: string;
+          status: Database["public"]["Enums"]["job_post_campaign_status_enum"];
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          end_date?: string | null;
+          id?: string;
+          is_integration_enabled?: boolean;
+          job_id: string;
+          organization_id: string;
+          start_date: string;
+          status?: Database["public"]["Enums"]["job_post_campaign_status_enum"];
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          end_date?: string | null;
+          id?: string;
+          is_integration_enabled?: boolean;
+          job_id?: string;
+          organization_id?: string;
+          start_date?: string;
+          status?: Database["public"]["Enums"]["job_post_campaign_status_enum"];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "job_posts_campaigns_job_id_fkey";
+            columns: ["job_id"];
+            isOneToOne: false;
+            referencedRelation: "job_posts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "job_posts_campaigns_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       organization_members: {
         Row: {
           created_at: string;
@@ -899,6 +950,11 @@ export type Database = {
         | "canceled"
         | "awaiting_feedback";
       job_location_enum: "remote" | "hybrid" | "on_site";
+      job_post_campaign_status_enum:
+        | "active"
+        | "paused"
+        | "completed"
+        | "pending";
       job_status_enum: "published" | "draft" | "closed" | "paused";
       user_role_enum: "admin" | "recruiter" | "hiring_manager" | "interviewer";
     };

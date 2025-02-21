@@ -102,7 +102,7 @@ export default async function OrganizationDepartmentsPage({
             <div className="flex items-center justify-between gap-2">
               <TooltipProvider delayDuration={0}>
                 <Tooltip>
-                  <TooltipTrigger  asChild>
+                  <TooltipTrigger asChild>
                     <Link
                       href={`/job-posts?department=${department.id}`}
                       className="flex items-center gap-2"

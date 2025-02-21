@@ -67,7 +67,7 @@ create policy "Admin Or User Can Update User" on users for update using (is_user
 create policy "Admin Can Delete User" on users for delete using (is_user_admin());
 
 
--- Job Listings
+-- Job Posts
 alter table job_posts enable row level security;
 
 create policy "Organization admin , recruiter or hiring_manager Can Create Job Post" on job_posts for insert with check (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager');
@@ -78,6 +78,16 @@ create policy "Admin Or Creator Can Update Job Post" on job_posts for update usi
 (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager' or auth.uid() = created_by);
 
 create policy "Admin Or Creator Can Delete Job Post" on job_posts for delete using (is_user_organization_admin(organization_id) or get_user_access_role() = 'recruiter' or get_user_access_role() = 'hiring_manager' or auth.uid() = created_by);
+
+-- Job Posts Campaigns
+alter table job_posts_campaigns enable row level security;
+create policy "Organization Members Can Create Job Post Campaign" on job_posts_campaigns for insert with check (is_user_organization_member(organization_id));
+
+create policy "Organization Members Can Update Job Post Campaign" on job_posts_campaigns for update using (is_user_organization_member(organization_id));
+
+create policy "Organization Members Can Delete Job Post Campaign" on job_posts_campaigns for delete using (is_user_organization_member(organization_id));
+
+create policy "Organization Members Can View Job Post Campaign" on job_posts_campaigns for select using (is_user_organization_member(organization_id));
 
 
 -- Candidates

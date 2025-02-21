@@ -1,8 +1,13 @@
 "use server";
 
 import { authActionClient } from "@/lib/safe-action";
-import { createJobPost, updateJobPost } from "@optima/supabase/mutations";
 import {
+  createJobCampaign,
+  createJobPost,
+  updateJobPost,
+} from "@optima/supabase/mutations";
+import {
+  jobPostCampaignInsertSchema,
   jobPostInsertSchema,
   jobPostUpdateSchema,
 } from "@optima/supabase/validations";
@@ -30,7 +35,7 @@ export const createJobPostAction = authActionClient
     if (error) throw new Error(error.message);
 
     revalidatePath("/job-posts");
-    redirect("/job-posts");
+    return data;
   });
 
 export const updateJobPostAction = authActionClient
@@ -55,4 +60,27 @@ export const updateJobPostAction = authActionClient
     revalidatePath("/job-posts");
 
     return data;
+  });
+
+export const createJobCampaignAction = authActionClient
+  .metadata({
+    name: "createJobCampaign",
+    track: {
+      event: "createJobCampaign",
+      channel: "jobCampaigns",
+    },
+  })
+  .schema(jobPostCampaignInsertSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { supabase } = ctx;
+    const payload = {
+      ...parsedInput,
+      organization_id: ctx.user.user_metadata.organization_id,
+    };
+    const { error } = await createJobCampaign(supabase, payload);
+
+    if (error) throw new Error(error.message);
+
+    revalidatePath("/job-posts");
+    redirect("/job-posts");
   });

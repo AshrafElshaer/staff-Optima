@@ -11,6 +11,7 @@ export type InterviewStatus = Enums<"interview_status_enum">;
 export type ExperienceLevel = Enums<"experience_level_enum">;
 export type EmploymentType = Enums<"employment_type_enum">;
 export type AttachmentType = Enums<"attachment_type_enum">;
+export type JobPostCampaignStatus = Enums<"job_post_campaign_status_enum">;
 
 export const userRoleEnum: {
   [key in UserAccessRole]: key;
@@ -36,6 +37,15 @@ export const jobLocationEnum: {
   remote: "remote",
   on_site: "on_site",
   hybrid: "hybrid",
+};
+
+export const jobPostCampaignStatusEnum: {
+  [key in JobPostCampaignStatus]: key;
+} = {
+  active: "active",
+  pending: "pending",
+  completed: "completed",
+  paused: "paused",
 };
 
 export const experienceLevelEnum: {
@@ -80,6 +90,7 @@ export type JobPost = Tables<"job_posts">;
 export type Candidate = Tables<"candidates">;
 export type Application = Tables<"applications">;
 export type DomainVerification = Tables<"domain_verification">;
+export type JobPostCampaign = Tables<"job_posts_campaigns">;
 
 export interface ApplicationWithJobPost extends Application {
   job_posts: {

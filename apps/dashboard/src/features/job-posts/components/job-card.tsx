@@ -10,7 +10,11 @@ import {
 
 import { HoverCardTrigger } from "@optima/ui/hover-card";
 
-import type { Department, JobPost } from "@optima/supabase/types";
+import type {
+  Department,
+  JobPost,
+  JobPostCampaign,
+} from "@optima/supabase/types";
 import {
   Card,
   CardContent,
@@ -36,15 +40,20 @@ import { Calendar03Icon } from "hugeicons-react";
 
 import Link from "next/link";
 import { FaPause } from "react-icons/fa";
-
+import { CampaignStatus } from "./campaign-status";
 interface JobCardProps {
   job: JobPost & {
     department: Department;
     applications: [{ count: number }];
+    campaigns: JobPostCampaign[];
   };
 }
 
 export function JobPostCard({ job }: JobCardProps) {
+  const latestCampaign = job.campaigns.sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  )[0];
   return (
     <Card key={job.id} className=" bg-accent space-y-2 h-fit">
       <CardHeader className="p-4 pb-0 ">
@@ -58,11 +67,7 @@ export function JobPostCard({ job }: JobCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="px-4 py-0 space-y-2">
-        <p className="text-sm ">
-          <span className="text-secondary-foreground">Deadline:</span>{" "}
-          <span>5 Days left</span>
-        </p>
-        <Progress value={50} indicatorBg="success" />
+        <CampaignStatus campaign={latestCampaign} />
       </CardContent>
       <Separator />
       <CardFooter className="flex items-center gap-2 text-sm">

@@ -6,3 +6,4 @@ export * from "./email-templates.queries";
 export * from "./job-posts.queries";
 export * from "./candidates.queries";
 export * from "./attachments.queries";
+export * from "./job-campaigns.queries";

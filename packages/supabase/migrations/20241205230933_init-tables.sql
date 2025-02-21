@@ -158,20 +158,23 @@ create table job_posts (
 create index idx_job_listings_id on job_listings(id);
 create index idx_job_listings_org on job_listings(organization_id);
 
--- create table job_listing_campaigns (
---     id uuid primary key default gen_random_uuid(),
---     organization_id uuid references organizations(id) not null on delete cascade,
---     job_listing_id uuid references job_listings(id) not null on delete cascade,
---     start_date timestamp with time zone not null,
---     end_date timestamp with time zone,
---     status text not null,
---     platform_settings jsonb, -- Store platform-specific campaign settings
---     created_at timestamp with time zone default now() not null,
---     updated_at timestamp with time zone default now() not null
--- );
+create type job_post_campaign_status_enum as enum ('active', 'paused', 'completed','pending');
 
-create index idx_campaigns_org on job_listing_campaigns(organization_id);
-create index idx_campaigns_job on job_listing_campaigns(job_listing_id);
+create table job_posts_campaigns (
+    id uuid primary key default gen_random_uuid(),
+    organization_id uuid references organizations(id) not null on delete cascade,
+    job_id uuid references job_posts(id) not null on delete cascade,
+    start_date timestamp with time zone not null,
+    end_date timestamp with time zone check (end_date is null or end_date > start_date),
+    status job_post_campaign_status_enum not null default 'pending',
+    is_integration_enabled boolean not null default false,
+    created_at timestamp with time zone default now() not null,
+    updated_at timestamp with time zone default now() not null
+);
+
+create index idx_campaigns_org on job_posts_campaigns(organization_id);
+create index idx_campaigns_job on job_posts_campaigns(job_id);
+create index idx_campaigns_status on job_posts_campaigns(status);
 
 
 create table candidates (

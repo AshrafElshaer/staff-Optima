@@ -6,6 +6,7 @@ import {
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
+  jobPostCampaignStatusEnum,
   jobStatusEnum,
   userRoleEnum,
 } from "./index";
@@ -187,7 +188,7 @@ export const jobPostSchema = z.object({
   benefits: z.array(z.string()).nullable(),
   created_at: z.string(),
   created_by: z.string().nullable(),
-  department_id: z.string().nullable(),
+  department_id: z.string().uuid(),
   employment_type: z.nativeEnum(employmentTypeEnum),
   experience_level: z.nativeEnum(experienceLevelEnum),
   id: z.string(),
@@ -217,6 +218,31 @@ export const jobPostInsertSchema = jobPostSchema.omit({
 export const jobPostUpdateSchema = jobPostSchema.partial().required({
   id: true,
 });
+
+export const jobPostCampaignSchema = z.object({
+  created_at: z.string(),
+  end_date: z.string().nullable(),
+  id: z.string(),
+  is_integration_enabled: z.boolean(),
+  job_id: z.string(),
+  organization_id: z.string(),
+  start_date: z.string(),
+  status: z.nativeEnum(jobPostCampaignStatusEnum),
+  updated_at: z.string(),
+});
+
+export const jobPostCampaignInsertSchema = jobPostCampaignSchema.omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+  organization_id: true,
+});
+
+export const jobPostCampaignUpdateSchema = jobPostCampaignSchema
+  .partial()
+  .required({
+    id: true,
+  });
 
 const socialLinkSchema = z.record(
   z.string().min(2, {

@@ -73,7 +73,7 @@ Staff Optima is a modern, open-source Applicant Tracking System (ATS) designed t
 │    ├── kv                      # Upstash rate-limited key-value storage
 │    ├── locations               # Locations & Timezones
 │    ├── logger                  # Logger library
-│    ├── supabase                # Supabase - Migrations, Queries, Mutations & zod schemas
+│    ├── supabase                # Supabase - Migrations, Queries, Mutations, Edge Functions & zod schemas
 │    └── ui                      # Shared UI components (Shadcn)
 ├── tooling                      # are the shared configuration that are used by the apps and packages
 │    └── typescript              # Shared TypeScript configuration
@@ -132,7 +132,7 @@ cd packages/supabase
 bunx supabase login // login to supabase
 bunx supabase link // link the database to the project
 bunx supabase db push // push the migrations to the database
-
+bunx supabase functions deploy --no-verify-jwt    // deploy the edge functions ( requiers to have docker running before deploying )
 ```
 
 

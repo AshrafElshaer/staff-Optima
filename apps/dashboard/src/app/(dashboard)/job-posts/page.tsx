@@ -3,7 +3,11 @@ import { JobPostCard } from "@/features/job-posts/components/job-card";
 import { JobPostFilters } from "@/features/job-posts/components/job-post-filters";
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPostsWithApplicationsCount } from "@optima/supabase/queries";
-import type { Department, JobPost } from "@optima/supabase/types";
+import type {
+  Department,
+  JobPost,
+  JobPostCampaign,
+} from "@optima/supabase/types";
 
 import { loadSearchParams } from "@/features/job-posts/job-posts.search-params";
 import { buttonVariants } from "@optima/ui/button";
@@ -70,6 +74,7 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
               job as unknown as JobPost & {
                 department: Department;
                 applications: [{ count: number }];
+                campaigns: JobPostCampaign[];
               }
             }
           />

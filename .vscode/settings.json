@@ -24,5 +24,10 @@
   "search.exclude": {
     "**/node_modules": true
   },
+  "deno.enablePaths": ["./packages/supabase/functions"],
+  "deno.enable": true,
+  "deno.lint": true,
+  "deno.importMap": "./packages/supabase/functions/import-map.json",
+
   "cSpell.words": ["hugeicons", "nuqs", "sonner", "supabase", "usehooks"]
 }
