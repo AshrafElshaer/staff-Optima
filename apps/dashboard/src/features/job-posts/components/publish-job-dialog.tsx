@@ -88,6 +88,7 @@ export function PublishJobDialog({
           if (result?.serverError) {
             throw new Error(result.serverError);
           }
+          setOpen(false);
           return {
             success: true,
           };
