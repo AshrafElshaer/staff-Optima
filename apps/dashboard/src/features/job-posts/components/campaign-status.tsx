@@ -1,3 +1,4 @@
+"use client";
 import type { JobPostCampaign } from "@optima/supabase/types";
 import { Progress } from "@optima/ui/progress";
 import moment from "moment";
