@@ -87,13 +87,10 @@ export function PublishJobDialog({
           const result = await createJobCampaign({
             job_id: job.id,
             start_date: moment(data.dateRange.from)
-              .utc()
+
               .startOf("day")
               .toISOString(),
-            end_date: moment(data.dateRange.to)
-              .utc()
-              .endOf("day")
-              .toISOString(),
+            end_date: moment(data.dateRange.to).endOf("day").toISOString(),
             status: "pending",
             is_integration_enabled: data.useIntegratedApps,
           });
