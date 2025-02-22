@@ -2,7 +2,7 @@ import {
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
-  jobStatusEnum,
+  jobPostCampaignStatusEnum,
 } from "@optima/supabase/types";
 import {
   createSearchParamsCache,

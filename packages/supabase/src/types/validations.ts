@@ -7,7 +7,6 @@ import {
   experienceLevelEnum,
   jobLocationEnum,
   jobPostCampaignStatusEnum,
-  jobStatusEnum,
   userRoleEnum,
 } from "./index";
 
@@ -200,7 +199,7 @@ export const jobPostSchema = z.object({
   salary_range: z.string().nullable(),
   screening_questions: z.array(z.string()).nullable(),
   skills: z.array(z.string()).nullable(),
-  status: z.nativeEnum(jobStatusEnum).nullable(),
+
   title: z.string().min(2, {
     message: "Must be minimum 2 characters",
   }),

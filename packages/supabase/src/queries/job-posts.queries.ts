@@ -3,14 +3,14 @@ import type {
   ExperienceLevel,
   JobLocation,
   JobPost,
-  JobStatus,
+  JobPostCampaignStatus,
   SupabaseInstance,
 } from "../types";
 export async function getJobPosts(
   supabase: SupabaseInstance,
   organization_id: string,
   filters?: {
-    status?: JobStatus[];
+    status?: JobPostCampaignStatus[];
     type?: EmploymentType[];
     location?: JobLocation[];
     experience?: ExperienceLevel[];
@@ -28,7 +28,7 @@ export async function getJobPosts(
     .eq("organization_id", organization_id);
 
   if (filters?.status?.length) {
-    query.in("status", filters.status);
+    query.in("campaigns.status", filters.status);
   }
 
   if (filters?.type?.length) {

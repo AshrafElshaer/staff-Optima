@@ -2,14 +2,9 @@ import {
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
-  jobStatusEnum,
+  jobPostCampaignStatusEnum,
 } from "@optima/supabase/types";
-import type {
-  EmploymentType,
-  ExperienceLevel,
-  JobLocation,
-  JobStatus,
-} from "@optima/supabase/types";
+
 import {
   createLoader,
   parseAsArrayOf,
@@ -21,7 +16,7 @@ import {
 // Describe your search params, and reuse this in useQueryStates / createSerializer:
 export const jobPostsSearchParams = {
   status: parseAsArrayOf(
-    parseAsStringEnum(Object.values(jobStatusEnum)),
+    parseAsStringEnum(Object.values(jobPostCampaignStatusEnum)),
   ).withDefault([]),
   type: parseAsArrayOf(
     parseAsStringEnum(Object.values(employmentTypeEnum)),

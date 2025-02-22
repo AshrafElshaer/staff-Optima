@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-import { jobPostCampaignStatusEnum, jobStatusEnum } from "../_shared/enums.ts";
+import { jobPostCampaignStatusEnum } from "../_shared/enums.ts";
 import { supabase } from "../_shared/supabase-client.ts";
 
 Deno.serve(async () => {
@@ -13,13 +13,12 @@ Deno.serve(async () => {
     console.error("Error fetching job campaigns:", error);
     return new Response(JSON.stringify({ error: error?.message }), {
       headers: { "Content-Type": "application/json" },
-      status: 500,
+      status: 400,
     });
   }
 
   const now = new Date();
   const updates = [];
-  const jobPostUpdates = [];
 
   // Loop through each campaign and check if status needs to be updated
   for (const campaign of jobCampaigns) {
@@ -39,12 +38,6 @@ Deno.serve(async () => {
         status: jobPostCampaignStatusEnum.active,
         updated_at: now.toISOString(),
       });
-
-      jobPostUpdates.push({
-        id: campaign.job_id,
-        status: jobStatusEnum.published,
-        updated_at: now.toISOString(),
-      });
     }
 
     // Check if campaign should be completed (ends today)
@@ -61,12 +54,6 @@ Deno.serve(async () => {
         status: jobPostCampaignStatusEnum.completed,
         updated_at: now.toISOString(),
       });
-
-      jobPostUpdates.push({
-        id: campaign.job_id,
-        status: jobStatusEnum.paused,
-        updated_at: now.toISOString(),
-      });
     }
   }
 
@@ -78,23 +65,12 @@ Deno.serve(async () => {
     if (updateError) {
       return new Response(JSON.stringify({ error: updateError?.message }), {
         headers: { "Content-Type": "application/json" },
-        status: 500,
-      });
-    }
-
-    const { error: jobPostError } = await supabase
-      .from("job_posts")
-      .upsert(jobPostUpdates);
-
-    if (jobPostError) {
-      return new Response(JSON.stringify({ error: jobPostError?.message }), {
-        headers: { "Content-Type": "application/json" },
-        status: 500,
+        status: 400,
       });
     }
   }
 
-  return new Response(JSON.stringify({ processed: updates.length }), {
+  return new Response("ok", {
     headers: { "Content-Type": "application/json" },
   });
 });

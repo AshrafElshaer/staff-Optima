@@ -15,7 +15,8 @@ import {
   employmentTypeEnum,
   experienceLevelEnum,
   jobLocationEnum,
-  jobStatusEnum,
+  JobPostCampaignStatus,
+  jobPostCampaignStatusEnum,
 } from "@optima/supabase/types";
 
 import { BriefcaseIcon, X } from "lucide-react";
@@ -40,7 +41,7 @@ import { candidatesSearchParams } from "../candidates.search-params";
 const filters = [
   {
     label: "Status",
-    options: Object.values(jobStatusEnum).map((status) => ({
+    options: Object.values(jobPostCampaignStatusEnum).map((status) => ({
       label: status,
       value: status,
     })),

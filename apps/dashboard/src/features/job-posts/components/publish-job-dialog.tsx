@@ -1,5 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { JobPost } from "@optima/supabase/types";
+import type {
+  Department,
+  JobPost,
+  JobPostCampaign,
+} from "@optima/supabase/types";
 import { Button } from "@optima/ui/button";
 import { Checkbox } from "@optima/ui/checkbox";
 import { DatePickerWithRange } from "@optima/ui/date-picker-range";
@@ -49,7 +53,10 @@ export function PublishJobDialog({
   open,
   setOpen,
 }: {
-  job: JobPost;
+  job: JobPost & {
+    department: Department;
+    campaigns: JobPostCampaign[];
+  };
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
@@ -96,26 +103,13 @@ export function PublishJobDialog({
 
         const jobPostResult = await createJobPost({
           ...job,
-          status: "published",
-        });
-
-        if (jobPostResult?.serverError || !jobPostResult?.data?.id) {
-          throw new Error(
-            jobPostResult?.serverError || "Failed to create job post",
-          );
-        }
-
-        const jobCampaignResult = await createJobCampaign({
-          job_id: jobPostResult.data.id,
-          start_date: data.dateRange.from.toISOString(),
-          end_date: data.dateRange.to.toISOString(),
           status: "pending",
-          is_integration_enabled: data.useIntegratedApps,
         });
 
-        if (jobCampaignResult?.serverError) {
-          throw new Error(jobCampaignResult.serverError);
+        if (jobPostResult?.serverError) {
+          throw new Error(jobPostResult?.serverError);
         }
+
         setOpen(false);
       },
 

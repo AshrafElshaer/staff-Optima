@@ -1,16 +1,4 @@
 import {
-  employmentTypeEnum,
-  experienceLevelEnum,
-  jobLocationEnum,
-  jobStatusEnum,
-} from "@optima/supabase/types";
-import type {
-  EmploymentType,
-  ExperienceLevel,
-  JobLocation,
-  JobStatus,
-} from "@optima/supabase/types";
-import {
   createLoader,
   parseAsArrayOf,
   parseAsFloat,

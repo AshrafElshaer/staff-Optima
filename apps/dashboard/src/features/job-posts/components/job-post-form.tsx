@@ -10,7 +10,11 @@ import { Button } from "@optima/ui/button";
 import { Checkbox } from "@optima/ui/checkbox";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { JobPost } from "@optima/supabase/types";
+import type {
+  Department,
+  JobPost,
+  JobPostCampaign,
+} from "@optima/supabase/types";
 import { jobPostSchema } from "@optima/supabase/validations";
 import {
   Form,
@@ -48,7 +52,13 @@ const COMPANY_BENEFITS = [
   "Employee Discounts",
 ];
 
-export function JobPostForm({ job }: { job?: JobPost }) {
+type JobPostFormProps = {
+  job?: JobPost & {
+    department: Department;
+    campaigns: JobPostCampaign[];
+  };
+};
+export function JobPostForm({ job }: JobPostFormProps) {
   const [openPublishDialog, setOpenPublishDialog] = useState(false);
   const { execute: createJobPost, isExecuting: isCreating } = useAction(
     createJobPostAction,
@@ -92,7 +102,6 @@ export function JobPostForm({ job }: { job?: JobPost }) {
           updated_at: "",
           organization_id: "",
           created_by: "",
-          status: "draft",
         },
   });
 
@@ -108,7 +117,7 @@ export function JobPostForm({ job }: { job?: JobPost }) {
         created_by,
         ...rest
       } = data;
-      createJobPost(rest);
+      createJobPost({ ...rest, status: "draft" });
     }
   }
 
@@ -149,7 +158,12 @@ export function JobPostForm({ job }: { job?: JobPost }) {
               Publish
             </Button>
             <PublishJobDialog
-              job={form.getValues()}
+              job={
+                form.getValues() as JobPost & {
+                  department: Department;
+                  campaigns: JobPostCampaign[];
+                }
+              }
               open={openPublishDialog}
               setOpen={setOpenPublishDialog}
             />

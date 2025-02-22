@@ -2,7 +2,7 @@ import { filterSearchParamsCache } from "@/lib/filters.search-params";
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPosts } from "@optima/supabase/queries";
 import {
-  jobStatusEnum,
+  jobPostCampaignStatusEnum,
   type Department,
   type JobPost,
 } from "@optima/supabase/types";
@@ -20,7 +20,7 @@ export async function OpenPositions({
   const { data: jobPosts, error } = await getJobPosts(
     supabase,
     organizationId,
-    { ...filters, status: [jobStatusEnum.published] },
+    { ...filters, status: [jobPostCampaignStatusEnum.active] },
   );
 
   const groupedJobPosts = jobPosts?.reduce<

@@ -15,13 +15,13 @@ export const updateJobCampaign = async (
   supabase: SupabaseInstance,
   data: TablesUpdate<"job_posts_campaigns">,
 ) => {
-  if (!data.id) {
-    throw new Error("id is required");
+  if (!data.job_id) {
+    throw new Error("job_id is required");
   }
   return await supabase
     .from("job_posts_campaigns")
     .update(data)
-    .eq("id", data.id)
+    .eq("job_id", data.job_id)
     .select()
     .single();
 };

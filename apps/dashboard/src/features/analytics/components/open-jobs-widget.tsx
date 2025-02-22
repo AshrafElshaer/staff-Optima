@@ -1,6 +1,6 @@
 import { createServerClient } from "@/lib/supabase/server";
 import { getJobPosts } from "@optima/supabase/queries";
-import { jobStatusEnum } from "@optima/supabase/types";
+import { jobPostCampaignStatusEnum } from "@optima/supabase/types";
 import { Card } from "@optima/ui/card";
 import { Skeleton } from "@optima/ui/skeleton";
 import { JobLinkIcon } from "hugeicons-react";
@@ -16,7 +16,7 @@ export async function OpenJobsWidget() {
     supabase,
     organizationId as string,
     {
-      status: [jobStatusEnum.published],
+      status: [jobPostCampaignStatusEnum.active],
     },
   );
   return (

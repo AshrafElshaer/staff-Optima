@@ -8,12 +8,22 @@ export function CampaignStatus({
     return (
       <>
         <p className="text-sm ">
+          <span className="text-secondary-foreground">Campaign not found</span>
+        </p>
+        <Progress value={100} indicatorBg="destructive" />
+      </>
+    );
+  const status = campaign?.status;
+  if (status === "draft") {
+    return (
+      <>
+        <p className="text-sm ">
           <span className="text-secondary-foreground">Draft not published</span>
         </p>
         <Progress value={100} indicatorBg="destructive" />
       </>
     );
-  const status = campaign.status;
+  }
 
   if (status === "pending") {
     return (
@@ -28,7 +38,7 @@ export function CampaignStatus({
   }
   if (status === "active") {
     const daysLeft = moment(campaign.end_date).diff(moment(), "days");
-    const progress = (daysLeft / 7) * 100;
+    const progress = 100 - (daysLeft / 7) * 100;
     return (
       <>
         <p className="text-sm ">
@@ -43,7 +53,6 @@ export function CampaignStatus({
     return (
       <>
         <p className="text-sm ">
-          <span className="text-secondary-foreground">Deadline:</span>{" "}
           <span>Campaign completed</span>
         </p>
         <Progress value={100} indicatorBg="success" />

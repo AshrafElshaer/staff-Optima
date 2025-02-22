@@ -5,7 +5,7 @@ export * from "./database";
 export type SupabaseInstance = SupabaseClient<Database>;
 
 export type UserAccessRole = Enums<"user_role_enum">;
-export type JobStatus = Enums<"job_status_enum">;
+
 export type JobLocation = Enums<"job_location_enum">;
 export type InterviewStatus = Enums<"interview_status_enum">;
 export type ExperienceLevel = Enums<"experience_level_enum">;
@@ -20,15 +20,6 @@ export const userRoleEnum: {
   hiring_manager: "hiring_manager",
   interviewer: "interviewer",
   recruiter: "recruiter",
-};
-
-export const jobStatusEnum: {
-  [key in JobStatus]: key;
-} = {
-  published: "published",
-  draft: "draft",
-  closed: "closed",
-  paused: "paused",
 };
 
 export const jobLocationEnum: {
@@ -46,6 +37,8 @@ export const jobPostCampaignStatusEnum: {
   pending: "pending",
   completed: "completed",
   paused: "paused",
+  draft: "draft",
+  closed: "closed",
 };
 
 export const experienceLevelEnum: {

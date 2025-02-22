@@ -570,7 +570,6 @@ export type Database = {
           salary_range: string | null;
           screening_questions: string[] | null;
           skills: string[] | null;
-          status: Database["public"]["Enums"]["job_status_enum"] | null;
           title: string;
           updated_at: string;
         };
@@ -588,7 +587,6 @@ export type Database = {
           salary_range?: string | null;
           screening_questions?: string[] | null;
           skills?: string[] | null;
-          status?: Database["public"]["Enums"]["job_status_enum"] | null;
           title: string;
           updated_at?: string;
         };
@@ -606,7 +604,6 @@ export type Database = {
           salary_range?: string | null;
           screening_questions?: string[] | null;
           skills?: string[] | null;
-          status?: Database["public"]["Enums"]["job_status_enum"] | null;
           title?: string;
           updated_at?: string;
         };
@@ -954,8 +951,9 @@ export type Database = {
         | "active"
         | "paused"
         | "completed"
-        | "pending";
-      job_status_enum: "published" | "draft" | "closed" | "paused";
+        | "pending"
+        | "draft"
+        | "closed";
       user_role_enum: "admin" | "recruiter" | "hiring_manager" | "interviewer";
     };
     CompositeTypes: {

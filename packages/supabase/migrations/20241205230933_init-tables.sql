@@ -129,7 +129,7 @@ create index idx_email_templates_org on email_templates(organization_id);
 
 create type employment_type_enum as enum ('full_time', 'part_time', 'contract', 'internship');
 create type experience_level_enum as enum ('junior', 'mid', 'senior', 'lead', 'executive');
-create type job_status_enum as enum ('published', 'draft', 'closed', 'paused');
+
 create type job_location_enum as enum ('remote','hybrid','on_site');
 
 
@@ -142,7 +142,7 @@ create table job_posts (
     employment_type employment_type_enum not null,
     salary_range text,
     experience_level experience_level_enum not null,
-    status job_status_enum default 'draft',
+
     location job_location_enum not null,
 
     screening_questions text[],
@@ -158,7 +158,7 @@ create table job_posts (
 create index idx_job_listings_id on job_listings(id);
 create index idx_job_listings_org on job_listings(organization_id);
 
-create type job_post_campaign_status_enum as enum ('active', 'paused', 'completed','pending');
+create type job_post_campaign_status_enum as enum ('active', 'paused', 'completed','pending','draft','closed');
 
 create table job_posts_campaigns (
     id uuid primary key default gen_random_uuid(),
@@ -166,7 +166,7 @@ create table job_posts_campaigns (
     job_id uuid references job_posts(id) not null on delete cascade,
     start_date timestamp with time zone not null,
     end_date timestamp with time zone check (end_date is null or end_date > start_date),
-    status job_post_campaign_status_enum not null default 'pending',
+    status job_post_campaign_status_enum not null default 'draft',
     is_integration_enabled boolean not null default false,
     created_at timestamp with time zone default now() not null,
     updated_at timestamp with time zone default now() not null
