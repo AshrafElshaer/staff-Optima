@@ -87,7 +87,7 @@ create policy "Organization Members Can Update Job Post Campaign" on job_posts_c
 
 create policy "Organization Members Can Delete Job Post Campaign" on job_posts_campaigns for delete using (is_user_organization_member(organization_id));
 
-create policy "Organization Members Can View Job Post Campaign" on job_posts_campaigns for select using (is_user_organization_member(organization_id));
+create policy "Public Can View Job Post Campaign" on job_posts_campaigns for select using (true);
 
 
 -- Candidates

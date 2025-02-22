@@ -31,7 +31,6 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
     filters,
   );
 
-
   return (
     <div className="flex flex-col gap-8 flex-1">
       <section className="flex items-center justify-between">
