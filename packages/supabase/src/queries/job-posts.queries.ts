@@ -2,7 +2,6 @@ import type {
   EmploymentType,
   ExperienceLevel,
   JobLocation,
-  JobPost,
   JobPostCampaignStatus,
   SupabaseInstance,
 } from "../types";
@@ -28,7 +27,10 @@ export async function getJobPosts(
     .eq("organization_id", organization_id);
 
   if (filters?.status?.length) {
-    query.in("campaigns.status", filters.status);
+    const statuses = filters.status.map((status) => `status.eq.${status}`);
+    query.or(statuses.join(","), {
+      referencedTable: "job_posts_campaigns",
+    });
   }
 
   if (filters?.type?.length) {
@@ -51,7 +53,12 @@ export async function getJobPosts(
     query.ilike("title", `%${filters.title}%`);
   }
 
-  return await query;
+  const { data, error } = await query;
+
+  return {
+    data: data?.filter((post) => post.campaigns?.length > 0),
+    error,
+  };
 }
 
 export async function getJobPostsWithApplicationsCount(
@@ -74,7 +81,10 @@ export async function getJobPostsWithApplicationsCount(
     .eq("organization_id", organization_id);
 
   if (filters?.status?.length) {
-    query.in("status", filters.status);
+    const statuses = filters.status.map((status) => `status.eq.${status}`);
+    query.or(statuses.join(","), {
+      referencedTable: "job_posts_campaigns",
+    });
   }
 
   if (filters?.type?.length) {
@@ -97,7 +107,12 @@ export async function getJobPostsWithApplicationsCount(
     query.ilike("title", `%${filters.title}%`);
   }
 
-  return await query;
+  const { data, error } = await query;
+
+  return {
+    data: data?.filter((post) => post.campaigns?.length > 0),
+    error,
+  };
 }
 
 export async function getJobPostById(

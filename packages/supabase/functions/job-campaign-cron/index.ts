@@ -10,7 +10,6 @@ Deno.serve(async () => {
     .or("status.eq.pending,status.eq.active");
 
   if (!jobCampaigns || error) {
-    console.error("Error fetching job campaigns:", error);
     return new Response(JSON.stringify({ error: error?.message }), {
       headers: { "Content-Type": "application/json" },
       status: 400,
