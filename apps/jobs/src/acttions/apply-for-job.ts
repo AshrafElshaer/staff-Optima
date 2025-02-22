@@ -111,12 +111,20 @@ export const createApplicationAction = actionClientWithMeta
       }
     }
 
-    const { data: job } = await getJobPostById(supabase, newApplication.job_id);
-
-    const { data: organization } = await getOrganizationById(
+    const { data: job, error: jobError } = await getJobPostById(
       supabase,
-      newApplication.organization_id,
+      newApplication.job_id,
     );
+
+    if (jobError) {
+      throw new Error(jobError.message);
+    }
+    const { data: organization, error: organizationError } =
+      await getOrganizationById(supabase, newApplication.organization_id);
+
+    if (organizationError) {
+      throw new Error(organizationError.message);
+    }
 
     await resend.emails.send({
       from: "Staff Optima <noreply@staffoptima.co>",

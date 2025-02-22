@@ -4,18 +4,18 @@ export const createApplication = async (
   supabase: SupabaseInstance,
   application: TablesInsert<"applications">,
 ) => {
-  const { data: existingApplication, error } = await supabase
+  const { data: existingApplications, error } = await supabase
     .from("applications")
     .select("*")
     .eq("job_id", application.job_id)
     .eq("candidate_id", application.candidate_id)
-    .single();
+    .eq("organization_id", application.organization_id);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  if (existingApplication) {
+  if (existingApplications && existingApplications.length > 0) {
     throw new Error("You already applied for this job");
   }
 
