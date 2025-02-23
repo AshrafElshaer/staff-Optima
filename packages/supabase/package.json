@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
+    "deploy:functions": "bunx supabase functions deploy --no-verify-jwt",
     "lint": "biome check .",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit "
