@@ -125,13 +125,14 @@ cp packages/jobs/.env.example packages/jobs/.env
 cd packages/supabase
 bunx supabase login # login to supabase
 bunx supabase link # link the database to the project
-bunx supabase db push # Push the database schema and migrations to Supabase
-bunx supabase functions deploy --no-verify-jwt # deploy the edge functions ( requiers to have docker running before deploying )
+bun  run db:push # Push the database schema and migrations to Supabase
+bun  run deploy:functions # deploy the edge functions ( requiers to have docker running before deploying )
 
 ```
 
 4. Setup the Trigger.dev jobs
 [Visit trigger.dev docs](https://trigger.dev/docs/trigger-config) to configure the trigger.dev project.
+[Visit trigger.dev docs for supabase edge functions](https://trigger.dev/docs/guides/frameworks/supabase-edge-functions-basic) to set up the supabase edge functions secret key.
 
 ```sh
 cd packages/jobs
