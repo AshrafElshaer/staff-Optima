@@ -14,4 +14,5 @@ export const config: TriggerConfig = {
       randomize: true,
     },
   },
+  dependenciesToBundle: ["@supabase/supabase-js"],
 };

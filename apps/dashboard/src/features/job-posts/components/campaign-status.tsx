@@ -38,15 +38,16 @@ export function CampaignStatus({
     );
   }
   if (status === "active") {
-    const daysLeft = moment(campaign.end_date).diff(moment(), "days");
-    const progress = 100 - (daysLeft / 7) * 100;
+    const totalMinutes = moment(campaign.end_date).diff(campaign.start_date, "minutes");
+    const minutesLeft = moment(campaign.end_date).diff(moment(), "minutes");
+    const progress = Math.min(100, Math.max(0, ((totalMinutes - minutesLeft) / totalMinutes) * 100));
     return (
       <>
         <p className="text-sm ">
           <span className="text-secondary-foreground">Deadline:</span>{" "}
-          <span>{daysLeft} Days left</span>
+          <span>{moment(campaign.end_date).fromNow()}</span>
         </p>
-        <Progress value={progress} indicatorBg="success" />
+        <Progress value={progress} indicatorBg="blue" />
       </>
     );
   }
