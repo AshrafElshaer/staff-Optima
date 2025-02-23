@@ -110,31 +110,44 @@ git clone https://github.com/AshrafElshaer/staff-Optima.git
 bun i
 ```
 
-2. Copy `.env.example` to `.env` and update the variables.
+2. Copy `.env.example` to `.env` and update the variables for each app and package.
 
 ```sh
-# Copy .env.example to .env for each app
 cp apps/dashboard/.env.example apps/dashboard/.env
 cp apps/jobs/.env.example apps/jobs/.env
 cp apps/web/.env.example apps/web/.env
+cp packages/jobs/.env.example packages/jobs/.env
 ```
 
-4. Start the development server from either bun or turbo:
+3. Setup the Database
+
+```sh
+cd packages/supabase
+bunx supabase login # login to supabase
+bunx supabase link # link the database to the project
+bunx supabase db push # Push the database schema and migrations to Supabase
+bunx supabase functions deploy --no-verify-jwt # deploy the edge functions ( requiers to have docker running before deploying )
+
+```
+
+4. Setup the Trigger.dev jobs
+[Visit trigger.dev docs](https://trigger.dev/docs/trigger-config) to configure the trigger.dev project.
+
+```sh
+cd packages/jobs
+bunx trigger.dev@latest deploy --env-file .env # deploy the trigger.dev jobs
+```
+
+5. Start the development server from either bun or turbo:
 
 ```ts
-bun dev // starts everything in development mode (web, app, api, email)
+bun dev // starts everything in development mode (web, dashboard, jobs-web, jobs)
 bun dev:web // starts the web app in development mode
 bun dev:dashboard // starts the dashboard in development mode
 bun dev:jobs-web // starts the jobs-web in development mode
+bun dev:jobs // starts the trigger.dev jobs in development mode
 
-// Database
-cd packages/supabase
-bunx supabase login // login to supabase
-bunx supabase link // link the database to the project
-bunx supabase db push // push the migrations to the database
-bunx supabase functions deploy --no-verify-jwt    // deploy the edge functions ( requiers to have docker running before deploying )
 ```
-
 
 ### Hosting
 
