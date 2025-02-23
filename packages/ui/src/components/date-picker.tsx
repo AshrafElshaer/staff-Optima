@@ -13,11 +13,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 type DatePickerProps = {
   date: Date | undefined;
   setDate: (date: Date | undefined) => void;
+  fromDate?: Date;
+  toDate?: Date;
 };
 
-export function DatePicker({ date, setDate }: DatePickerProps) {
+export function DatePicker({
+  date,
+  setDate,
+  fromDate,
+  toDate,
+}: DatePickerProps) {
   return (
-    <Popover>
+    <Popover modal>
       <PopoverTrigger asChild>
         <Button
           variant={"secondary"}
@@ -36,6 +43,8 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           selected={date}
           onSelect={setDate}
           initialFocus
+          fromDate={fromDate}
+          toDate={toDate}
         />
       </PopoverContent>
     </Popover>

@@ -2,8 +2,9 @@ import type { TriggerConfig } from "@trigger.dev/sdk/v3";
 
 export const config: TriggerConfig = {
   // Replace <your-project-ref> with your project id: https://trigger.dev/docs/trigger-config
-  project: "<your-project-ref>",
+  project: "proj_nkmpdkyurjnkbujjdqtb",
   logLevel: "log",
+  maxDuration: 10, // 10 seconds
   retries: {
     enabledInDev: true,
     default: {
@@ -14,5 +15,4 @@ export const config: TriggerConfig = {
       randomize: true,
     },
   },
-  dependenciesToBundle: ["@supabase/supabase-js"],
 };

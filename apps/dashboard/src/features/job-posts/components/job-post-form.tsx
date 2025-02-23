@@ -117,7 +117,12 @@ export function JobPostForm({ job }: JobPostFormProps) {
         created_by,
         ...rest
       } = data;
-      createJobPost({ ...rest, status: "draft" });
+      createJobPost({
+        ...rest,
+        status: "draft",
+        start_date: new Date().toISOString(),
+        end_date: new Date().toISOString(),
+      });
     }
   }
 

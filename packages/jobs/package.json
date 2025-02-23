@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@trigger.dev/sdk": "3.0.0-beta.56"
+    "@optima/supabase": "workspace:*",
+    "@trigger.dev/sdk": "3.3.16"
   }
 }

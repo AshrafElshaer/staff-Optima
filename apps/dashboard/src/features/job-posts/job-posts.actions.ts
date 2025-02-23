@@ -1,6 +1,7 @@
 "use server";
 
 import { authActionClient } from "@/lib/safe-action";
+import type { launchJobCampaign } from "@optima/jobs/trigger/launch-job-campaign";
 import {
   createJobCampaign,
   createJobPost,
@@ -13,10 +14,11 @@ import {
   jobPostInsertSchema,
   jobPostUpdateSchema,
 } from "@optima/supabase/validations";
+import { tasks } from "@trigger.dev/sdk/v3";
+import moment from "moment";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-
 export const createJobPostAction = authActionClient
   .metadata({
     name: "createJobPost",
@@ -28,11 +30,13 @@ export const createJobPostAction = authActionClient
   .schema(
     jobPostInsertSchema.extend({
       status: z.nativeEnum(jobPostCampaignStatusEnum),
+      start_date: z.string(),
+      end_date: z.string(),
     }),
   )
   .action(async ({ parsedInput, ctx }) => {
     const { supabase } = ctx;
-    const { status, ...rest } = parsedInput;
+    const { status, start_date, end_date, ...rest } = parsedInput;
     const payload = {
       ...rest,
       organization_id: ctx.user.user_metadata.organization_id,
@@ -46,10 +50,22 @@ export const createJobPostAction = authActionClient
       organization_id: ctx.user.user_metadata.organization_id,
       job_id: data.id,
       status,
-      start_date: new Date().toISOString(),
+      start_date,
+      end_date,
     });
 
     if (campaignError) throw new Error(campaignError.message);
+    if (status === "pending") {
+      await tasks.trigger<typeof launchJobCampaign>(
+        "launch-job-campaign",
+        {
+          jobPostId: data.id,
+        },
+        {
+          delay: moment(start_date).toISOString(),
+        },
+      );
+    }
 
     revalidatePath("/job-posts");
     return data;
@@ -109,6 +125,15 @@ export const createJobCampaignAction = authActionClient
           ...parsedInput,
           updated_at: new Date().toISOString(),
         });
+        await tasks.trigger<typeof launchJobCampaign>(
+          "launch-job-campaign",
+          {
+            jobPostId: parsedInput.job_id,
+          },
+          {
+            delay: moment(parsedInput.start_date).toISOString(),
+          },
+        );
 
         if (updateError) throw new Error(updateError.message);
         revalidatePath("/job-posts");
@@ -125,6 +150,16 @@ export const createJobCampaignAction = authActionClient
     const { error } = await createJobCampaign(supabase, payload);
 
     if (error) throw new Error(error.message);
+
+    await tasks.trigger<typeof launchJobCampaign>(
+      "launch-job-campaign",
+      {
+        jobPostId: parsedInput.job_id,
+      },
+      {
+        delay: moment(parsedInput.start_date).toISOString(),
+      },
+    );
 
     revalidatePath("/job-posts");
     redirect("/job-posts");
