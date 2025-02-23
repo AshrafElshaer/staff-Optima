@@ -177,7 +177,13 @@ export function PublishJobDialog({
                         type="time"
                         onChange={(e) => field.onChange(e.target.value)}
                         value={field.value}
-                        min={new Date(Date.now() + 60 * 60 * 1000).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })}
+                        min={new Date(
+                          Date.now() + 60 * 60 * 1000,
+                        ).toLocaleTimeString("en-US", {
+                          hour12: false,
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                       />
                     </FormControl>
                     <FormMessage />
