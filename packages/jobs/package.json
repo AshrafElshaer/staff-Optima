@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
+    "deploy": "bunx trigger.dev@latest deploy --env-file .env",
     "lint": "biome check .",
     "jobs": "bunx trigger.dev@beta dev",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@optima/supabase": "workspace:*",
     "@trigger.dev/sdk": "3.3.16"
   }
 }

@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit "
   },
   "dependencies": {
+    "@optima/jobs": "workspace:*",
     "@optima/logger": "workspace:*",
     "@supabase/ssr": "^0.5.1",
     "@tiptap/core": "^2.10.3",

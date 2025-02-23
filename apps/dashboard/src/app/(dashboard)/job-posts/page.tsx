@@ -11,6 +11,7 @@ import type {
 
 import { loadSearchParams } from "@/features/job-posts/job-posts.search-params";
 import { buttonVariants } from "@optima/ui/button";
+import { cn } from "@optima/ui/cn";
 import { PlusIcon } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -34,7 +35,7 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
   return (
     <div className="flex flex-col gap-8 flex-1">
       <section className="flex items-center justify-between">
-        <PageTitle title="Job Listings" className="text-lg" />
+        <PageTitle title="Job Posts" className="text-lg" />
         <Link
           href="/job-posts/new"
           className={buttonVariants({
@@ -47,7 +48,12 @@ export default async function JobPostsPage({ searchParams }: PageProps) {
         </Link>
       </section>
       <JobPostFilters />
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
+      <section
+        className={cn(
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4",
+          !jobPosts?.length ? "flex-1" : "",
+        )}
+      >
         {!jobPosts?.length && (
           <div className="col-span-full flex min-h-[200px] flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-8 text-center">
             <p className=" text-muted-foreground">No job posts found</p>
