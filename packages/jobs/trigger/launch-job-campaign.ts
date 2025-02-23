@@ -1,6 +1,6 @@
 import type { Database } from "@optima/supabase/types";
 import { createClient } from "@supabase/supabase-js";
-import { envvars, logger, task, wait } from "@trigger.dev/sdk/v3";
+import { envvars, logger, task } from "@trigger.dev/sdk/v3";
 
 type LaunchJobCampaignPayload = {
   jobPostId: string;
@@ -10,10 +10,16 @@ export const launchJobCampaign = task({
   id: "launch-job-campaign",
   run: async (payload: LaunchJobCampaignPayload, { ctx }) => {
     logger.log("Launching job campaign", { payload, ctx });
-
+    const SUPABASE_URL = await envvars.retrieve("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = await envvars.retrieve(
+      "SUPABASE_SERVICE_ROLE_KEY",
+    );
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      throw new Error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not set");
+    }
     const supabase = createClient<Database>(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      SUPABASE_URL.value,
+      SUPABASE_SERVICE_ROLE_KEY.value,
     );
 
     const { data, error } = await supabase

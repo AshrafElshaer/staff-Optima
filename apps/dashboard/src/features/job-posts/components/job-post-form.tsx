@@ -121,7 +121,7 @@ export function JobPostForm({ job }: JobPostFormProps) {
         ...rest,
         status: "draft",
         start_date: new Date().toISOString(),
-        end_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
       });
     }
   }
