@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "deploy": "bunx trigger.dev@latest deploy --env-file .env",
+    "deploy": "bunx trigger.dev@latest deploy",
     "lint": "biome check .",
-    "jobs": "bunx trigger.dev@beta dev",
+    "jobs": "bunx trigger.dev@latest dev",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@trigger.dev/sdk": "3.3.16"
+    "@trigger.dev/sdk": "3.0.0-beta.56"
   }
 }

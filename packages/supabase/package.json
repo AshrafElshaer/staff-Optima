@@ -6,7 +6,7 @@
     "clean": "rm -rf .turbo node_modules",
     "db:push": "bunx supabase db push",
     "deploy:functions": "bunx supabase functions deploy --no-verify-jwt",
-    "lint": "biome check .",
+    "lint": "biome check . ",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit "
   },
