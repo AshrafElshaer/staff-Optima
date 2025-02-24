@@ -30,6 +30,7 @@ export const launchJobCampaign = task({
       })
       .eq("job_id", payload.jobPostId)
       .eq("status", "pending")
+      .select()
       .single();
     if (error) {
       logger.error("Error launching job campaign", { error });
